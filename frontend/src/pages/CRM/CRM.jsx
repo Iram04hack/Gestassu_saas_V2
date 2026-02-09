@@ -15,19 +15,24 @@ const CRM = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Charger les clients depuis l'API
+    // Debounce search term
     useEffect(() => {
-        loadClients();
-    }, [activeTab]);
+        const timer = setTimeout(() => {
+            loadClients();
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchTerm, activeTab]);
 
     const loadClients = async () => {
         try {
             setLoading(true);
             setError(null);
 
-            // Filtrer par type selon l'onglet actif
+            // Filtrer par type selon l'onglet actif et terme de recherche
             const params = {
-                est_entreprise: activeTab === 'entreprises' ? 'true' : 'false'
+                est_entreprise: activeTab === 'entreprises' ? 'true' : 'false',
+                search: searchTerm
             };
 
             const response = await crmService.getClients(params);
@@ -35,11 +40,12 @@ const CRM = () => {
             // Transformer les données de l'API pour correspondre au format attendu par ClientList
             const transformedClients = response.results ? response.results.map(client => ({
                 id: client.id_client,
-                type: client.est_entreprise ? 'Entreprise' : 'Client', // Badge type
+                type: client.type_client || (client.est_entreprise ? 'Entreprise' : 'Client'), // Badge type (Client/Prospect)
                 qualite: client.civilite || '-',
                 nom: client.nom_complet || `${client.prenom_client || ''} ${client.nom_client || ''}`.trim(),
                 adresse: client.adresse || '-',
                 origine: client.source || '-',
+                createur: client.enregistre_par || '-',
                 conseiller: '-', // À implémenter plus tard
                 contacts: [
                     client.telephone && { type: 'phone', value: client.telephone },
@@ -57,6 +63,19 @@ const CRM = () => {
             setError('Impossible de charger les clients. Veuillez réessayer.');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleDeleteClient = async (id) => {
+        if (window.confirm('Voulez-vous vraiment supprimer ce client ?')) {
+            try {
+                await crmService.deleteClient(id);
+                // Rafraîchir la liste
+                loadClients();
+            } catch (err) {
+                console.error('Erreur lors de la suppression du client:', err);
+                alert('Impossible de supprimer le client. Veuillez réessayer.');
+            }
         }
     };
 
@@ -149,6 +168,7 @@ const CRM = () => {
                     clients={clients}
                     searchTerm={searchTerm}
                     activeTab={activeTab}
+                    onDelete={handleDeleteClient}
                 />
             )}
 

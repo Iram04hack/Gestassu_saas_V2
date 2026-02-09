@@ -51,7 +51,7 @@ class Client(models.Model):
         blank=True,
         null=True
     )
-    date_naissance = models.DateTimeField(
+    date_naissance = models.DateField(  # DateField car c'est 'date' dans la BD, pas 'datetime'
         db_column='Date_naissance',
         blank=True,
         null=True
@@ -114,7 +114,7 @@ class Client(models.Model):
         blank=True,
         null=True
     )
-    date_permis_cond = models.DateTimeField(
+    date_permis_cond = models.DateField(  # DateField car c'est 'date' dans la BD
         db_column='date_permis_cond',
         blank=True,
         null=True
@@ -164,7 +164,7 @@ class Client(models.Model):
 
     class Meta:
         managed = False  # Ne pas gérer la table (elle existe déjà)
-        db_table = 'CLIENT'  # Nom exact de la table dans la BD
+        db_table = 'client'  # Nom exact de la table dans la BD (minuscules)
         ordering = ['-date_enreg']
 
     def __str__(self):
@@ -283,7 +283,7 @@ class Interaction(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'INTERACTION'
+        db_table = 'interaction'  # Nom exact de la table dans la BD (minuscules)
         ordering = ['-date_heure_interaction']
 
     def __str__(self):

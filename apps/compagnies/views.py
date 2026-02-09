@@ -15,7 +15,7 @@ class CompagnieViewSet(viewsets.ModelViewSet):
     ViewSet pour gérer les compagnies d'assurance
     Fournit les operations CRUD + recherche et filtrage
     """
-    queryset = Compagnie.objects.filter(effacer=False)
+    # queryset = Compagnie.objects.filter(effacer=False)
     serializer_class = CompagnieSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
@@ -23,22 +23,40 @@ class CompagnieViewSet(viewsets.ModelViewSet):
     ordering_fields = ['date_enreg', 'nom_compagnie']
     ordering = ['nom_compagnie']
     
+    def get_queryset(self):
+        from django.db.models import Q
+        return Compagnie.objects.filter(Q(effacer=False) | Q(effacer__isnull=True))
+
     @action(detail=True, methods=['get'])
     def contacts(self, request, pk=None):
         """Récupérer tous les contacts d'une compagnie"""
         contacts = ContactCompagnie.objects.filter(
             id_compagnie=pk,
-            effacer=False
+            effacer=False  # TODO: Handle NULLs here too if needed
         )
         serializer = ContactCompagnieSerializer(contacts, many=True)
         return Response(serializer.data)
+
+    def perform_create(self, serializer):
+        """Enregistrer l'utilisateur qui a créé la compagnie"""
+        user_id = self.request.user.id if self.request.user.is_authenticated else None
+        serializer.save(idutilisateur_save=user_id)
+
+    def perform_update(self, serializer):
+        """Enregistrer l'utilisateur qui a modifié la compagnie"""
+        user_id = self.request.user.id if self.request.user.is_authenticated else None
+        serializer.save(idutilisateur_save=user_id)
+
+    def perform_destroy(self, instance):
+        instance.effacer = True
+        instance.save()
 
 
 class ContactCompagnieViewSet(viewsets.ModelViewSet):
     """
     ViewSet pour gérer les contacts des compagnies
     """
-    queryset = ContactCompagnie.objects.filter(effacer=False)
+    # queryset = ContactCompagnie.objects.filter(effacer=False)
     serializer_class = ContactCompagnieSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
@@ -50,7 +68,9 @@ class ContactCompagnieViewSet(viewsets.ModelViewSet):
         """
         Filtrage par compagnie
         """
-        queryset = super().get_queryset()
+        # Base queryset avec soft delete
+        from django.db.models import Q
+        queryset = ContactCompagnie.objects.filter(Q(effacer=False) | Q(effacer__isnull=True))
         
         # Filtre par compagnie
         id_compagnie = self.request.query_params.get('id_compagnie', None)
@@ -58,3 +78,7 @@ class ContactCompagnieViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(id_compagnie=id_compagnie)
             
         return queryset
+
+    def perform_destroy(self, instance):
+        instance.effacer = True
+        instance.save()

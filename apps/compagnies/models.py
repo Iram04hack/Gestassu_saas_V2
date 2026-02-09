@@ -96,7 +96,7 @@ class Compagnie(models.Model):
 
     class Meta:
         managed = False  # Ne pas gérer la table (elle existe déjà)
-        db_table = 'COMPAGNIE'  # Nom exact de la table dans la BD
+        db_table = 'compagnie'  # Nom exact de la table dans la BD (minuscules)
         ordering = ['nom_compagnie']
 
     def __str__(self):
@@ -188,7 +188,7 @@ class ContactCompagnie(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Contact_compagnie'
+        db_table = 'contact_compagnie'  # Nom exact de la table dans la BD (minuscules)
         ordering = ['nom_contact']
 
     def __str__(self):

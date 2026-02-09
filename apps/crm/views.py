@@ -15,7 +15,6 @@ class ClientViewSet(viewsets.ModelViewSet):
     ViewSet pour gérer les clients
     Fournit les operations CRUD + recherche et filtrage
     """
-    queryset = Client.objects.filter(effacer=False)  # Ne pas afficher les clients supprimés
     serializer_class = ClientSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
@@ -27,7 +26,9 @@ class ClientViewSet(viewsets.ModelViewSet):
         """
         Filtrage personnalisé du queryset
         """
-        queryset = super().get_queryset()
+        # Base queryset avec soft delete (effacer=False OU effacer=NULL)
+        from django.db.models import Q
+        queryset = Client.objects.filter(Q(effacer=False) | Q(effacer__isnull=True))
         
         # Filtre par type (personne ou entreprise)
         est_entreprise = self.request.query_params.get('est_entreprise', None)
@@ -54,6 +55,25 @@ class ClientViewSet(viewsets.ModelViewSet):
             'personnes': personnes
         })
 
+    def perform_create(self, serializer):
+        """Enregistrer l'utilisateur qui a créé le client"""
+        user_id = self.request.user.id if self.request.user.is_authenticated else None
+        serializer.save(idutilisateur_source=user_id, idutilisateur_save=user_id)
+
+    def perform_update(self, serializer):
+        """Enregistrer l'utilisateur qui a modifié le client"""
+        user_id = self.request.user.id if self.request.user.is_authenticated else None
+        serializer.save(idutilisateur_save=user_id)
+
+    def perform_destroy(self, instance):
+        """
+        Soft delete : Marquer comme effacé au lieu de supprimer
+        """
+        print(f"SOFT DELETE: Marquage du client {instance.id_client} comme effacé")
+        instance.effacer = True
+        instance.save()
+        print(f"SOFT DELETE: Client {instance.id_client} marqué, effacer={instance.effacer}")
+
 
 class InteractionViewSet(viewsets.ModelViewSet):
     """
@@ -79,3 +99,7 @@ class InteractionViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(id_client=id_client)
             
         return queryset
+
+    def perform_destroy(self, instance):
+        instance.effacer = True
+        instance.save()

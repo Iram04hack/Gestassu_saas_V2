@@ -216,9 +216,15 @@
 }
 
 /* Action Buttons in Table */
-.action-buttons {
-    display: flex;
-    gap: 6px;
+.action-buttons,
+.action-buttons-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
 }
 
 .btn-details {

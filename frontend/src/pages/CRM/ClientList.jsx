@@ -1,26 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-const ClientList = ({ clients, searchTerm, activeTab }) => {
+const ClientList = ({ clients, searchTerm, activeTab, onDelete }) => {
     // Basic Filtering Logic
-    const filteredClients = clients.filter(client => {
-        // Filter by Tab (simple logic based on details.type if available, or just show all for now)
-        if (client.details && client.details.type) {
-            if (activeTab === 'personnes' && client.details.type !== 'personne') return false;
-            if (activeTab === 'entreprises' && client.details.type !== 'entreprise') return false;
-        }
-
-        // Filter by Search
-        if (!searchTerm) return true;
-        const searchLower = searchTerm.toLowerCase();
-        return (
-            (client.nom && client.nom.toLowerCase().includes(searchLower)) ||
-            (client.qualite && client.qualite.toLowerCase().includes(searchLower))
-        );
-    });
+    // Use clients directly as they are already filtered by the API (server-side search & filtering)
+    const filteredClients = clients;
 
     // Pagination Logic
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 7; // Show 7 items per page to fit screen better
+    const itemsPerPage = 10; // Show 10 items per page
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -72,11 +59,15 @@ const ClientList = ({ clients, searchTerm, activeTab }) => {
                                             ))}
                                         </div>
                                     </td>
-                                    <td>Admin</td> {/* Placeholder */}
+                                    <td>{client.createur}</td>
                                     <td>
-                                        <div className="action-buttons">
+                                        <div className="action-buttons-row">
                                             <button className="btn-details">Détails</button>
-                                            <button className="btn-icon-danger">
+                                            <button
+                                                className="btn-icon-danger"
+                                                onClick={() => onDelete(client.id)}
+                                                title="Supprimer"
+                                            >
                                                 <i className="bi bi-trash"></i>
                                             </button>
                                         </div>

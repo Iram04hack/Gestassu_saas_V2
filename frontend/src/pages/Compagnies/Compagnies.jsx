@@ -48,7 +48,7 @@ const Compagnies = () => {
 
     // Pagination Logic
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 7;
+    const itemsPerPage = 10;
 
     const filteredCompagnies = compagnies.filter(comp =>
         comp.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -63,7 +63,19 @@ const Compagnies = () => {
     const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
     const handleSaveCompagnie = (newCompagnie) => {
-        setCompagnies([...compagnies, { ...newCompagnie, id: Date.now(), contacts: 0 }]); // Add to top or bottom?
+        loadCompagnies(); // Reload list to get sorted/updated data
+    };
+
+    const handleDeleteCompagnie = async (id) => {
+        if (window.confirm('Voulez-vous vraiment supprimer cette compagnie ?')) {
+            try {
+                await compagniesService.deleteCompagnie(id);
+                loadCompagnies();
+            } catch (err) {
+                console.error('Erreur lors de la suppression:', err);
+                alert('Impossible de supprimer la compagnie.');
+            }
+        }
     };
 
     return (
@@ -143,7 +155,12 @@ const Compagnies = () => {
                                             <button className="btn-action pill">Compte courant</button>
                                             <button className="btn-action pill">Accessoires</button>
                                             <button className="btn-action pill">Modifier</button>
-                                            <button className="btn-action pill delete">Supprimer</button>
+                                            <button
+                                                className="btn-action pill delete"
+                                                onClick={() => handleDeleteCompagnie(comp.id)}
+                                            >
+                                                Supprimer
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
