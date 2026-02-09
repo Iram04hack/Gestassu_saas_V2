@@ -18,25 +18,32 @@
 }
 
 /* Header */
+/* Header */
 .sidebar-header {
-    padding: 20px;
+    padding: 30px 20px 10px 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Center the logo */
+    margin-bottom: 10px;
 }
 
 .logo-container-sidebar {
     width: 100%;
     display: flex;
     justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.logo-container-sidebar:hover {
+    transform: scale(1.05);
 }
 
 .sidebar-logo {
-    max-width: 150px;
-    /* Adjust size as needed */
+    max-width: 190px;
+    width: 100%;
     height: auto;
     object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 /* Removed old logo-icon and logo-text styles */
