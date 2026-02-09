@@ -1,13 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Compagnies.css';
 import CompagnieFormModal from './CompagnieFormModal';
+import compagniesService from '../../services/compagnies';
 
 const Compagnies = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Dummy Data for Companies (Simulating Database)
+    // State for Companies
     const [compagnies, setCompagnies] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Charger les compagnies depuis l'API
+    useEffect(() => {
+        loadCompagnies();
+    }, []);
+
+    const loadCompagnies = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const response = await compagniesService.getCompagnies();
+
+            // Transformer les données de l'API pour correspondre au format attendu
+            const transformedCompagnies = response.results ? response.results.map(comp => ({
+                id: comp.id_compagnie,
+                numero: comp.codification_compagnie || '-',
+                nom: comp.nom_compagnie || '-',
+                adresse: comp.adresse_compagnie || '-',
+                telephone: comp.tel_compagnie || '-',
+                email: comp.email_compagnie || '-',
+                logo: comp.url_logo || comp.logo || null,
+                contacts: 0, // À calculer plus tard avec les contacts
+                details: comp
+            })) : [];
+
+            setCompagnies(transformedCompagnies);
+        } catch (err) {
+            console.error('Erreur lors du chargement des compagnies:', err);
+            setError('Impossible de charger les compagnies. Veuillez réessayer.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Pagination Logic
     const [currentPage, setCurrentPage] = useState(1);
@@ -50,7 +87,7 @@ const Compagnies = () => {
                     <button className="btn-icon-action" title="Filtrer">
                         <i className="bi bi-funnel"></i>
                     </button>
-                    <button className="btn-icon-action" title="Actualiser">
+                    <button className="btn-icon-action" title="Actualiser" onClick={loadCompagnies}>
                         <i className="bi bi-arrow-clockwise"></i>
                     </button>
                     <button className="btn-new" onClick={() => setIsModalOpen(true)}>
@@ -59,50 +96,65 @@ const Compagnies = () => {
                 </div>
             </div>
 
-            <div className="compagnies-table-container">
-                <table className="compagnies-table">
-                    <thead>
-                        <tr>
-                            <th style={{ width: '60px' }}>Logo</th>
-                            <th style={{ width: '80px' }}>Numéro</th>
-                            <th>Nom compagnie</th>
-                            <th>Adresse</th>
-                            <th>Contacts</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentItems.map(comp => (
-                            <tr key={comp.id}>
-                                <td><div className="logo-placeholder">{comp.nom.substring(0, 2).toUpperCase()}</div></td>
-                                <td>{comp.numero}</td>
-                                <td style={{ fontWeight: '700' }}>{comp.nom}</td>
-                                <td className="address-cell">
-                                    {comp.adresse}
-                                    <div className="contact-mini">
-                                        <i className="bi bi-telephone-fill"></i> {comp.phone}
-                                        {comp.email && <><br /><i className="bi bi-envelope-fill"></i> {comp.email}</>}
-                                    </div>
-                                </td>
-                                <td>
-                                    <span className="contact-badge">{comp.contacts} Contacts <i className="bi bi-caret-down-fill"></i></span>
-                                </td>
-                                <td>
-                                    <div className="action-buttons">
-                                        <button className="btn-action pill">Compte courant</button>
-                                        <button className="btn-action pill">Accessoires</button>
-                                        <button className="btn-action pill">Modifier</button>
-                                        <button className="btn-action pill delete">Supprimer</button>
-                                    </div>
-                                </td>
+            {loading ? (
+                <div style={{ textAlign: 'center', padding: '40px', color: '#8d6e63' }}>
+                    <i className="bi bi-hourglass-split" style={{ fontSize: '2rem' }}></i>
+                    <p>Chargement des compagnies...</p>
+                </div>
+            ) : error ? (
+                <div style={{ textAlign: 'center', padding: '40px', color: '#d32f2f' }}>
+                    <i className="bi bi-exclamation-triangle" style={{ fontSize: '2rem' }}></i>
+                    <p>{error}</p>
+                    <button className="btn-new" onClick={loadCompagnies} style={{ marginTop: '16px' }}>
+                        Réessayer
+                    </button>
+                </div>
+            ) : (
+                <div className="compagnies-table-container">
+                    <table className="compagnies-table">
+                        <thead>
+                            <tr>
+                                <th style={{ width: '60px' }}>Logo</th>
+                                <th style={{ width: '80px' }}>Numéro</th>
+                                <th>Nom compagnie</th>
+                                <th>Adresse</th>
+                                <th>Contacts</th>
+                                <th>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            {currentItems.map(comp => (
+                                <tr key={comp.id}>
+                                    <td><div className="logo-placeholder">{comp.nom.substring(0, 2).toUpperCase()}</div></td>
+                                    <td>{comp.numero}</td>
+                                    <td style={{ fontWeight: '700' }}>{comp.nom}</td>
+                                    <td className="address-cell">
+                                        {comp.adresse}
+                                        <div className="contact-mini">
+                                            <i className="bi bi-telephone-fill"></i> {comp.phone}
+                                            {comp.email && <><br /><i className="bi bi-envelope-fill"></i> {comp.email}</>}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span className="contact-badge">{comp.contacts} Contacts <i className="bi bi-caret-down-fill"></i></span>
+                                    </td>
+                                    <td>
+                                        <div className="action-buttons">
+                                            <button className="btn-action pill">Compte courant</button>
+                                            <button className="btn-action pill">Accessoires</button>
+                                            <button className="btn-action pill">Modifier</button>
+                                            <button className="btn-action pill delete">Supprimer</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
 
             {/* Pagination Controls */}
-            {filteredCompagnies.length > 0 && (
+            {!loading && !error && filteredCompagnies.length > 0 && (
                 <div className="pagination-container">
                     <div className="pagination-info">
                         Affichage de {indexOfFirstItem + 1} à {Math.min(indexOfLastItem, filteredCompagnies.length)} sur {filteredCompagnies.length} éléments

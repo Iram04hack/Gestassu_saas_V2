@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import AuthService from '../../services/auth';
+import logo from '../../assets/logo.png';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -30,10 +31,9 @@ const Sidebar = () => {
     return (
         <aside className="smart-sidebar">
             <div className="sidebar-header">
-                <div className="logo-icon">
-                    <i className="bi bi-shield-check"></i>
+                <div className="logo-container-sidebar">
+                    <img src={logo} alt="GestAssu" className="sidebar-logo" />
                 </div>
-                <div className="logo-text">GestAssu</div>
             </div>
 
             <nav className="sidebar-content">

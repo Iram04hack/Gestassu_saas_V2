@@ -53,4 +53,3 @@ Projet de gestion d'assurance SaaS.
 Pour travailler sur ce projet :
 1. Cloner le dépôt.
 2. Basculer sur votre branche de travail (ex: `amir-work`).
-3. Avant de commencer, assurez-vous de faire un `git pull` pour avoir les dernières mises à jour.

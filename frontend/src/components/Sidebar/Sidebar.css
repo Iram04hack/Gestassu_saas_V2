@@ -19,32 +19,27 @@
 
 /* Header */
 .sidebar-header {
-    padding: 30px 0 30px 30px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.logo-icon {
-    width: 40px;
-    height: 40px;
-    background: #f1f5f9;
-    border-radius: 12px;
+    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ef4444;
-    font-size: 1.25rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* Center the logo */
 }
 
-.logo-text {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #f1f5f9;
-    letter-spacing: 0.5px;
+.logo-container-sidebar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
+.sidebar-logo {
+    max-width: 150px;
+    /* Adjust size as needed */
+    height: auto;
+    object-fit: contain;
+}
+
+/* Removed old logo-icon and logo-text styles */
 
 .nav-list {
     list-style: none;

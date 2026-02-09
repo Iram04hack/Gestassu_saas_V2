@@ -3,7 +3,7 @@ Views pour le module CRM
 APIs REST pour les clients et interactions
 """
 from rest_framework import viewsets, filters
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Client, Interaction

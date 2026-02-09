@@ -3,7 +3,7 @@ Views pour le module Compagnies
 APIs REST pour les compagnies et leurs contacts
 """
 from rest_framework import viewsets, filters
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Compagnie, ContactCompagnie
