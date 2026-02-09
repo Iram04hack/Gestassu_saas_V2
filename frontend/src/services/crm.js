@@ -6,7 +6,7 @@ import api from './api';
 
 const crmService = {
     // ========== CLIENTS ==========
-    
+
     /**
      * Récupérer tous les clients
      * @param {Object} params - Paramètres de filtrage (search, est_entreprise, source)
@@ -58,6 +58,15 @@ const crmService = {
      */
     getClientsStats: async () => {
         const response = await api.get('/crm/clients/stats/');
+        return response.data;
+    },
+
+    /**
+     * Récupérer les détails complets d'un client
+     * @param {string} id - ID du client
+     */
+    getClientDetails: async (id) => {
+        const response = await api.get(`/crm/clients/${id}/details/`);
         return response.data;
     },
 

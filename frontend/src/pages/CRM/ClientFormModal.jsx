@@ -3,7 +3,7 @@ import { countries } from '../../constants/countries';
 import { legalForms, civilities } from '../../constants/legalForms';
 import './ClientFormModal.css';
 
-const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne' }) => {
+const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne', initialData = null, isEditMode = false }) => {
     const [type, setType] = useState(defaultType); // 'personne' or 'entreprise'
     const [formData, setFormData] = useState({
         qualite: '', // Will hold Civilité or Forme Juridique
@@ -25,10 +25,38 @@ const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne' }) 
         autresInfos: ''
     });
 
+    // Initialize form data when editing
+    useEffect(() => {
+        if (isEditMode && initialData) {
+            setType(initialData.est_entreprise ? 'entreprise' : 'personne');
+            setFormData({
+                qualite: initialData.civilite || '',
+                nom: initialData.nom_client || '',
+                prenom: initialData.prenom_client || '',
+                raisonSocial: initialData.nom_client || '',
+                adresse: initialData.adresse || '',
+                email: initialData.email || '',
+                tel: initialData.telephone || '',
+                whatsapp: initialData.tel_whatsapp || '',
+                profession: initialData.profession || '',
+                dateNaissance: initialData.date_naissance || '',
+                pays: initialData.pays || 'Gabon',
+                nif: initialData.nif_client || '',
+                pointFocal: initialData.representant_entreprise || '',
+                fonctionPf: initialData.role_representant || '',
+                source: initialData.source || '',
+                conseiller: '',
+                autresInfos: initialData.autres_informations || ''
+            });
+        }
+    }, [isEditMode, initialData]);
+
     // Reset qualite when type changes
     useEffect(() => {
-        setFormData(prev => ({ ...prev, qualite: '' }));
-    }, [type]);
+        if (!isEditMode) {
+            setFormData(prev => ({ ...prev, qualite: '' }));
+        }
+    }, [type, isEditMode]);
 
     if (!isOpen) return null;
 
@@ -39,35 +67,44 @@ const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne' }) 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Construct the client object based on type
-        const newClient = {
-            id: Date.now(),
-            type: type === 'personne' ? 'Client' : 'Entreprise',
-            qualite: formData.qualite, // This now holds Civilité or Forme Juridique
-            nom: type === 'personne' ? `${formData.nom} ${formData.prenom}` : formData.raisonSocial,
+
+        // Construct the data for API
+        const apiData = {
+            civilite: formData.qualite,
+            nom_client: type === 'personne' ? formData.nom : formData.raisonSocial,
+            prenom_client: type === 'personne' ? formData.prenom : '',
             adresse: formData.adresse,
-            origine: formData.source || 'Direct',
-            conseiller: formData.conseiller || 'Standard',
-            contacts: [
-                { type: 'phone', value: formData.tel },
-                { type: 'email', value: formData.email }
-            ].filter(c => c.value),
-            details: { ...formData, type }
+            email: formData.email,
+            telephone: formData.tel,
+            tel_whatsapp: formData.whatsapp,
+            profession: type === 'personne' ? formData.profession : '',
+            date_naissance: type === 'personne' ? formData.dateNaissance : null,
+            pays: formData.pays,
+            nif_client: type === 'entreprise' ? formData.nif : '',
+            representant_entreprise: type === 'entreprise' ? formData.pointFocal : '',
+            role_representant: type === 'entreprise' ? formData.fonctionPf : '',
+            source: formData.source,
+            autres_informations: formData.autresInfos,
+            est_entreprise: type === 'entreprise'
         };
-        onSave(newClient);
-        setFormData({
-            qualite: '', nom: '', prenom: '', raisonSocial: '', adresse: '', email: '', tel: '', whatsapp: '',
-            profession: '', dateNaissance: '', pays: 'Gabon', nif: '', pointFocal: '', fonctionPf: '',
-            source: '', conseiller: '', autresInfos: ''
-        });
-        onClose();
+
+        onSave(apiData);
+
+        // Reset form if not in edit mode
+        if (!isEditMode) {
+            setFormData({
+                qualite: '', nom: '', prenom: '', raisonSocial: '', adresse: '', email: '', tel: '', whatsapp: '',
+                profession: '', dateNaissance: '', pays: 'Gabon', nif: '', pointFocal: '', fonctionPf: '',
+                source: '', conseiller: '', autresInfos: ''
+            });
+        }
     };
 
     return (
         <div className="modal-overlay">
             <div className="modal-container">
                 <div className="modal-header">
-                    <h2>Fiche Client</h2>
+                    <h2>{isEditMode ? 'Modifier Client' : 'Fiche Client'}</h2>
                     <h3>{type === 'personne' ? 'Personne physique' : 'Entreprise'}</h3>
                     <button className="close-btn" onClick={onClose}><i className="bi bi-x-lg"></i></button>
                 </div>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ClientList = ({ clients, searchTerm, activeTab, onDelete }) => {
+    const navigate = useNavigate();
     // Basic Filtering Logic
     // Use clients directly as they are already filtered by the API (server-side search & filtering)
     const filteredClients = clients;
@@ -62,7 +64,12 @@ const ClientList = ({ clients, searchTerm, activeTab, onDelete }) => {
                                     <td>{client.createur}</td>
                                     <td>
                                         <div className="action-buttons-row">
-                                            <button className="btn-details">Détails</button>
+                                            <button
+                                                className="btn-details"
+                                                onClick={() => navigate(`/crm/client/${client.id}`)}
+                                            >
+                                                Détails
+                                            </button>
                                             <button
                                                 className="btn-icon-danger"
                                                 onClick={() => onDelete(client.id)}

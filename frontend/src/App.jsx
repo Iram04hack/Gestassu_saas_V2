@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Login from './pages/Login/Login';
 import CRM from './pages/CRM/CRM';
+import ClientDetails from './pages/CRM/ClientDetails';
 import Compagnies from './pages/Compagnies/Compagnies';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Layout from './components/Layout/Layout';
@@ -20,6 +21,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/crm" element={<CRM />} />
+            <Route path="/crm/client/:id" element={<ClientDetails />} />
             <Route path="/compagnies" element={<Compagnies />} />
             <Route path="/catalogue" element={<div>Module Catalogue (À venir)</div>} />
             <Route path="/contrats" element={<div>Module Contrats (À venir)</div>} />

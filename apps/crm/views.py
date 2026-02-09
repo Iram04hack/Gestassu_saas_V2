@@ -54,6 +54,14 @@ class ClientViewSet(viewsets.ModelViewSet):
             'entreprises': entreprises,
             'personnes': personnes
         })
+    
+    @action(detail=True, methods=['get'])
+    def details(self, request, pk=None):
+        """Récupère les détails complets d'un client"""
+        from .serializers import ClientDetailSerializer
+        client = self.get_object()
+        serializer = ClientDetailSerializer(client)
+        return Response(serializer.data)
 
     def perform_create(self, serializer):
         """Enregistrer l'utilisateur qui a créé le client"""
@@ -87,6 +95,13 @@ class InteractionViewSet(viewsets.ModelViewSet):
     ordering_fields = ['date_heure_interaction', 'date_enreg']
     ordering = ['-date_heure_interaction']
     
+    def get_serializer_class(self):
+        """Utilise InteractionCreateSerializer pour la création/modification"""
+        from .serializers import InteractionCreateSerializer
+        if self.action in ['create', 'update', 'partial_update']:
+            return InteractionCreateSerializer
+        return InteractionSerializer
+    
     def get_queryset(self):
         """
         Filtrage par client
@@ -99,6 +114,16 @@ class InteractionViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(id_client=id_client)
             
         return queryset
+    
+    def perform_create(self, serializer):
+        """Enregistrer l'utilisateur qui a créé l'interaction"""
+        user_id = self.request.user.id if self.request.user.is_authenticated else None
+        serializer.save(idutilisateur_save=user_id)
+    
+    def perform_update(self, serializer):
+        """Enregistrer l'utilisateur qui a modifié l'interaction"""
+        user_id = self.request.user.id if self.request.user.is_authenticated else None
+        serializer.save(idutilisateur_save=user_id)
 
     def perform_destroy(self, instance):
         instance.effacer = True

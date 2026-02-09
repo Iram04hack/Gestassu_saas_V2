@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'django_filters',
     
     # Local Apps - Phase 1: Commencer avec ces deux
     'authentication',

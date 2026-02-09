@@ -16,14 +16,14 @@ urlpatterns = [
     # API Core
     path('api/core/', include('core.urls')),
     
-    # APIs Modules
+    # API Modules
     path('api/crm/', include('crm.urls')),
     path('api/compagnies/', include('compagnies.urls')),
+    path('api/contrats/', include('contrats.urls')),
+    path('api/produits/', include('produits.urls')),
+    path('api/finances/', include('finances.urls')),
     
     # Autres APIs (à ajouter progressivement):
-    # path('api/produits/', include('produits.urls')),
-    # path('api/contrats/', include('contrats.urls')),
-    # path('api/finances/', include('finances.urls')),
     # path('api/reversement/', include('reversement.urls')),
     # path('api/sinistres/', include('sinistres.urls')),
     # path('api/commerciaux/', include('commerciaux.urls')),

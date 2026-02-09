@@ -1,0 +1,186 @@
+/* ClientDetails.css */
+
+.client-details-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #fdfbf7;
+    overflow: hidden;
+}
+
+/* Header */
+.client-details-header {
+    background: #6d4c41;
+    padding: 16px 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-back {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-back:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(-2px);
+}
+
+.client-header-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.client-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+}
+
+.client-header-text h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.client-header-text .badge {
+    margin-top: 4px;
+}
+
+/* Main Content with Sidebar */
+.client-details-main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.client-details-sidebar {
+    width: 220px;
+    background: white;
+    border-right: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0;
+    overflow-y: auto;
+}
+
+.sidebar-tab {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    border: none;
+    background: transparent;
+    color: #5d4037;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    position: relative;
+}
+
+.sidebar-tab i {
+    font-size: 1.1rem;
+    width: 20px;
+}
+
+.sidebar-tab:hover {
+    background: #fff8e1;
+}
+
+.sidebar-tab.active {
+    background: #efebe9;
+    color: #6d4c41;
+    font-weight: 600;
+    border-left: 3px solid #6d4c41;
+}
+
+.sidebar-tab.active::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background: #6d4c41;
+    border-radius: 4px 0 0 4px;
+}
+
+/* Content Area */
+.client-details-content {
+    flex: 1;
+    overflow-y: auto;
+    background: #fdfbf7;
+    padding: 24px 30px;
+}
+
+/* Tab Placeholder */
+.tab-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    color: #8d6e63;
+    text-align: center;
+}
+
+.tab-placeholder p {
+    margin-top: 16px;
+    font-size: 1.1rem;
+}
+
+/* Loading and Error States */
+.client-details-loading,
+.client-details-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #8d6e63;
+    text-align: center;
+}
+
+.client-details-error {
+    color: #d32f2f;
+}
+
+.client-details-loading p,
+.client-details-error p {
+    margin-top: 16px;
+    font-size: 1.1rem;
+}
+
+.client-details-error .btn-back {
+    margin-top: 24px;
+    background: #6d4c41;
+    color: white;
+}
+
+.client-details-error .btn-back:hover {
+    background: #5d4037;
+}
