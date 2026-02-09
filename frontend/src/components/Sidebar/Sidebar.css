@@ -1,0 +1,237 @@
+/* Sidebar.css */
+
+/* Smart Sidebar Container */
+.smart-sidebar {
+    width: 260px;
+    height: 96vh;
+    margin: 2vh;
+    background: linear-gradient(180deg, var(--bg-sidebar-start) 0%, var(--bg-sidebar-end) 100%);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    color: #f1f5f9;
+    position: fixed;
+    /* Fixed position to allow native scroll */
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+/* Header */
+.sidebar-header {
+    padding: 30px 0 30px 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    background: #f1f5f9;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ef4444;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    letter-spacing: 0.5px;
+}
+
+
+.nav-list {
+    list-style: none;
+    padding: 0;
+    padding-top: 20px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Increased gap to prevent curve overlap */
+}
+
+.nav-item {
+    position: relative;
+    width: 100%;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: all 0.3s;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    position: relative;
+    margin-left: 10px;
+    /* Push in slightly */
+    z-index: 10;
+    /* Ensure inactive links are above active link curves */
+}
+
+.nav-link:hover {
+    color: #f1f5f9;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.icon-wrapper {
+    margin-right: 15px;
+    font-size: 1.3rem;
+    /* Slightly bigger */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    /* Fixed width for alignment */
+    color: inherit;
+    /* Inherit color from parent */
+}
+
+.link-text {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Active State - "Liquid" Effect */
+/* Active State - "Liquid" Effect */
+.nav-link.active {
+    background: var(--bg-primary);
+    /* Matches dashboard background color */
+    color: #b91c1c;
+    /* Active Text Color */
+    font-weight: 700;
+    position: relative;
+    z-index: 5;
+    /* Lower z-index than inactive links to ensure curves go behind */
+    margin-left: 10px;
+    /* Keep margin for pill look */
+    margin-right: -1px;
+    /* Overlap right edge slightly for perfect blend */
+    padding-left: 20px;
+    border-radius: 30px 0 0 30px;
+    /* Pill left, flat right */
+    box-shadow: none;
+}
+
+.nav-link.active .icon-wrapper {
+    color: #b91c1c;
+}
+
+/* The Curves - Pure White to blend with dashboard */
+/* The Curves - Adaptive color to blend with dashboard background */
+.nav-link.active::before,
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    /* Increased height for smoother curve */
+    background-color: transparent;
+    pointer-events: none;
+    z-index: -1;
+    /* Move behind all content */
+    border-radius: 0;
+    /* Reset border radius for specific corners below */
+}
+
+/* Top Curve */
+.nav-link.active::before {
+    top: -50px;
+    /* Match height */
+    border-bottom-right-radius: 50%;
+    /* Perfect circle corner */
+    box-shadow: 25px 25px 0 0 var(--bg-primary);
+    /* Use theme bg variable */
+}
+
+/* Bottom Curve */
+.nav-link.active::after {
+    bottom: -50px;
+    /* Match height */
+    border-top-right-radius: 50%;
+    /* Perfect circle corner */
+    box-shadow: 25px -25px 0 0 var(--bg-primary);
+    /* Use theme bg variable */
+}
+
+/* Adjust text/icon color for active state */
+.nav-link.active .icon-wrapper,
+.nav-link.active .link-text {
+    color: #7f1d1d;
+    /* Dark Red */
+    position: relative;
+    z-index: 2;
+    /* Force text to front */
+}
+
+.nav-link.active .icon-wrapper {
+    color: #b91c1c;
+    /* Explicit Active Icon Color */
+}
+
+/* Footer */
+.sidebar-footer {
+    padding: 20px 30px;
+    /* border-top: 1px solid rgba(255, 255, 255, 0.1); */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar-placeholder {
+    width: 38px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.logout-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.2s;
+}
+
+.logout-btn:hover {
+    color: #ef4444;
+}

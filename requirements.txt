@@ -1,0 +1,25 @@
+# Django Core
+Django==4.2.9
+python-decouple==3.8
+
+# Database (using PyMySQL for Windows compatibility)
+pymysql==1.1.0
+cryptography==41.0.7
+
+# REST Framework
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
+
+# CORS Headers
+django-cors-headers==4.3.1
+
+# Pour la génération de PDF (contrats, attestations)
+reportlab==4.0.7
+Pillow>=10.2.0 
+
+# Pour Excel exports (statistiques)
+openpyxl==3.1.2
+
+# Utilitaires
+python-dateutil==2.8.2
+pytz==2023.3

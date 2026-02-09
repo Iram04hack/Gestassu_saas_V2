@@ -1,0 +1,406 @@
+/* CompagnieFormModal.css */
+
+/* GLOBAL BOX-SIZING FIX - Critical for preventing overflow */
+.modal-overlay,
+.modal-overlay *,
+.compagnies-modal-container,
+.compagnies-modal-container *,
+.compagnies-modal-container *::before,
+.compagnies-modal-container *::after {
+    box-sizing: border-box !important;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+    padding: 20px;
+}
+
+
+.compagnies-modal-container {
+    background: #ffffff;
+    width: 720px;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 40px);
+    margin: 0;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: none;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.compagnies-modal-header {
+    padding: 16px 20px;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.header-title {
+    display: none;
+    /* Hide icon and small text */
+}
+
+.compagnies-modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #4a3b32;
+    text-align: center;
+    /* Center Title */
+    flex: 1;
+    /* Take up available space to center properly with absolute button */
+}
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.win-btn {
+    background: #f5f5f5;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 0.9rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #f5f5f5;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 1.1rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: #e0e0e0;
+    color: #333;
+    transform: translateY(-50%) rotate(90deg);
+}
+
+/* Tabs - Segmented Control Style from CRM */
+.form-type-switch {
+    display: flex;
+    background: #f5f5f7;
+    padding: 4px;
+    border-radius: 12px;
+    margin: 12px 0;
+}
+
+.switch-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.switch-option:hover {
+    color: #333;
+}
+
+.switch-option.active {
+    background: #fff;
+    color: #4a3b32;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.compagnies-modal-body {
+    padding: 16px 20px;
+    background: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+}
+
+/* General Tab Layout */
+.general-tab-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 24px;
+}
+
+.logo-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.logo-section label {
+    font-weight: 600;
+    color: #4a3b32;
+    font-size: 0.9rem;
+}
+
+.logo-upload-box {
+    width: 100%;
+    height: 200px;
+    border: 2px dashed #8d6e63;
+    background: #efebe9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.btn-select-image {
+    background: #3e2723;
+    /* Dark brown button */
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 0.5px;
+}
+
+/* Fields Section */
+.fields-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.form-row label {
+    width: 140px;
+    text-align: right;
+    font-size: 0.9rem;
+    color: #3e2723;
+    font-weight: 600;
+}
+
+.form-row input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    outline: none;
+    background: #fcfcfc;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.form-row input:focus {
+    background: #fff;
+    border-color: #8d6e63;
+    box-shadow: 0 0 0 4px rgba(141, 110, 99, 0.1);
+}
+
+/* Footer */
+.compagnies-modal-footer {
+    padding: 16px 20px;
+    background: #fafafa;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-footer-cancel {
+    padding: 12px 28px;
+    border-radius: 12px;
+    background: transparent;
+    color: #666;
+    border: 1px solid transparent;
+    font-weight: 600;
+}
+
+.btn-footer-cancel:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.btn-footer-save {
+    padding: 12px 32px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #5d4037 0%, #4e342e 100%);
+    color: white;
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(93, 64, 55, 0.2);
+}
+
+.btn-footer-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(93, 64, 55, 0.3);
+}
+
+/* Accessory Tab */
+/* Accessory Tab */
+/* Accessory Tab */
+/* Accessory Tab */
+.accessoire-tab-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.accessoire-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-right: 20px;
+    border-right: 1px solid #f0f0f0;
+    /* Separator */
+}
+
+.input-group {
+    display: flex;
+    /* Changed back to flex column for better responsiveness inside grid */
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #5d4037;
+    text-align: left;
+    /* Changed alignment */
+}
+
+.input-group input {
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: #fff;
+    width: 100%;
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-add,
+.btn-del {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    font-size: 0.85rem;
+    /* Slightly smaller font */
+    transition: all 0.2s;
+    white-space: nowrap;
+    /* Prevent text wrapping */
+    display: flex;
+    /* Ensure centering */
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-add {
+    background: white;
+    border: 1px solid #333;
+    color: #333;
+}
+
+.btn-add:hover {
+    background: #f5f5f5;
+}
+
+.btn-del {
+    background: white;
+    border: 1px solid #333;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-del:hover {
+    background: #ffeeee;
+    border-color: #d32f2f;
+    color: #d32f2f;
+}
+
+.accessoire-table-wrapper {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #fff;
+    /* height: 100%; Remove fixed height to allow content to flow */
+    overflow-x: auto;
+    /* Allow horizontal scroll if table is too wide */
+}
+
+.accessoire-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.accessoire-table th {
+    text-align: left;
+    padding: 12px 16px;
+    background-color: #fdfbf7;
+    /* Light background from screenshot */
+    border-bottom: 1px solid #efebe9;
+    font-size: 0.9rem;
+    color: #5d4037;
+    font-weight: 700;
+}
+
+.accessoire-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #fcfcfc;
+    color: #3e2723;
+}

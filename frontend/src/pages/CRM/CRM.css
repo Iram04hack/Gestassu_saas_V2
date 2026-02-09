@@ -1,0 +1,308 @@
+/* CRM.css */
+.crm-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #fdfbf7;
+    /* Light warm background */
+    overflow: hidden;
+    padding: 0;
+    /* Reset padding to full width/height like Companies */
+}
+
+.crm-header-strip {
+    background: #6d4c41;
+    /* Brown Header */
+    padding: 12px 30px;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.crm-header-strip h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+/* Toolbar */
+.crm-toolbar {
+    padding: 16px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    border-bottom: 1px solid #eee;
+    box-shadow: none;
+    /* Reset shadow from previous style */
+    border-radius: 0;
+    /* Reset border radius */
+}
+
+.search-group {
+    position: relative;
+    width: 400px;
+}
+
+.search-group i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8d6e63;
+}
+
+.search-group input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border: 1px solid #d7ccc8;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s;
+    background: #fafafa;
+}
+
+.search-group input:focus {
+    border-color: #6d4c41;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
+}
+
+.crm-actions-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Tab Switcher */
+.tab-switcher {
+    display: flex;
+    background: #fafafa;
+    padding: 4px;
+    border-radius: 50px;
+    border: 1px solid #d7ccc8;
+    margin-right: 12px;
+}
+
+.tab-btn {
+    padding: 6px 16px;
+    border: none;
+    background: transparent;
+    color: #5d4037;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: white;
+    color: #6d4c41;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon-action {
+    background: white;
+    border: none;
+    color: #8d6e63;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-icon-action:hover {
+    background: #efebe9;
+    color: #5d4037;
+}
+
+.btn-new {
+    background: #6d4c41;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(109, 76, 65, 0.2);
+}
+
+.btn-new:hover {
+    background: #5d4037;
+    transform: translateY(-1px);
+}
+
+/* Table Container (Replaces client-list-container) */
+.client-list-container {
+    flex: 1;
+    overflow: auto;
+    padding: 0 30px;
+    background: white;
+    min-height: 0;
+    box-shadow: none;
+    /* Reset */
+    border-radius: 0;
+    /* Reset */
+}
+
+.table-responsive {
+    overflow-x: auto;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+.client-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.client-table th {
+    text-align: left;
+    padding: 16px 12px;
+    font-size: 0.8rem;
+    color: #8d6e63;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    text-transform: none;
+    /* Reset uppercase if needed */
+}
+
+.client-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f5f5f5;
+    vertical-align: top;
+    font-size: 0.9rem;
+    color: #3e2723;
+}
+
+.client-table tr:hover td {
+    background: #fff8e1;
+    /* Very light yellow hover */
+}
+
+/* Reusing Badge styles but tweaking colors */
+.badge {
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.badge.client {
+    background: rgba(109, 76, 65, 0.1);
+    color: #6d4c41;
+    border: 1px solid rgba(109, 76, 65, 0.2);
+}
+
+.badge.prospect {
+    background: rgba(141, 110, 99, 0.1);
+    color: #8d6e63;
+    border: 1px solid rgba(141, 110, 99, 0.2);
+}
+
+/* Action Buttons in Table */
+.action-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-details {
+    padding: 4px 12px;
+    border: 1px solid #d7ccc8;
+    background: white;
+    color: #5d4037;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: normal;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-details:hover {
+    background: #efebe9;
+    border-color: #a1887f;
+}
+
+.btn-icon-danger {
+    width: 26px;
+    /* Smaller to match pill buttons height approx */
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid #ffcdd2;
+    background: white;
+    color: #d32f2f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.btn-icon-danger:hover {
+    background: #ffebee;
+}
+
+/* Pagination */
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 30px;
+    background: white;
+    border-top: 1px solid #eee;
+    margin-top: auto;
+}
+
+.pagination-info {
+    font-size: 0.85rem;
+    color: #8d6e63;
+}
+
+.pagination-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.page-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #d7ccc8;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #5d4037;
+    transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: #efebe9;
+    border-color: #8d6e63;
+}
+
+.page-btn.active {
+    background: #6d4c41;
+    color: white;
+    border-color: #6d4c41;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

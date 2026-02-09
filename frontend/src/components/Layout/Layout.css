@@ -1,0 +1,123 @@
+/* Layout.css */
+:root {
+    --sidebar-width: 260px;
+    --header-height: 70px;
+    --primary: #ef4444;
+    --primary-light: #fca5a5;
+    --primary-dark: #b91c1c;
+    --bg-dark: #0f172a;
+    --text-light: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+.layout-container {
+    display: flex;
+    min-height: 100vh;
+    /* Use min-height instead of fixed height */
+    background-color: var(--bg-primary);
+    font-family: 'Outfit', sans-serif;
+    position: relative;
+    /* For absolute positioning context if needed */
+}
+
+/* Sidebar Styling is in Sidebar.css, but we need to ensure it's fixed */
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 290px;
+    /* Push content to right of fixed sidebar + curve buffer */
+    width: calc(100% - 290px);
+    /* Ensure correct width */
+    min-height: 100vh;
+}
+
+.top-bar {
+    height: var(--header-height);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* Keeps buttons to the right */
+    padding: 0 30px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    pointer-events: none;
+    /* Click through the empty parts bar */
+}
+
+/* Hide brand header as requested, keeping only buttons */
+.brand-header {
+    display: none;
+}
+
+.topbar-actions {
+    pointer-events: auto;
+    /* Re-enable clicks on buttons */
+}
+
+.brand-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    letter-spacing: 0.5px;
+}
+
+.page-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.topbar-actions {
+    display: flex;
+    gap: 15px;
+}
+
+/* Fix for JSX class name mismatch */
+.top-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Icon Buttons (Notifications/Settings) */
+.icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    /* Transparent by default */
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+    /* No shadow by default */
+    font-size: 1.2rem;
+}
+
+.icon-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--primary);
+    border-color: var(--text-muted);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-md);
+}
+
+.content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 30px;
+    /* Start at the very top */
+    padding-top: 0;
+    /* Explicitly 0 */
+}
