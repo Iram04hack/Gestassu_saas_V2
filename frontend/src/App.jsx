@@ -20,11 +20,19 @@ function App() {
           {/* Routes protégées avec Layout */}
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/agenda" element={<div>Module Agenda partagé (À venir)</div>} />
             <Route path="/crm" element={<CRM />} />
+            <Route path="/clients" element={<Navigate to="/crm" replace />} />
             <Route path="/crm/client/:id" element={<ClientDetails />} />
             <Route path="/compagnies" element={<Compagnies />} />
-            <Route path="/catalogue" element={<div>Module Catalogue (À venir)</div>} />
-            <Route path="/contrats" element={<div>Module Contrats (À venir)</div>} />
+            <Route path="/produits" element={<div>Module Produits (À venir)</div>} />
+            <Route path="/tarifs/auto" element={<div>Tarif automobile (À venir)</div>} />
+            <Route path="/tarifs/mrh" element={<div>Tarif Multirisque Habitation (À venir)</div>} />
+            <Route path="/contrats/auto" element={<div>Assurance Auto (À venir)</div>} />
+            <Route path="/contrats/mrh" element={<div>Assurance Multirisque Habitation (À venir)</div>} />
+            <Route path="/contrats/autres-iard" element={<div>Autres IARD (À venir)</div>} />
+            <Route path="/contrats/vie" element={<div>Assurance Vie (À venir)</div>} />
+            <Route path="/quittances" element={<div>Module Quittances (À venir)</div>} />
             <Route path="/finances" element={<div>Module Finances (À venir)</div>} />
             <Route path="/reversement" element={<div>Module Reversement (À venir)</div>} />
             <Route path="/sinistres" element={<div>Module Sinistres (À venir)</div>} />

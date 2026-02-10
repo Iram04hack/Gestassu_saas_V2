@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import AuthService from '../../services/auth';
 import logo from '../../assets/logo.png';
@@ -7,20 +7,63 @@ import './Sidebar.css';
 const Sidebar = () => {
     const location = useLocation();
     const user = AuthService.getCurrentUser();
+    const [openMenus, setOpenMenus] = useState({});
+
 
     const isActive = (path) => {
-        return location.pathname.startsWith(path) ? 'active' : '';
+        return location.pathname === path || location.pathname.startsWith(path + '/') ? 'active' : '';
+    };
+
+    const toggleMenu = (label) => {
+        setOpenMenus(prev => ({
+            ...prev,
+            [label]: !prev[label]
+        }));
     };
 
     const menuItems = [
-        { path: '/dashboard', label: 'Tableau de bord', icon: 'bi-grid-fill' }, // Changed to grid for Dashboard
-        { path: '/crm', label: 'CRM', icon: 'bi-people-fill' },
-        { path: '/compagnies', label: 'Compagnies', icon: 'bi-building' },
-        { path: '/catalogue', label: 'Catalogue', icon: 'bi-journal-bookmark-fill' },
-        { path: '/contrats', label: 'Contrats', icon: 'bi-file-earmark-text-fill' },
-        { path: '/finances', label: 'Finances', icon: 'bi-cash-coin' },
-        { path: '/reversement', label: 'Reversement', icon: 'bi-arrow-left-right' },
-        { path: '/sinistres', label: 'Sinistres', icon: 'bi-exclamation-triangle-fill' },
+        {
+            group: '',
+            items: [
+                { path: '/dashboard', label: 'Tableau de bord', icon: 'bi-grid-fill' },
+                { path: '/agenda', label: 'Agenda partagé', icon: 'bi-calendar3' },
+                { path: '/crm', label: 'Clients', icon: 'bi-people-fill' },
+                { path: '/compagnies', label: 'Compagnies', icon: 'bi-building' },
+                { path: '/produits', label: 'Produits', icon: 'bi-box-seam' },
+            ]
+        },
+        {
+            group: '',
+            items: [
+                {
+                    label: 'Tarifs',
+                    icon: 'bi-tags-fill',
+                    subItems: [
+                        { path: '/tarifs/auto', label: 'Tarif automobile' },
+                        { path: '/tarifs/mrh', label: 'Tarif Multirisque Habitation' },
+                    ]
+                },
+                {
+                    label: 'Contrats',
+                    icon: 'bi-file-earmark-text-fill',
+                    subItems: [
+                        { path: '/contrats/auto', label: 'Assurance Auto' },
+                        { path: '/contrats/mrh', label: 'Assurance Multirisque Habitation' },
+                        { path: '/contrats/autres-iard', label: 'Autres IARD' },
+                        { path: '/contrats/vie', label: 'Assurance Vie' },
+                    ]
+                },
+            ]
+        },
+        {
+            group: '',
+            items: [
+                { path: '/quittances', label: 'Quittances', icon: 'bi-receipt' },
+                { path: '/finances', label: 'Finances', icon: 'bi-cash-coin' },
+                { path: '/reversement', label: 'Reversements', icon: 'bi-arrow-left-right' },
+                { path: '/sinistres', label: 'Sinistre', icon: 'bi-exclamation-triangle-fill' },
+            ]
+        }
     ];
 
     const handleLogout = () => {
@@ -30,39 +73,74 @@ const Sidebar = () => {
 
     return (
         <aside className="smart-sidebar">
-            <div className="sidebar-header">
-                <div className="logo-container-sidebar">
-                    <img src={logo} alt="GestAssu" className="sidebar-logo" />
-                </div>
-            </div>
-
             <nav className="sidebar-content">
-                <ul className="nav-list">
-                    {menuItems.map((item) => (
-                        <li key={item.path} className="nav-item">
-                            <Link to={item.path} className={`nav-link ${isActive(item.path)}`}>
-                                <span className="icon-wrapper">
-                                    <i className={`bi ${item.icon}`}></i>
-                                </span>
-                                <span className="link-text">{item.label}</span>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+                <div className="brand-section">
+                    <span className="brand-primary">GESTASSU</span>
+                    <span className="brand-secondary">-ASSURANCES-</span>
+                    <span className="brand-tertiary">Espace d'administration</span>
+                </div>
+                {menuItems.map((group) => (
+                    <div key={group.group} className="nav-group">
+                        {group.group && <span className="group-label">{group.group}</span>}
+                        <ul className="nav-list">
+                            {group.items.map((item) => (
+                                <li key={item.label} className="nav-item">
+                                    {item.subItems ? (
+                                        <div className="menu-group-wrapper">
+                                            <button
+                                                onClick={() => toggleMenu(item.label)}
+                                                className={`nav-link sub-toggle ${openMenus[item.label] ? 'expanded' : ''}`}
+                                            >
+                                                <span className="icon-wrapper">
+                                                    <i className={`bi ${item.icon}`}></i>
+                                                </span>
+                                                <span className="link-text">{item.label}</span>
+                                                <i className={`bi bi-chevron-down arrow-icon ${openMenus[item.label] ? 'rotated' : ''}`}></i>
+                                            </button>
+                                            {openMenus[item.label] && (
+                                                <ul className="sub-nav-list">
+                                                    {item.subItems.map((subItem) => (
+                                                        <li key={subItem.path} className="sub-nav-item">
+                                                            <Link to={subItem.path} className={`sub-nav-link ${isActive(subItem.path)}`}>
+                                                                <span className="sub-link-text">{subItem.label}</span>
+                                                            </Link>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <Link to={item.path} className={`nav-link ${isActive(item.path)}`}>
+                                            <span className="icon-wrapper">
+                                                <i className={`bi ${item.icon}`}></i>
+                                            </span>
+                                            <span className="link-text">{item.label}</span>
+                                        </Link>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
             </nav>
 
             <div className="sidebar-footer">
-                <div className="user-profile">
-                    {/* Using the first letter of the name as avatar if no image */}
-                    <div className="avatar-placeholder">
-                        {user?.nom?.charAt(0) || 'U'}
+                <div className="user-profile-card">
+                    <div className="user-avatar">
+                        <img
+                            src={`https://ui-avatars.com/api/?name=${user?.nom || 'U'}&background=E1CCB1&color=1a1a1b`}
+                            alt="User"
+                        />
                     </div>
-                    <div className="user-info-text">
-                        <span className="user-name">{user?.nom || 'Utilisateur'}</span>
-                        <span className="user-role">{user?.role || 'Agent'}</span>
+                    <div className="user-details">
+                        <div className="user-name-wrapper">
+                            <span className="user-name">{user?.nom || 'Utilisateur'}</span>
+                            <span className="badge-pro">PRO</span>
+                        </div>
+                        <span className="user-email">{user?.email || 'email@example.com'}</span>
                     </div>
                 </div>
-                <button onClick={handleLogout} className="logout-btn" title="Déconnexion">
+                <button onClick={handleLogout} className="logout-icon-btn" title="Déconnexion">
                     <i className="bi bi-box-arrow-right"></i>
                 </button>
             </div>
