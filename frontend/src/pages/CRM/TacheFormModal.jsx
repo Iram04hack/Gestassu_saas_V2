@@ -96,16 +96,18 @@ const TacheFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                     .modal-overlay {
                         position: fixed; top: 0; left: 0; right: 0; bottom: 0;
                         background: rgba(0, 0, 0, 0.5);
-                        display: flex; justify-content: center; align-items: center;
+                        display: flex; justify-content: center; align-items: flex-start;
                         z-index: 1000;
+                        overflow-y: auto;
+                        padding: 20px 0;
                     }
                     .tache-modal-content {
                         background: white; width: 700px; max-width: 95vw;
-                        max-height: 90vh;
                         border-radius: 4px; overflow: hidden;
                         box-shadow: 0 4px 20px rgba(0,0,0,0.3);
                         display: flex;
                         flex-direction: column;
+                        margin: auto 0;
                     }
                     .tache-modal-header {
                         background: #6d4c41; color: white; padding: 15px;
