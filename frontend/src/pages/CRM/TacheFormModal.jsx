@@ -101,19 +101,27 @@ const TacheFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                     }
                     .tache-modal-content {
                         background: white; width: 700px; max-width: 95vw;
+                        max-height: 90vh;
                         border-radius: 4px; overflow: hidden;
                         box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                        display: flex;
+                        flex-direction: column;
                     }
                     .tache-modal-header {
                         background: #6d4c41; color: white; padding: 15px;
                         font-size: 1.1rem; font-weight: 500;
                         display: flex; justify-content: space-between; align-items: center;
+                        flex-shrink: 0;
                     }
                     .modal-close {
                         background: none; border: none; color: white;
                         font-size: 1.5rem; cursor: pointer;
                     }
-                    .tache-modal-body { padding: 30px; }
+                    .tache-modal-body { 
+                        padding: 30px; 
+                        overflow-y: auto;
+                        flex: 1;
+                    }
                     .form-row {
                         display: grid;
                         grid-template-columns: 1fr 1fr;
@@ -173,6 +181,7 @@ const TacheFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                     .tache-modal-footer {
                         padding: 15px; background: #f5f5f5; display: flex;
                         justify-content: center; gap: 15px;
+                        flex-shrink: 0;
                     }
                     .btn-cancel, .btn-save {
                         padding: 8px 20px; border-radius: 20px; border: none;
