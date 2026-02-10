@@ -96,15 +96,29 @@ const MovementTypeSelectionModal = ({ isOpen, onClose, onSelect }) => {
                     font-size: 0.9rem;
                 }
                 .btn-action {
-                    padding: 6px 12px;
-                    border: none;
-                    background: #efebe9;
-                    color: #5d4037;
-                    border-radius: 20px;
+                    padding: 8px 14px;
+                    border: 1px solid #d7ccc8;
+                    background: transparent;
+                    color: #8d6e63;
+                    border-radius: 8px;
                     cursor: pointer;
                     display: flex;
                     align-items: center;
-                    gap: 5px;
+                    gap: 6px;
+                    font-size: 0.9rem;
+                    transition: all 0.2s;
+                }
+                .btn-action:hover {
+                    background: #f5f5f5;
+                    border-color: #8d6e63;
+                }
+                .btn-icon-only {
+                    padding: 8px;
+                    min-width: 36px;
+                    justify-content: center;
+                }
+                .btn-icon-only i {
+                    font-size: 1.1rem;
                 }
                 .btn-add { background: transparent; color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px; }
 
@@ -159,8 +173,8 @@ const MovementTypeSelectionModal = ({ isOpen, onClose, onSelect }) => {
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        <button className="btn-action"><i className="bi bi-funnel"></i> Filtrer</button>
-                        <button className="btn-action" onClick={() => setSearch('')}><i className="bi bi-arrow-counterclockwise"></i> Réinitialiser</button>
+                        <button className="btn-action btn-icon-only" title="Filtrer"><i className="bi bi-funnel"></i></button>
+                        <button className="btn-action btn-icon-only" onClick={() => setSearch('')} title="Réinitialiser"><i className="bi bi-arrow-counterclockwise"></i></button>
                     </div>
 
                     <table className="types-table">

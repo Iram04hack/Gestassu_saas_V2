@@ -5,6 +5,8 @@ import ClientOverview from './ClientOverview';
 import ClientInteractions from './ClientInteractions';
 import ClientContracts from './ClientContracts';
 import ClientAccount from './ClientAccount';
+import ClientDocuments from './ClientDocuments';
+import ClientTasks from './ClientTasks';
 import ClientFormModal from './ClientFormModal';
 import './ClientDetails.css';
 
@@ -156,16 +158,10 @@ const ClientDetails = () => {
                         <ClientAccount client={client} />
                     )}
                     {activeTab === 'documents' && (
-                        <div className="tab-placeholder">
-                            <i className="bi bi-folder" style={{ fontSize: '3rem' }}></i>
-                            <p>Module Documents à venir</p>
-                        </div>
+                        <ClientDocuments client={client} />
                     )}
                     {activeTab === 'taches' && (
-                        <div className="tab-placeholder">
-                            <i className="bi bi-list-check" style={{ fontSize: '3rem' }}></i>
-                            <p>Module Tâches à venir</p>
-                        </div>
+                        <ClientTasks client={client} />
                     )}
                 </div>
             </div>

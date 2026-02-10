@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'produits',       # ONGLET 4: Catalogue (Produits + Tarifs)
     'contrats',       # ONGLET 5: Contrats
     'finances',       # ONGLET 6: Finances (Caisses + Quittances)
+    'documents',      # Documents clients
+    'taches',         # Gestion des tâches
     'reversement',    # ONGLET 7: Reversement
     'sinistres',      # ONGLET 8: Sinistres
     'commerciaux',    # Module sans onglet dédié
