@@ -25,12 +25,10 @@ class ContratSerializer(serializers.ModelSerializer):
             'Date_echeance',
             'duree_contrat',
             'ID_Client',
-            'produit',  # ID du produit via FK
             'nom_produit',
             'prime_nette_brute',
             'reductions',
             'prime_net_red',
-            'compagnie',  # ID de la compagnie via FK
             'nom_compagnie',
             'accessoires',
             'taxe',
@@ -57,7 +55,7 @@ class ContratSerializer(serializers.ModelSerializer):
             'montant_surprime',
             'fractionnement',
             'est_suspendu',
-            'date_début_suspension',
+            'date_debut_suspension',
             'date_fin_suspension',
             'Motif_avenant',
             'duree_paiement',
@@ -71,42 +69,52 @@ class ContratSerializer(serializers.ModelSerializer):
             'generation_auto_cotisation',
             'date_enreg',
             'date_modif',
-            'IDUTILISATEUR_save', # Ajout demandé (Enreg.Par)
+            'IDUTILISATEUR_save',
             'statut',
         ]
     
     def get_nom_compagnie(self, obj):
         """Récupère le nom de la compagnie via la relation"""
         try:
-            return obj.compagnie.nom_compagnie if obj.compagnie else "-"
+            if hasattr(obj, 'compagnie') and obj.compagnie:
+                if hasattr(obj.compagnie, 'nom_compagnie'):
+                    return obj.compagnie.nom_compagnie
+            return "-"
         except Exception:
             return "-"
     
     def get_nom_produit(self, obj):
         """Récupère le nom du produit via la relation"""
         try:
-            return obj.produit.lib_produit if obj.produit else "-"
+            if hasattr(obj, 'produit') and obj.produit:
+                if hasattr(obj.produit, 'lib_produit'):
+                    return obj.produit.lib_produit
+            return "-"
         except Exception:
             return "-"
     
     def get_nom_agence(self, obj):
         """Récupère le nom de l'agence"""
         try:
-            from core.models import Agence
-            if obj.CodeAgence:
-                agence = Agence.objects.filter(codeagence=obj.CodeAgence).first()
-                return agence.nomagence if agence else "-"
-            return "-"
+            if not obj.CodeAgence:
+                return "-"
+            from django.apps import apps
+            Agence = apps.get_model('core', 'Agence')
+            agence = Agence.objects.filter(codeagence=obj.CodeAgence).first()
+            return agence.nomagence if agence else "-"
         except Exception:
             return "-"
     
     def get_statut(self, obj):
         """Détermine le statut du contrat"""
-        if obj.est_resilier:
-            return "Résilié"
-        elif obj.est_suspendu:
-            return "Suspendu"
-        elif obj.estprojet:
-            return "Projet"
-        else:
-            return "Actif"
+        try:
+            if obj.est_resilier:
+                return "Résilié"
+            elif obj.est_suspendu:
+                return "Suspendu"
+            elif obj.estprojet:
+                return "Projet"
+            else:
+                return "Actif"
+        except Exception:
+            return "Inconnu"

@@ -1,0 +1,143 @@
+/* ClientFilters.css */
+
+.client-filters-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    z-index: 1000;
+    animation: slideDown 0.2s ease-out;
+}
+
+.filters-panel {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    padding: 20px;
+    min-width: 400px;
+    border: 1px solid #e0e0e0;
+}
+
+.filters-header {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.filters-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4a3b32;
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+    margin-left: 4px;
+}
+
+.filter-group select {
+    padding: 10px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #333;
+    background: #fcfcfc;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.filter-group select:hover {
+    background: #fff;
+    border-color: #bdbdbd;
+}
+
+.filter-group select:focus {
+    background: #fff;
+    border-color: #8d6e63;
+    box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.1);
+    outline: none;
+}
+
+.filters-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.btn-reset-filters,
+.btn-apply-filters {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-reset-filters {
+    background: transparent;
+    color: #8d6e63;
+    border: 1px solid #e0e0e0;
+}
+
+.btn-reset-filters:hover {
+    background: #f5f5f5;
+    color: #5d4037;
+}
+
+.btn-apply-filters {
+    background: linear-gradient(135deg, #5d4037 0%, #4e342e 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(93, 64, 55, 0.2);
+}
+
+.btn-apply-filters:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(93, 64, 55, 0.3);
+}
+
+.btn-apply-filters:active {
+    transform: translateY(0);
+}
+
+/* Animation */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .filters-panel {
+        min-width: 300px;
+    }
+}

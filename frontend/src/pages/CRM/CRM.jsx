@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ClientList from './ClientList';
 import ClientFormModal from './ClientFormModal';
+import ClientFilters from './ClientFilters';
 import crmService from '../../services/crm';
 import './CRM.css';
 
@@ -15,16 +16,23 @@ const CRM = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Debounce search term
+    // Filters State
+    const [showFilters, setShowFilters] = useState(false);
+    const [filters, setFilters] = useState({
+        typeClient: '',
+        qualite: ''
+    });
+
+    // Debounce search term and reload on filter/tab changes
     useEffect(() => {
         const timer = setTimeout(() => {
             loadClients();
         }, 500);
 
         return () => clearTimeout(timer);
-    }, [searchTerm, activeTab]);
+    }, [searchTerm, activeTab, filters]); // loadClients is stable now
 
-    const loadClients = async () => {
+    const loadClients = useCallback(async () => {
         try {
             setLoading(true);
             setError(null);
@@ -38,7 +46,7 @@ const CRM = () => {
             const response = await crmService.getClients(params);
 
             // Transformer les données de l'API pour correspondre au format attendu par ClientList
-            const transformedClients = response.results ? response.results.map(client => ({
+            let transformedClients = response.results ? response.results.map(client => ({
                 id: client.id_client,
                 type: client.type_client || (client.est_entreprise ? 'Entreprise' : 'Client'), // Badge type (Client/Prospect)
                 qualite: client.civilite || '-',
@@ -57,6 +65,14 @@ const CRM = () => {
                 }
             })) : [];
 
+            // Filtrage frontend pour typeClient et qualite (Optimisation: fait ici pour éviter trop de requêtes)
+            if (filters.typeClient) {
+                transformedClients = transformedClients.filter(c => c.type === filters.typeClient);
+            }
+            if (filters.qualite) {
+                transformedClients = transformedClients.filter(c => c.qualite === filters.qualite);
+            }
+
             setClients(transformedClients);
         } catch (err) {
             console.error('Erreur lors du chargement des clients:', err);
@@ -64,7 +80,7 @@ const CRM = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [activeTab, searchTerm, filters]);
 
     const handleDeleteClient = async (id) => {
         if (window.confirm('Voulez-vous vraiment supprimer ce client ?')) {
@@ -99,6 +115,19 @@ const CRM = () => {
             // For now, let's assume 'nom' vs 'raisonSocial' distinguishes, or add a category field.
             // In ClientFormModal I added 'type' (Personne/Entreprise) to details.
         }
+    };
+
+    const handleApplyFilters = () => {
+        setShowFilters(false);
+        // loadClients will be called automatically via useEffect
+    };
+
+    const handleResetFilters = () => {
+        setFilters({
+            typeClient: '',
+            qualite: ''
+        });
+        setShowFilters(false);
     };
 
     return (
@@ -136,9 +165,25 @@ const CRM = () => {
                         </button>
                     </div>
 
-                    <button className="btn-icon-action" title="Filtrer">
-                        <i className="bi bi-funnel"></i>
-                    </button>
+                    <div style={{ position: 'relative' }}>
+                        <button
+                            className={`btn-icon-action ${showFilters ? 'active' : ''}`}
+                            title="Filtrer"
+                            onClick={() => setShowFilters(!showFilters)}
+                        >
+                            <i className="bi bi-funnel"></i>
+                        </button>
+
+                        <ClientFilters
+                            filters={filters}
+                            setFilters={setFilters}
+                            onApply={handleApplyFilters}
+                            onReset={handleResetFilters}
+                            isOpen={showFilters}
+                            activeTab={activeTab}
+                        />
+                    </div>
+
                     <button className="btn-icon-action" title="Actualiser" onClick={loadClients}>
                         <i className="bi bi-arrow-clockwise"></i>
                     </button>

@@ -68,16 +68,22 @@ class ClientSerializer(serializers.ModelSerializer):
     def get_type_client(self, obj):
         """
         Détermine si c'est un Client (a un contrat) ou un Prospect.
-        Vérifie l'existence d'un contrat actif (non supprimé) et non projet.
+        Utilise l'annotation 'has_active_contract' si disponible (optimisation),
+        sinon fait une requête DB (fallback).
         """
         try:
-            # Import local pour éviter les imports circulaires
-            from contrats.models import Contrat
-            
             # Vérifier que id_client n'est pas None
             if not obj.id_client:
                 return "Prospect"
 
+            # Optimisation : Utiliser l'annotation du ViewSet si disponible
+            if hasattr(obj, 'has_active_contract'):
+                return "Client" if obj.has_active_contract else "Prospect"
+
+            # Fallback : Requête DB (lent pour les listes)
+            from django.apps import apps
+            Contrat = apps.get_model('contrats', 'Contrat')
+            
             has_contract = Contrat.objects.filter(
                 ID_Client=obj.id_client, 
                 effacer=False,
@@ -88,6 +94,78 @@ class ClientSerializer(serializers.ModelSerializer):
         except Exception as e:
             print(f"Erreur get_type_client pour {obj.id_client}: {e}")
             return "Prospect (Erreur)"
+
+
+class ClientListSerializer(serializers.ModelSerializer):
+    """Serializer allégé pour la liste des clients (Optimisation)"""
+    
+    # Champs calculés
+    nom_complet = serializers.SerializerMethodField()
+    type_client = serializers.SerializerMethodField()
+    enregistre_par = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Client
+        fields = [
+            'id_client',
+            'nom_complet',
+            'type_client',
+            'email',
+            'telephone',
+            'est_entreprise',
+            'civilite',
+            'source',
+            'adresse',
+            'pays',
+            'enregistre_par' # Nécessaire pour l'affichage liste
+        ]
+        # Pas de read_only_fields car c'est un serializer de lecture seule par définition via son usage
+
+    def get_nom_complet(self, obj):
+        """Retourne le nom complet du client"""
+        if obj.est_entreprise:
+            return obj.nom_client or ''
+        return f"{obj.prenom_client or ''} {obj.nom_client or ''}".strip()
+
+    def get_type_client(self, obj):
+        """
+        Détermine si c'est un Client ou un Prospect.
+        Utilise l'annotation 'has_active_contract' (Optimisation).
+        """
+        if hasattr(obj, 'has_active_contract'):
+            return "Client" if obj.has_active_contract else "Prospect"
+        
+        # Fallback (Au cas où)
+        try:
+            from django.apps import apps
+            Contrat = apps.get_model('contrats', 'Contrat')
+            if not obj.id_client: return "Prospect"
+            
+            exists = Contrat.objects.filter(
+                ID_Client=obj.id_client, 
+                effacer=False, 
+                estprojet=False
+            ).exists()
+            return "Client" if exists else "Prospect"
+        except:
+            return "Prospect"
+
+    def get_enregistre_par(self, obj):
+        """Retourne le nom de l'utilisateur qui a enregistré le client"""
+        try:
+            from django.apps import apps
+            Utilisateur = apps.get_model('authentication', 'Utilisateur')
+            
+            user_id = obj.idutilisateur_source or obj.idutilisateur_save
+            if not user_id:
+                return "-"
+            
+            user = Utilisateur.objects.filter(idutilisateur=user_id).first()
+            if user:
+                return user.nom_utilisateur or user.login_utilisateur
+            return "-"
+        except Exception:
+            return "-"
 
 
 class InteractionSerializer(serializers.ModelSerializer):
@@ -170,9 +248,16 @@ class ClientDetailSerializer(serializers.ModelSerializer):
     def get_type_client(self, obj):
         """Détermine si c'est un Client ou un Prospect"""
         try:
-            from contrats.models import Contrat
+            from django.apps import apps
+            Contrat = apps.get_model('contrats', 'Contrat')
+            
             if not obj.id_client:
                 return "Prospect"
+            
+            # Optimisation si l'annotation est présente (peu probable ici car c'est un detail view, mais possible via get_object)
+            if hasattr(obj, 'has_active_contract'):
+                return "Client" if obj.has_active_contract else "Prospect"
+
             has_contract = Contrat.objects.filter(
                 ID_Client=obj.id_client, 
                 effacer=False,
@@ -209,9 +294,10 @@ class ClientDetailSerializer(serializers.ModelSerializer):
     def get_nombre_contrats(self, obj):
         """Compte le nombre de contrats du client"""
         try:
-            from contrats.models import Contrat
+            from django.apps import apps
+            Contrat = apps.get_model('contrats', 'Contrat')
             return Contrat.objects.filter(
-                id_client=obj.id_client,
+                ID_Client=obj.id_client,
                 effacer=False
             ).count()
         except Exception:
@@ -220,11 +306,14 @@ class ClientDetailSerializer(serializers.ModelSerializer):
     def get_nombre_risques(self, obj):
         """Compte le nombre total de risques du client"""
         try:
-            from contrats.models import Risques
+            from django.apps import apps
+            Contrat = apps.get_model('contrats', 'Contrat')
+            ContratRisques = apps.get_model('contrats', 'ContratRisques')
+            Risques = apps.get_model('contrats', 'Risques')
+            
             # Récupérer les risques via les contrats
-            from contrats.models import Contrat, ContratRisques
             contrats = Contrat.objects.filter(
-                id_client=obj.id_client,
+                ID_Client=obj.id_client,
                 effacer=False
             ).values_list('id_contrat', flat=True)
             
@@ -243,7 +332,10 @@ class ClientDetailSerializer(serializers.ModelSerializer):
     def get_risques_par_type(self, obj):
         """Compte les risques par type (Véhicule, Crédit, Logement, Personne, Société)"""
         try:
-            from contrats.models import Contrat, ContratRisques, Risques
+            from django.apps import apps
+            Contrat = apps.get_model('contrats', 'Contrat')
+            ContratRisques = apps.get_model('contrats', 'ContratRisques')
+            Risques = apps.get_model('contrats', 'Risques')
             
             # Récupérer les contrats du client
             contrats = Contrat.objects.filter(

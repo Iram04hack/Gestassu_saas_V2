@@ -12,7 +12,7 @@ class ContratViewSet(viewsets.ModelViewSet):
     """
     ViewSet pour gérer les contrats
     """
-    queryset = Contrat.objects.all().select_related('compagnie', 'produit')
+    queryset = Contrat.objects.all()
     serializer_class = ContratSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['ID_Client', 'compagnie', 'CodeAgence', 'estprojet', 'est_resilier', 'est_suspendu', 'produit__code_groupe_prod']
@@ -25,7 +25,10 @@ class ContratViewSet(viewsets.ModelViewSet):
         Filtrage personnalisé du queryset
         """
         # Base queryset avec soft delete (effacer=False OU effacer=NULL)
-        queryset = Contrat.objects.filter(Q(effacer=False) | Q(effacer__isnull=True)).select_related('compagnie', 'produit')
+        # NOTE: Temporairement sans select_related pour déboguer
+        queryset = Contrat.objects.filter(
+            Q(effacer=False) | Q(effacer__isnull=True)
+        )
         
         # Filtre par client
         id_client = self.request.query_params.get('ID_Client', None)

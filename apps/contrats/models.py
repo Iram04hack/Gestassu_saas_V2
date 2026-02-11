@@ -21,17 +21,17 @@ class Contrat(models.Model):
         blank=True,
         null=True
     )
-    date_acte = models.DateTimeField(
+    date_acte = models.DateField(
         db_column='date_acte',
         blank=True,
         null=True
     )
-    date_effet = models.DateTimeField(
+    date_effet = models.DateField(
         db_column='date_effet',
         blank=True,
         null=True
     )
-    Date_echeance = models.DateTimeField(
+    Date_echeance = models.DateField(
         db_column='Date_echeance',
         blank=True,
         null=True
@@ -251,12 +251,12 @@ class Contrat(models.Model):
         db_column='est_suspendu',
         default=False
     )
-    date_début_suspension = models.DateTimeField(
-        db_column='date_début_suspension',
+    date_debut_suspension = models.DateField(
+        db_column='date_debut_suspension',
         blank=True,
         null=True
     )
-    date_fin_suspension = models.DateTimeField(
+    date_fin_suspension = models.DateField(
         db_column='date_fin_suspension',
         blank=True,
         null=True
@@ -293,7 +293,7 @@ class Contrat(models.Model):
         db_column='est_resilier',
         default=False
     )
-    date_resiliation = models.DateTimeField(
+    date_resiliation = models.DateField(
         db_column='date_resiliation',
         blank=True,
         null=True

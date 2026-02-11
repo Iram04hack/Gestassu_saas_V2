@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import crmService from '../../services/crm';
 import InteractionFormModal from './InteractionFormModal';
 
-const ClientInteractions = ({ clientId, clientName }) => {
+const ClientInteractions = ({ clientId, clientName, clientType }) => {
     const [interactions, setInteractions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -80,7 +80,7 @@ const ClientInteractions = ({ clientId, clientName }) => {
                     />
                 </div>
 
-                <div className="filter-group">
+                <div className="toolbar-controls">
                     <select
                         value={filters.methode}
                         onChange={(e) => setFilters({ ...filters, methode: e.target.value })}
@@ -180,19 +180,19 @@ const ClientInteractions = ({ clientId, clientName }) => {
 
                 .interactions-toolbar {
                     background: white;
-                    padding: 16px 24px;
+                    padding: 20px 24px;
                     border-radius: 12px;
                     margin-bottom: 24px;
                     display: flex;
-                    gap: 16px;
+                    gap: 24px;
                     align-items: center;
+                    justify-content: space-between;
                     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
                 }
 
                 .search-group {
                     position: relative;
-                    flex: 1;
-                    max-width: 400px;
+                    flex: 0 1 400px;
                 }
 
                 .search-group i {
@@ -205,7 +205,7 @@ const ClientInteractions = ({ clientId, clientName }) => {
 
                 .search-group input {
                     width: 100%;
-                    padding: 10px 16px 10px 40px;
+                    padding: 12px 16px 12px 40px;
                     border: 1px solid #d7ccc8;
                     border-radius: 50px;
                     font-size: 0.9rem;
@@ -218,32 +218,43 @@ const ClientInteractions = ({ clientId, clientName }) => {
                     box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
                 }
 
-                .filter-group {
+                .toolbar-controls {
                     display: flex;
                     gap: 12px;
                     align-items: center;
                 }
 
-                .filter-group select {
-                    padding: 8px 16px;
+                .toolbar-controls select {
+                    padding: 12px 20px;
                     border: 1px solid #d7ccc8;
                     border-radius: 50px;
-                    font-size: 0.85rem;
+                    font-size: 0.9rem;
                     outline: none;
                     cursor: pointer;
                     background: white;
+                    min-width: 200px;
+                    transition: all 0.2s;
+                }
+
+                .toolbar-controls select:hover {
+                    border-color: #a1887f;
+                }
+
+                .toolbar-controls select:focus {
+                    border-color: #6d4c41;
+                    box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
                 }
 
                 .btn-filter-reset {
-                    width: 36px;
-                    height: 36px;
+                    width: 44px;
+                    height: 44px;
                     padding: 0;
                     border: 1px solid #d7ccc8;
                     background: white;
                     color: #5d4037;
                     border-radius: 50%;
                     cursor: pointer;
-                    font-size: 1rem;
+                    font-size: 1.2rem;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -260,21 +271,23 @@ const ClientInteractions = ({ clientId, clientName }) => {
                     background: #6d4c41;
                     color: white;
                     border: none;
-                    padding: 8px 20px;
+                    padding: 12px 28px;
                     border-radius: 50px;
                     cursor: pointer;
                     font-weight: 600;
-                    font-size: 0.85rem;
+                    font-size: 0.9rem;
                     display: flex;
                     align-items: center;
                     gap: 8px;
                     transition: all 0.2s;
                     box-shadow: 0 2px 4px rgba(109, 76, 65, 0.2);
+                    white-space: nowrap;
                 }
 
                 .btn-new-interaction:hover {
                     background: #5d4037;
                     transform: translateY(-1px);
+                    box-shadow: 0 4px 8px rgba(109, 76, 65, 0.3);
                 }
 
                 .table-container {

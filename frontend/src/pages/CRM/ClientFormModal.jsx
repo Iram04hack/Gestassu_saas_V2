@@ -51,6 +51,13 @@ const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne', in
         }
     }, [isEditMode, initialData]);
 
+    // Synchronize type with defaultType when modal opens or defaultType changes
+    useEffect(() => {
+        if (isOpen && !isEditMode) {
+            setType(defaultType);
+        }
+    }, [isOpen, defaultType, isEditMode]);
+
     // Reset qualite when type changes
     useEffect(() => {
         if (!isEditMode) {
@@ -120,6 +127,7 @@ const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne', in
                                     value="personne"
                                     checked={type === 'personne'}
                                     onChange={() => setType('personne')}
+                                    disabled={!isEditMode}
                                 />
                                 <i className="bi bi-person"></i> Personne
                             </label>
@@ -130,6 +138,7 @@ const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne', in
                                     value="entreprise"
                                     checked={type === 'entreprise'}
                                     onChange={() => setType('entreprise')}
+                                    disabled={!isEditMode}
                                 />
                                 <i className="bi bi-building"></i> Entreprise
                             </label>

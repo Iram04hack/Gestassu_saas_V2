@@ -149,6 +149,7 @@ const ClientDetails = () => {
                         <ClientInteractions
                             clientId={id}
                             clientName={client.nom_complet}
+                            clientType={client.type_client}
                         />
                     )}
                     {activeTab === 'contrats' && (

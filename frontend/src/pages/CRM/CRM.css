@@ -121,6 +121,11 @@
     color: #5d4037;
 }
 
+.btn-icon-action.active {
+    background: #6d4c41;
+    color: white;
+}
+
 .btn-new {
     background: #6d4c41;
     color: white;

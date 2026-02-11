@@ -21,14 +21,39 @@ class ClientViewSet(viewsets.ModelViewSet):
     search_fields = ['nom_client', 'prenom_client', 'email', 'telephone', 'id_client']
     ordering_fields = ['date_enreg', 'nom_client', 'prenom_client']
     ordering = ['-date_enreg']
+
+    def get_serializer_class(self):
+        """Utilise un serializer optimisé pour la liste"""
+        from .serializers import ClientListSerializer
+        if self.action == 'list':
+            return ClientListSerializer
+        return ClientSerializer
     
     def get_queryset(self):
         """
         Filtrage personnalisé du queryset
+        Optimisé pour éviter les problèmes N+1 queries
         """
+        from django.db.models import Q, Exists, OuterRef
+        from django.apps import apps
+        # Utilisation de get_model pour éviter les problèmes d'import
+        Contrat = apps.get_model('contrats', 'Contrat')
+
         # Base queryset avec soft delete (effacer=False OU effacer=NULL)
-        from django.db.models import Q
         queryset = Client.objects.filter(Q(effacer=False) | Q(effacer__isnull=True))
+        
+        # Sous-requête pour vérifier l'existence d'un contrat actif
+        # Cela permet de déterminer si c'est un Client ou Prospect en une seule requête SQL
+        active_contracts = Contrat.objects.filter(
+            ID_Client=OuterRef('id_client'),
+            effacer=False,
+            estprojet=False
+        )
+        
+        # Annotation du queryset
+        queryset = queryset.annotate(
+            has_active_contract=Exists(active_contracts)
+        )
         
         # Filtre par type (personne ou entreprise)
         est_entreprise = self.request.query_params.get('est_entreprise', None)
