@@ -79,9 +79,9 @@ class ClientSerializer(serializers.ModelSerializer):
                 return "Prospect"
 
             has_contract = Contrat.objects.filter(
-                id_client=obj.id_client, 
+                ID_Client=obj.id_client, 
                 effacer=False,
-                est_projet=False 
+                estprojet=False 
             ).exists()
             
             return "Client" if has_contract else "Prospect"
@@ -174,7 +174,7 @@ class ClientDetailSerializer(serializers.ModelSerializer):
             if not obj.id_client:
                 return "Prospect"
             has_contract = Contrat.objects.filter(
-                id_client=obj.id_client, 
+                ID_Client=obj.id_client, 
                 effacer=False,
                 estprojet=False
             ).exists()
