@@ -1,91 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { getCaisses, createMouvement } from '../../services/finances';
-import MovementTypeSelectionModal from './MovementTypeSelectionModal';
+import { createMouvement } from '../../services/finances';
 
-const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
-    const [caisses, setCaisses] = useState([]);
-    const [isTypeModalOpen, setIsTypeModalOpen] = useState(false);
+const RegularisationFormModal = ({ isOpen, onClose, client, onSuccess, type = 'credit' }) => {
     const [loading, setLoading] = useState(false);
-
-    // Form state
     const [formData, setFormData] = useState({
-        libelle: '',
-        type_mvt_id: '',
-        type: '', // 'Crédit' or 'Débit'
-        caisse_id: '',
-        type_impact: '',
-        date_mouvement: new Date().toISOString().slice(0, 16), // YYYY-MM-DDTHH:MM
         montant: '',
-        observation: ''
+        observation: '',
+        date_mouvement: new Date().toISOString().slice(0, 16),
     });
 
     useEffect(() => {
-        if (isOpen) {
-            loadCaisses();
-            // Reset form
+        if (isOpen && client) {
+            // Pré-remplir l'observation avec le nom du client
+            const clientName = `${client.nom_client || ''} ${client.prenom_client || ''}`.trim().toUpperCase();
             setFormData({
-                libelle: '',
-                type_mvt_id: '',
-                type: '',
-                caisse_id: '',
-                type_impact: '',
-                date_mouvement: new Date().toISOString().slice(0, 16),
                 montant: '',
-                observation: ''
+                observation: `Régularisation du compte intitulé - [${clientName}]`,
+                date_mouvement: new Date().toISOString().slice(0, 16),
             });
         }
-    }, [isOpen]);
-
-    const loadCaisses = async () => {
-        try {
-            const data = await getCaisses();
-            setCaisses(data.results || data || []);
-        } catch (err) {
-            console.error('Erreur chargement caisses:', err);
-        }
-    };
-
-    const handleTypeSelect = (selectedType) => {
-        setFormData(prev => ({
-            ...prev,
-            libelle: selectedType.lib_type_mouvement,
-            type_mvt_id: selectedType.id_type_mvt,
-            type: selectedType.type_op ? 'Crédit' : 'Débit'
-        }));
-        setIsTypeModalOpen(false);
-    };
+    }, [isOpen, client]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         try {
-            // Mapping frontend data to backend model (Mouvement)
             const payload = {
-                idtransfert: client.id, // Client ID
+                idtransfert: client.id,
                 datemouvement: formData.date_mouvement,
-                mont_debit: formData.type === 'Débit' ? formData.montant : 0,
-                mont_credit: formData.type === 'Crédit' ? formData.montant : 0,
+                mont_debit: type === 'debit' ? formData.montant : 0,
+                mont_credit: type === 'credit' ? formData.montant : 0,
                 observation: formData.observation,
-                IDTYPE_MVT: formData.type_mvt_id,
-                IDCaisse: formData.caisse_id,
+                LibType_Mouvement: `Régularisation de compte – ${type === 'credit' ? 'crédit' : 'débit'}`,
                 nature_compte: 'CLIENT',
-                LibType_Mouvement: formData.libelle,
-                // IDUTILISATEUR_save: 'current_user_id', // Should be handled by backend
             };
 
             await createMouvement(payload);
             if (onSuccess) onSuccess();
             onClose();
         } catch (err) {
-            console.error('Erreur création mouvement:', err);
-            alert('Erreur lors de la création du mouvement');
+            console.error('Erreur création régularisation:', err);
+            alert('Erreur lors de la création de la régularisation');
         } finally {
             setLoading(false);
         }
     };
 
     if (!isOpen) return null;
+
+    const clientName = client ? `${client.nom_client || ''} ${client.prenom_client || ''}`.trim().toUpperCase() : '';
 
     return (
         <div className="modal-overlay">
@@ -120,7 +84,7 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                     }
                 }
                 
-                .movement-modal-content {
+                .regularisation-modal-content {
                     background: white;
                     width: 650px;
                     max-width: 95vw;
@@ -130,7 +94,7 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                     animation: slideUp 0.3s ease-out;
                 }
                 
-                .movement-modal-header {
+                .regularisation-modal-header {
                     background: linear-gradient(135deg, #6d4c41 0%, #5d4037 100%);
                     color: white;
                     padding: 18px 24px;
@@ -139,21 +103,21 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                     letter-spacing: 0.3px;
                 }
                 
-                .movement-modal-body {
+                .regularisation-modal-body {
                     padding: 24px;
                     max-height: 65vh;
                     overflow-y: auto;
                 }
                 
-                .movement-modal-body::-webkit-scrollbar {
+                .regularisation-modal-body::-webkit-scrollbar {
                     width: 8px;
                 }
                 
-                .movement-modal-body::-webkit-scrollbar-track {
+                .regularisation-modal-body::-webkit-scrollbar-track {
                     background: #f1f1f1;
                 }
                 
-                .movement-modal-body::-webkit-scrollbar-thumb {
+                .regularisation-modal-body::-webkit-scrollbar-thumb {
                     background: #8d6e63;
                     border-radius: 4px;
                 }
@@ -207,10 +171,6 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                     cursor: not-allowed;
                 }
                 
-                select.form-input {
-                    cursor: pointer;
-                }
-                
                 textarea.form-input {
                     resize: vertical;
                     min-height: 80px;
@@ -248,7 +208,35 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                     font-size: 1rem;
                 }
                 
-                .movement-modal-footer {
+                .badge-type {
+                    padding: 6px 16px;
+                    border-radius: 20px;
+                    color: white;
+                    font-size: 0.9rem;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    min-width: 90px;
+                    justify-content: center;
+                    font-weight: 600;
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+                    transition: all 0.2s ease;
+                }
+                
+                .badge-type:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                }
+                
+                .badge-credit {
+                    background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+                }
+                
+                .badge-debit {
+                    background: linear-gradient(135deg, #ef5350 0%, #f44336 100%);
+                }
+                
+                .regularisation-modal-footer {
                     padding: 18px 24px;
                     background: #fafafa;
                     display: flex;
@@ -300,17 +288,17 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                 }
             `}</style>
 
-            <div className="movement-modal-content">
-                <div className="movement-modal-header">
-                    Fiche mouvement de compte client
+            <div className="regularisation-modal-content">
+                <div className="regularisation-modal-header">
+                    Fiche régularisation de compte client
                 </div>
 
                 <form onSubmit={handleSubmit}>
-                    <div className="movement-modal-body">
+                    <div className="regularisation-modal-body">
                         <div className="form-group">
                             <label className="form-label">Intitulé du compte :</label>
                             <div style={{ fontWeight: 'bold' }}>
-                                {client ? `${client.nom_client || ''} ${client.prenom_client || ''}`.toUpperCase() : ''}
+                                {clientName}
                             </div>
                         </div>
 
@@ -330,11 +318,10 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                                 <input
                                     type="text"
                                     className="form-input warning-bg"
-                                    value={formData.libelle}
+                                    value={`Régularisation de compte – ${type === 'credit' ? 'crédit' : 'débit'}`}
                                     readOnly
-                                    placeholder="Sélectionner..."
                                 />
-                                <button type="button" className="btn-dots" onClick={() => setIsTypeModalOpen(true)}>
+                                <button type="button" className="btn-dots">
                                     <i className="bi bi-three-dots"></i>
                                 </button>
                             </div>
@@ -343,44 +330,11 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                         <div className="form-group">
                             <label className="form-label">Type de mouvement :</label>
                             <div className="form-input-group" style={{ maxWidth: '150px' }}>
-                                <input
-                                    type="text"
-                                    className="form-input warning-bg"
-                                    value={formData.type}
-                                    readOnly
-                                    style={{
-                                        color: formData.type === 'Crédit' ? 'green' : (formData.type === 'Débit' ? 'red' : 'inherit'),
-                                        fontWeight: 'bold'
-                                    }}
-                                />
-                                {formData.type && (
-                                    <i className={`bi ${formData.type === 'Crédit' ? 'bi-arrow-down-circle-fill text-success' : 'bi-arrow-up-circle-fill text-danger'}`}></i>
-                                )}
+                                <span className={`badge-type ${type === 'credit' ? 'badge-credit' : 'badge-debit'}`}>
+                                    {type === 'credit' ? 'Crédit' : 'Débit'}
+                                    <i className={`bi ${type === 'credit' ? 'bi-arrow-down-circle-fill' : 'bi-arrow-up-circle-fill'}`}></i>
+                                </span>
                             </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Caisse impacté :</label>
-                            <div className="form-input-group">
-                                <select
-                                    className="form-input"
-                                    value={formData.caisse_id}
-                                    onChange={(e) => setFormData({ ...formData, caisse_id: e.target.value })}
-                                >
-                                    <option value="">Sélectionner une caisse...</option>
-                                    {caisses.map(c => (
-                                        <option key={c.id_caisse} value={c.id_caisse}>{c.lib_caisse}</option>
-                                    ))}
-                                </select>
-                                <button type="button" className="btn-dots"><i className="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Type d'impact :</label>
-                            <select className="form-input warning-bg" style={{ maxWidth: '100px' }}>
-                                <option></option>
-                            </select>
                         </div>
 
                         <div className="form-group">
@@ -401,6 +355,7 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                                 value={formData.montant}
                                 onChange={(e) => setFormData({ ...formData, montant: e.target.value })}
                                 placeholder="0,00"
+                                required
                             />
                         </div>
 
@@ -415,7 +370,7 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                         </div>
                     </div>
 
-                    <div className="movement-modal-footer">
+                    <div className="regularisation-modal-footer">
                         <button type="button" className="btn-cancel" onClick={onClose}>
                             <i className="bi bi-x-lg"></i> Annuler
                         </button>
@@ -425,14 +380,8 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                     </div>
                 </form>
             </div>
-
-            <MovementTypeSelectionModal
-                isOpen={isTypeModalOpen}
-                onClose={() => setIsTypeModalOpen(false)}
-                onSelect={handleTypeSelect}
-            />
         </div>
     );
 };
 
-export default MovementFormModal;
+export default RegularisationFormModal;

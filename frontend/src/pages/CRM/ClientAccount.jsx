@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getMouvementsByClient } from '../../services/finances';
 import MovementFormModal from './MovementFormModal';
+import RegularisationFormModal from './RegularisationFormModal';
 
 const ClientAccount = ({ client }) => {
     const [mouvements, setMouvements] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isMovementModalOpen, setIsMovementModalOpen] = useState(false);
+    const [isRegularisationModalOpen, setIsRegularisationModalOpen] = useState(false);
     const [stats, setStats] = useState({
         solde: 0,
         totalCredit: 0,
@@ -174,6 +176,14 @@ const ClientAccount = ({ client }) => {
                 onSuccess={loadMouvements}
             />
 
+            <RegularisationFormModal
+                isOpen={isRegularisationModalOpen}
+                onClose={() => setIsRegularisationModalOpen(false)}
+                client={client}
+                onSuccess={loadMouvements}
+                type="credit"
+            />
+
             <div className="account-overview">
                 <div className="account-card primary">
                     <span className="card-label">Solde du compte</span>
@@ -235,7 +245,7 @@ const ClientAccount = ({ client }) => {
                     <button className="btn-brown" onClick={() => setIsMovementModalOpen(true)}>
                         <i className="bi bi-plus-circle"></i> Créer un mouvement
                     </button>
-                    <button className="btn-brown">
+                    <button className="btn-brown" onClick={() => setIsRegularisationModalOpen(true)}>
                         <i className="bi bi-plus-circle"></i> Mouvement de régularisation
                     </button>
                     <button className="btn-brown" style={{ backgroundColor: '#8d6e63' }}>

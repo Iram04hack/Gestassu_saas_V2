@@ -5,6 +5,7 @@ const MovementTypeSelectionModal = ({ isOpen, onClose, onSelect }) => {
     const [types, setTypes] = useState([]);
     const [filteredTypes, setFilteredTypes] = useState([]);
     const [search, setSearch] = useState('');
+    const [filter, setFilter] = useState('all'); // 'all', 'debit', 'credit'
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -15,12 +16,20 @@ const MovementTypeSelectionModal = ({ isOpen, onClose, onSelect }) => {
 
     useEffect(() => {
         if (types.length > 0) {
-            const filtered = types.filter(t =>
+            let filtered = types.filter(t =>
                 t.lib_type_mouvement && t.lib_type_mouvement.toLowerCase().includes(search.toLowerCase())
             );
+
+            // Appliquer le filtre Débit/Crédit
+            if (filter === 'debit') {
+                filtered = filtered.filter(t => !t.type_op);
+            } else if (filter === 'credit') {
+                filtered = filtered.filter(t => t.type_op);
+            }
+
             setFilteredTypes(filtered);
         }
-    }, [search, types]);
+    }, [search, types, filter]);
 
     const loadTypes = async () => {
         try {
@@ -112,6 +121,11 @@ const MovementTypeSelectionModal = ({ isOpen, onClose, onSelect }) => {
                     background: #f5f5f5;
                     border-color: #8d6e63;
                 }
+                .btn-action.active {
+                    background: #6d4c41;
+                    color: white;
+                    border-color: #6d4c41;
+                }
                 .btn-icon-only {
                     padding: 8px;
                     min-width: 36px;
@@ -173,8 +187,33 @@ const MovementTypeSelectionModal = ({ isOpen, onClose, onSelect }) => {
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        <button className="btn-action btn-icon-only" title="Filtrer"><i className="bi bi-funnel"></i></button>
-                        <button className="btn-action btn-icon-only" onClick={() => setSearch('')} title="Réinitialiser"><i className="bi bi-arrow-counterclockwise"></i></button>
+                        <button
+                            className={`btn-action ${filter === 'all' ? 'active' : ''}`}
+                            onClick={() => setFilter('all')}
+                        >
+                            Tous
+                        </button>
+                        <button
+                            className={`btn-action ${filter === 'debit' ? 'active' : ''}`}
+                            onClick={() => setFilter('debit')}
+                            style={{ color: filter === 'debit' ? '#f44336' : '#8d6e63' }}
+                        >
+                            Débit
+                        </button>
+                        <button
+                            className={`btn-action ${filter === 'credit' ? 'active' : ''}`}
+                            onClick={() => setFilter('credit')}
+                            style={{ color: filter === 'credit' ? '#4caf50' : '#8d6e63' }}
+                        >
+                            Crédit
+                        </button>
+                        <button
+                            className="btn-action btn-icon-only"
+                            onClick={() => { setSearch(''); setFilter('all'); }}
+                            title="Réinitialiser"
+                        >
+                            <i className="bi bi-arrow-counterclockwise"></i>
+                        </button>
                     </div>
 
                     <table className="types-table">
