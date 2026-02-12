@@ -22,6 +22,7 @@ class GroupeProduitViewSet(viewsets.ModelViewSet):
     ordering = ['lib_groupe_prod']
 
 
+
 class ProduitViewSet(viewsets.ModelViewSet):
     """
     ViewSet pour gérer les produits
