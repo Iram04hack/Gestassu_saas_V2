@@ -95,6 +95,7 @@ class Compagnie(models.Model):
     )
 
     class Meta:
+        app_label = 'compagnies'
         managed = False  # Ne pas gérer la table (elle existe déjà)
         db_table = 'compagnie'  # Nom exact de la table dans la BD (minuscules)
         ordering = ['nom_compagnie']
@@ -187,6 +188,7 @@ class ContactCompagnie(models.Model):
     )
 
     class Meta:
+        app_label = 'compagnies'
         managed = False
         db_table = 'contact_compagnie'  # Nom exact de la table dans la BD (minuscules)
         ordering = ['nom_contact']

@@ -39,6 +39,7 @@ class GroupeProduit(models.Model):
     )
 
     class Meta:
+        app_label = 'produits'
         managed = False
         db_table = 'groupe_produit'
         ordering = ['lib_groupe_prod']
@@ -181,6 +182,7 @@ class Produit(models.Model):
     )
 
     class Meta:
+        app_label = 'produits'
         managed = False
         db_table = 'produit'
         ordering = ['lib_produit']
@@ -253,9 +255,77 @@ class CatVehicule(models.Model):
     )
 
     class Meta:
+        app_label = 'produits'
         managed = False
         db_table = 'cat_vehicule'
         ordering = ['lib_cat']
 
     def __str__(self):
         return self.lib_cat or self.code_cat
+
+
+class CommissionCategorie(models.Model):
+    """
+    Modèle pour la table COMMISSION_CATEGORIE existante
+    Gestion des commissions par catégorie et par compagnie
+    """
+    code_cat = models.CharField(
+        max_length=255,
+        primary_key=True,
+        db_column='Code_cat'
+    )
+    id_compagnie = models.CharField(
+        max_length=255,
+        db_column='Id_compagnie',
+        blank=True,
+        null=True
+    )
+    tx_commision = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        db_column='tx_commision',
+        blank=True,
+        null=True
+    )
+    
+    # Champs audit
+    effacer = models.BooleanField(
+        db_column='effacer',
+        default=False
+    )
+    sync = models.BooleanField(
+        db_column='sync',
+        default=False
+    )
+    date_synchro = models.DateTimeField(
+        db_column='date_synchro',
+        blank=True,
+        null=True
+    )
+    date_enreg = models.DateTimeField(
+        db_column='date_enreg',
+        auto_now_add=True,
+        blank=True,
+        null=True
+    )
+    idutilisateur_save = models.CharField(
+        max_length=255,
+        db_column='IDUTILISATEUR_save',
+        blank=True,
+        null=True
+    )
+    daterecupserveur = models.DateTimeField(
+        db_column='daterecupserveur',
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'commission_categorie'
+        ordering = ['code_cat']
+        unique_together = (('code_cat', 'id_compagnie'),) # Logique métier
+
+    def __str__(self):
+        return f"{self.code_cat} - {self.id_compagnie}"
+

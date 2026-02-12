@@ -152,6 +152,7 @@ class Utilisateur(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['nom_utilisateur']
     
     class Meta:
+        app_label = 'authentication'
         db_table = 'utilisateur'  # Correction: minuscules
         managed = False
         verbose_name = 'Utilisateur'

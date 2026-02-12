@@ -1,0 +1,366 @@
+/* CommissionCategories.css */
+.commission-categories-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #fdfbf7;
+    overflow: hidden;
+}
+
+.commission-categories-header-strip {
+    background: #6d4c41;
+    padding: 12px 30px;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.commission-categories-header-strip h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.commission-categories-toolbar {
+    padding: 16px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    border-bottom: 1px solid #eee;
+}
+
+.search-group {
+    position: relative;
+    width: 400px;
+}
+
+.search-group i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8d6e63;
+}
+
+.search-group input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border: 1px solid #d7ccc8;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s;
+    background: #fafafa;
+}
+
+.search-group input:focus {
+    border-color: #6d4c41;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
+}
+
+.actions-group {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-icon-action {
+    background: white;
+    border: none;
+    color: #8d6e63;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-icon-action:hover {
+    background: #efebe9;
+    color: #5d4037;
+}
+
+.btn-new {
+    background: #6d4c41;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(109, 76, 65, 0.2);
+}
+
+.btn-new:hover {
+    background: #5d4037;
+    transform: translateY(-1px);
+}
+
+.commission-list-section {
+    flex: 1;
+    padding: 0 30px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.table-responsive {
+    flex: 1;
+    overflow: auto;
+    background: white;
+    /* border-radius: 8px; */
+    /* box-shadow: 0 2px 8px rgba(0,0,0,0.05); */
+}
+
+/* Modal Styles Reuse */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 600px;
+    max-width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.modal-header {
+    background: #6d4c41;
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.btn-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.btn-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    background: #fafafa;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: #4e342e;
+    font-weight: 500;
+}
+
+.form-control {
+    padding: 10px 12px;
+    border: 1px solid #d7ccc8;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.2s;
+    background: #fafafa;
+}
+
+.form-control:focus {
+    border-color: #6d4c41;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: row;
+    /* Force row */
+    align-items: stretch;
+    width: 100%;
+}
+
+.input-group .form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+    flex: 1;
+    min-width: 0;
+    /* Prevent flex items from overflowing */
+}
+
+.input-group-text {
+    background: #efebe9;
+    border: 1px solid #d7ccc8;
+    border-left: none;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #5d4037;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    white-space: nowrap;
+}
+
+
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.btn-submit {
+    background: #5d4037;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(93, 64, 55, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-submit:hover {
+    background: #4e342e;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(93, 64, 55, 0.3);
+}
+
+.btn-cancel {
+    background: #795548;
+    /* Darker brown */
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #5d4037;
+}
+
+/* Table Styles */
+.commission-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.commission-table th {
+    background: white;
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.85rem;
+    color: #8d6e63;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.commission-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 0.95rem;
+    color: #3e2723;
+}
+
+.commission-table tr:hover td {
+    background: #fff8e1;
+}
+
+/* Actions in Table */
+.btn-action.pill {
+    background: white;
+    border: 1px solid #d7ccc8;
+    color: #5d4037;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-action.pill:hover {
+    background: #efebe9;
+    border-color: #a1887f;
+}
+
+.btn-action.pill.delete {
+    color: #d32f2f;
+    border-color: #ffcdd2;
+}
+
+.btn-action.pill.delete:hover {
+    background: #ffebee;
+}
+
+.text-end {
+    text-align: right;
+}
+
+.fw-bold {
+    font-weight: 600;
+}
