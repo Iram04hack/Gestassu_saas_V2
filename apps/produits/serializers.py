@@ -2,7 +2,7 @@
 Serializers pour le module Produits
 """
 from rest_framework import serializers
-from .models import Produit, GroupeProduit
+from .models import Produit, GroupeProduit, CatVehicule
 
 
 class GroupeProduitSerializer(serializers.ModelSerializer):
@@ -28,3 +28,10 @@ class ProduitSerializer(serializers.ModelSerializer):
             return None
         except Exception:
             return None
+
+
+class CatVehiculeSerializer(serializers.ModelSerializer):
+    """Serializer pour le modèle CatVehicule"""
+    class Meta:
+        model = CatVehicule
+        fields = '__all__'

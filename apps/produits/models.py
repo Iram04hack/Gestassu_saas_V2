@@ -187,3 +187,75 @@ class Produit(models.Model):
 
     def __str__(self):
         return self.lib_produit or self.id_produit
+
+
+class CatVehicule(models.Model):
+    """
+    Modèle pour la table cat_vehicule existante (Catégories de véhicules)
+    """
+    code_cat = models.CharField(
+        max_length=255,
+        primary_key=True,
+        db_column='code_cat'
+    )
+    lib_cat = models.CharField(
+        max_length=255,
+        db_column='lib_cat',
+        blank=True,
+        null=True
+    )
+    description_cat = models.TextField(
+        db_column='description_cat',
+        blank=True,
+        null=True
+    )
+    enable_flotte = models.BooleanField(
+        db_column='enable_flotte',
+        default=False
+    )
+    
+    # Champs audit
+    effacer = models.BooleanField(
+        db_column='effacer',
+        default=False
+    )
+    sync = models.BooleanField(
+        db_column='sync',
+        default=False
+    )
+    date_modif = models.DateTimeField(
+        db_column='date_modif',
+        auto_now=True,
+        blank=True,
+        null=True
+    )
+    date_synchro = models.DateTimeField(
+        db_column='date_synchro',
+        blank=True,
+        null=True
+    )
+    date_enreg = models.DateTimeField(
+        db_column='date_enreg',
+        auto_now_add=True,
+        blank=True,
+        null=True
+    )
+    idutilisateur_save = models.CharField(
+        max_length=255,
+        db_column='IDUTILISATEUR_save',
+        blank=True,
+        null=True
+    )
+    daterecupserveur = models.DateTimeField(
+        db_column='daterecupserveur',
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'cat_vehicule'
+        ordering = ['lib_cat']
+
+    def __str__(self):
+        return self.lib_cat or self.code_cat

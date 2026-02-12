@@ -5,6 +5,7 @@ import Login from './pages/Login/Login';
 import CRM from './pages/CRM/CRM';
 import ClientDetails from './pages/CRM/ClientDetails';
 import Compagnies from './pages/Compagnies/Compagnies';
+import VehicleCategories from './pages/BaseDonnees/VehicleCategories/VehicleCategories';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Layout from './components/Layout/Layout';
 import './App.css';
@@ -25,6 +26,7 @@ function App() {
             <Route path="/clients" element={<Navigate to="/crm" replace />} />
             <Route path="/crm/client/:id" element={<ClientDetails />} />
             <Route path="/compagnies" element={<Compagnies />} />
+            <Route path="/base/categories-vehicules" element={<VehicleCategories />} />
             <Route path="/produits" element={<div>Module Produits (À venir)</div>} />
             <Route path="/tarifs/auto" element={<div>Tarif automobile (À venir)</div>} />
             <Route path="/tarifs/mrh" element={<div>Tarif Multirisque Habitation (À venir)</div>} />

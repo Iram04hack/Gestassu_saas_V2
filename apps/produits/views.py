@@ -3,8 +3,8 @@ Views pour le module Produits
 """
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Produit, GroupeProduit
-from .serializers import ProduitSerializer, GroupeProduitSerializer
+from .models import Produit, GroupeProduit, CatVehicule
+from .serializers import ProduitSerializer, GroupeProduitSerializer, CatVehiculeSerializer
 
 
 class GroupeProduitViewSet(viewsets.ModelViewSet):
@@ -31,3 +31,24 @@ class ProduitViewSet(viewsets.ModelViewSet):
     search_fields = ['lib_produit', 'codification_produit']
     ordering_fields = ['lib_produit']
     ordering = ['lib_produit']
+
+
+class CatVehiculeViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet pour gérer les catégories de véhicules
+    """
+    queryset = CatVehicule.objects.filter(effacer=False)
+    serializer_class = CatVehiculeSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['enable_flotte', 'sync']
+    search_fields = ['lib_cat', 'code_cat']
+    ordering_fields = ['lib_cat']
+    ordering = ['lib_cat']
+
+    def perform_destroy(self, instance):
+        """
+        Soft delete: Marquer comme effacé au lieu de supprimer physiquement
+        """
+        instance.effacer = True
+        instance.save()
+

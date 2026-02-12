@@ -3,11 +3,12 @@ URLs pour le module Produits
 """
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ProduitViewSet, GroupeProduitViewSet
+from .views import ProduitViewSet, GroupeProduitViewSet, CatVehiculeViewSet
 
 router = DefaultRouter()
 router.register(r'produits', ProduitViewSet, basename='produit')
 router.register(r'groupes', GroupeProduitViewSet, basename='groupe-produit')
+router.register(r'categories-vehicules', CatVehiculeViewSet, basename='cat-vehicule')
 
 urlpatterns = [
     path('', include(router.urls)),
