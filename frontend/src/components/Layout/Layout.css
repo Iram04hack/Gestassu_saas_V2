@@ -55,7 +55,8 @@
     display: none;
 }
 
-.topbar-actions {
+.topbar-actions,
+.top-actions {
     pointer-events: auto;
     /* Re-enable clicks on buttons */
 }
@@ -80,6 +81,7 @@
 }
 
 /* Fix for JSX class name mismatch */
+/* Fix for JSX class name mismatch */
 .top-actions {
     display: flex;
     gap: 15px;
@@ -87,30 +89,41 @@
 }
 
 /* Icon Buttons (Notifications/Settings) */
-.icon-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    border: none;
-    background: transparent;
-    /* Transparent by default */
-    color: var(--text-secondary);
+.icon-btn,
+.top-link-btn {
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #475569;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: none;
-    /* No shadow by default */
-    font-size: 1.2rem;
+    font-size: 1rem;
+    padding: 0 16px;
+    gap: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.icon-btn:hover {
-    background: var(--bg-tertiary);
-    color: var(--primary);
-    border-color: var(--text-muted);
+.top-link-btn span {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.icon-btn:hover,
+.top-link-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #1e293b;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px var(--shadow-md);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.icon-btn:active,
+.top-link-btn:active {
+    transform: translateY(0);
 }
 
 .content-area {

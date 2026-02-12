@@ -26,7 +26,18 @@ const Sidebar = () => {
             group: '',
             items: [
                 { path: '/dashboard', label: 'Tableau de bord', icon: 'bi-grid-fill' },
-                { path: '/agenda', label: 'Agenda partagé', icon: 'bi-calendar3' },
+                {
+                    label: 'Données de base',
+                    icon: 'bi-database-fill',
+                    subItems: [
+                        { path: '/base/categories-vehicules', label: 'Catégories de véhicules' },
+                        { path: '/base/commissions', label: 'Commissions par catégorie' },
+                        { path: '/base/gestion-attestations', label: 'Gestion des attestations' },
+                        { path: '/base/affectation-attestations', label: 'Affectation des attestations' },
+                        { path: '/base/commerciaux', label: 'Gestion des commerciaux' },
+                        { path: '/base/motifs-transactions', label: 'Motifs des transactions financières' },
+                    ]
+                },
                 { path: '/crm', label: 'Clients', icon: 'bi-people-fill' },
                 { path: '/compagnies', label: 'Compagnies', icon: 'bi-building' },
                 { path: '/produits', label: 'Produits', icon: 'bi-box-seam' },
@@ -63,6 +74,20 @@ const Sidebar = () => {
                 { path: '/reversement', label: 'Reversements', icon: 'bi-arrow-left-right' },
                 { path: '/sinistres', label: 'Sinistre', icon: 'bi-exclamation-triangle-fill' },
             ]
+        },
+        {
+            group: '',
+            items: [
+                {
+                    label: 'Paramètres généraux',
+                    icon: 'bi-gear-fill',
+                    subItems: [
+                        { path: '/parametres/agences', label: 'Gestion des agences' },
+                        { path: '/parametres/roles', label: 'Gestion des rôles' },
+                        { path: '/parametres/utilisateurs', label: 'Gestion des utilisateurs' },
+                    ]
+                },
+            ]
         }
     ];
 
@@ -79,8 +104,8 @@ const Sidebar = () => {
                     <span className="brand-secondary">-ASSURANCES-</span>
                     <span className="brand-tertiary">Espace d'administration</span>
                 </div>
-                {menuItems.map((group) => (
-                    <div key={group.group} className="nav-group">
+                {menuItems.map((group, groupIndex) => (
+                    <div key={`group-${groupIndex}`} className="nav-group">
                         {group.group && <span className="group-label">{group.group}</span>}
                         <ul className="nav-list">
                             {group.items.map((item) => (
