@@ -20,9 +20,6 @@ class GroupeProduitViewSet(viewsets.ModelViewSet):
     search_fields = ['lib_groupe_prod']
     ordering_fields = ['lib_groupe_prod']
     ordering = ['lib_groupe_prod']
-
-
-
 class ProduitViewSet(viewsets.ModelViewSet):
     """
     ViewSet pour gérer les produits
