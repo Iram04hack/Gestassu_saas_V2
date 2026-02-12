@@ -83,7 +83,7 @@ const Sidebar = () => {
                     icon: 'bi-gear-fill',
                     subItems: [
                         { path: '/parametres/agences', label: 'Gestion des agences' },
-                        { path: '/parametres/roles', label: 'Gestion des rôles' },
+                        { path: '', label: 'Gestion des rôles' },
                         { path: '/parametres/utilisateurs', label: 'Gestion des utilisateurs' },
                     ]
                 },
