@@ -7,6 +7,11 @@ import ClientDetails from './pages/CRM/ClientDetails';
 import Compagnies from './pages/Compagnies/Compagnies';
 import VehicleCategories from './pages/BaseDonnees/VehicleCategories/VehicleCategories';
 import CommissionCategories from './pages/BaseDonnees/CommissionCategories/CommissionCategories';
+import AttestationsList from './pages/BaseDonnees/Attestations/AttestationsList';
+import AffectationAttestations from './pages/BaseDonnees/Attestations/AffectationAttestations';
+import Commerciaux from './pages/Commerciaux/Commerciaux';
+import CommercialDetails from './pages/Commerciaux/CommercialDetails';
+import TransactionReasonsList from './pages/BaseDonnees/TransactionReasons/TransactionReasonsList';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Layout from './components/Layout/Layout';
 import './App.css';
@@ -29,6 +34,8 @@ function App() {
             <Route path="/compagnies" element={<Compagnies />} />
             <Route path="/base/categories-vehicules" element={<VehicleCategories />} />
             <Route path="/base/commissions" element={<CommissionCategories />} />
+            <Route path="/base/attestations" element={<AttestationsList />} />
+            <Route path="/base/affectation-attestations" element={<AffectationAttestations />} />
             <Route path="/produits" element={<div>Module Produits (À venir)</div>} />
             <Route path="/tarifs/auto" element={<div>Tarif automobile (À venir)</div>} />
             <Route path="/tarifs/mrh" element={<div>Tarif Multirisque Habitation (À venir)</div>} />
@@ -40,6 +47,9 @@ function App() {
             <Route path="/finances" element={<div>Module Finances (À venir)</div>} />
             <Route path="/reversement" element={<div>Module Reversement (À venir)</div>} />
             <Route path="/sinistres" element={<div>Module Sinistres (À venir)</div>} />
+            <Route path="/base/commerciaux" element={<Commerciaux />} />
+            <Route path="/base/commerciaux/:id" element={<CommercialDetails />} />
+            <Route path="/base/motifs-transactions" element={<TransactionReasonsList />} />
           </Route>
 
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

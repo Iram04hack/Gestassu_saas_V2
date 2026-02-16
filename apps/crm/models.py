@@ -166,6 +166,7 @@ class Client(models.Model):
         managed = False  # Ne pas gérer la table (elle existe déjà)
         db_table = 'client'  # Nom exact de la table dans la BD (minuscules)
         ordering = ['-date_enreg']
+        app_label = 'crm'
 
     def __str__(self):
         if self.est_entreprise:
@@ -285,6 +286,7 @@ class Interaction(models.Model):
         managed = False
         db_table = 'interaction'  # Nom exact de la table dans la BD (minuscules)
         ordering = ['-date_heure_interaction']
+        app_label = 'crm'
 
     def __str__(self):
         return f"{self.type_interaction} - {self.id_client}"

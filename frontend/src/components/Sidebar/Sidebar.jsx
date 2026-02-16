@@ -32,7 +32,7 @@ const Sidebar = () => {
                     subItems: [
                         { path: '/base/categories-vehicules', label: 'Catégories de véhicules' },
                         { path: '/base/commissions', label: 'Commissions par catégorie' },
-                        { path: '/base/gestion-attestations', label: 'Gestion des attestations' },
+                        { path: '/base/attestations', label: 'Gestion des attestations' },
                         { path: '/base/affectation-attestations', label: 'Affectation des attestations' },
                         { path: '/base/commerciaux', label: 'Gestion des commerciaux' },
                         { path: '/base/motifs-transactions', label: 'Motifs des transactions financières' },

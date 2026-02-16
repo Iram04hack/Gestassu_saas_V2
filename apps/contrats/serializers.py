@@ -3,7 +3,18 @@ Serializers pour le module Contrats
 """
 from rest_framework import serializers
 from .models import Contrat
+from django.apps import apps
 
+
+class RisqueSerializer(serializers.ModelSerializer):
+    """Serializer pour le modèle Risques"""
+    class Meta:
+        model = apps.get_model('contrats', 'Risques')
+        fields = [
+            'id_risque', 'type_risque', 'designation_risque', 
+            'veh_marque', 'veh_modele', 'veh_immat', 
+            'veh_chassis', 'veh_type', 'veh_puissance', 'veh_nbplace'
+        ]
 
 class ContratSerializer(serializers.ModelSerializer):
     """Serializer pour le modèle Contrat"""
@@ -13,6 +24,8 @@ class ContratSerializer(serializers.ModelSerializer):
     nom_produit = serializers.SerializerMethodField()
     nom_agence = serializers.SerializerMethodField()
     statut = serializers.SerializerMethodField()
+    nom_client_complet = serializers.SerializerMethodField()
+    risques = serializers.SerializerMethodField()
     
     class Meta:
         model = Contrat
@@ -71,7 +84,33 @@ class ContratSerializer(serializers.ModelSerializer):
             'date_modif',
             'IDUTILISATEUR_save',
             'statut',
+            'nom_client_complet',
+            'risques',
         ]
+    
+    def get_risques(self, obj):
+        """Récupère les risques associés au contrat avec les attestations affectées"""
+        try:
+            ContratRisques = apps.get_model('contrats', 'ContratRisques')
+            Risques = apps.get_model('contrats', 'Risques')
+            
+            # Trouver les liens
+            liens = ContratRisques.objects.filter(id_contrat=obj.id_contrat)
+            
+            result = []
+            for lien in liens:
+                risque = Risques.objects.filter(id_risque=lien.id_risque).first()
+                if risque:
+                    data = RisqueSerializer(risque).data
+                    # Ajouter les infos du lien (Attestations assignées)
+                    data['attestation_jaune'] = lien.attestation_jaune
+                    data['attestation_rose'] = lien.attestation_rose
+                    result.append(data)
+            
+            return result
+        except Exception as e:
+            print(f"Erreur get_risques: {e}")
+            return []
     
     def get_nom_compagnie(self, obj):
         """Récupère le nom de la compagnie via la relation"""
@@ -93,6 +132,24 @@ class ContratSerializer(serializers.ModelSerializer):
         except Exception:
             return "-"
     
+    def get_nom_client_complet(self, obj):
+        """Récupère le nom complet du client"""
+        try:
+            if not obj.ID_Client:
+                return "-"
+            # Importation locale pour éviter les imports circulaires si nécessaire, 
+            # mais ici on a déjà importé Client en haut.
+            # Importation locale pour éviter les imports circulaires
+            from apps.crm.models import Client
+            client = Client.objects.filter(id_client=obj.ID_Client).first()
+            if client:
+                nom = client.nom_client or ""
+                prenom = client.prenom_client or ""
+                return f"{nom} {prenom}".strip()
+            return "-"
+        except Exception:
+            return "-"
+
     def get_nom_agence(self, obj):
         """Récupère le nom de l'agence"""
         try:

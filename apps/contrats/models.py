@@ -323,3 +323,61 @@ class Contrat(models.Model):
 
     def __str__(self):
         return f"Contrat {self.numPolice} - {self.ID_Client}"
+
+
+class Risques(models.Model):
+    """
+    Modèle pour la table Risques existante
+    Stocke les détails des risques (Véhicules, Bâtiments, etc.)
+    """
+    id_risque = models.CharField(max_length=255, primary_key=True, db_column='id_risque')
+    type_risque = models.CharField(max_length=255, db_column='type_risque', blank=True, null=True)
+    designation_risque = models.CharField(max_length=255, db_column='designation_risque', blank=True, null=True)
+    
+    # Champs Véhicule
+    veh_marque = models.CharField(max_length=255, db_column='veh_marque', blank=True, null=True)
+    veh_modele = models.CharField(max_length=255, db_column='veh_modele', blank=True, null=True)
+    veh_immat = models.CharField(max_length=255, db_column='veh_immat', blank=True, null=True)
+    veh_chassis = models.CharField(max_length=255, db_column='veh_chassis', blank=True, null=True)
+    veh_type = models.CharField(max_length=255, db_column='veh_type', blank=True, null=True)
+    veh_puissance = models.CharField(max_length=255, db_column='veh_puissance', blank=True, null=True)
+    veh_nbplace = models.IntegerField(db_column='veh_nbplace', blank=True, null=True)
+    
+    # Champs audit
+    effacer = models.BooleanField(db_column='effacer', default=False)
+    sync = models.BooleanField(db_column='sync', default=False)
+    date_enreg = models.DateTimeField(db_column='date_enreg', blank=True, null=True)
+    date_modif = models.DateTimeField(db_column='date_modif', blank=True, null=True)
+    idutilisateur_save = models.CharField(max_length=255, db_column='IDUTILISATEUR_save', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'risques'
+
+    def __str__(self):
+        return self.designation_risque or self.veh_immat or self.id_risque
+
+
+class ContratRisques(models.Model):
+    """
+    Table de liaison entre Contrat et Risques
+    """
+    id_risque = models.CharField(max_length=255, primary_key=True, db_column='Id_risque')
+    id_contrat = models.CharField(max_length=255, db_column='Id_contrat', blank=True, null=True)
+    
+    # Liens attestations
+    attestation_jaune = models.CharField(max_length=255, db_column='attestation_jaune', blank=True, null=True)
+    attestation_rose = models.CharField(max_length=255, db_column='attestation_rose', blank=True, null=True)
+    
+    # Champs audit
+    effacer = models.BooleanField(db_column='effacer', default=False)
+    sync = models.BooleanField(db_column='sync', default=False)
+    date_modif = models.DateTimeField(db_column='date_modif', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'contrat_risques'
+
+    def __str__(self):
+        return f"Lien {self.id_contrat} - {self.id_risque}"
+

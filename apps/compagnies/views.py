@@ -24,8 +24,14 @@ class CompagnieViewSet(viewsets.ModelViewSet):
     ordering = ['nom_compagnie']
     
     def get_queryset(self):
-        from django.db.models import Q
-        return Compagnie.objects.filter(Q(effacer=False) | Q(effacer__isnull=True))
+        print("DEBUG: CompagnieViewSet.get_queryset called")
+        try:
+            qs = Compagnie.objects.all()
+            print(f"DEBUG: Compagnie Queryset Count: {qs.count()}")
+            return qs
+        except Exception as e:
+            print(f"DEBUG: Error in CompagnieViewSet: {e}")
+            return Compagnie.objects.none()
 
     @action(detail=True, methods=['get'])
     def contacts(self, request, pk=None):

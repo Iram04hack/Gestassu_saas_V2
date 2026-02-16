@@ -2,11 +2,12 @@
 Views pour le module Finances
 """
 from rest_framework import viewsets, filters
+from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Mouvement, TypeMouvementManuel, Caisse
+from .models import Mouvement, TypeMouvementManuel, TypeMouvementAutomatique, Caisse
 from .serializers import MouvementSerializer, TypeMouvementSerializer, CaisseSerializer
 
 
@@ -47,9 +48,9 @@ class MouvementViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def types(self, request):
         """
-        Retourne les types de mouvements manuels
+        Retourne les types de mouvements automatiques
         """
-        types = TypeMouvementManuel.objects.filter(effacer=False)
+        types = TypeMouvementAutomatique.objects.filter(effacer=False)
         serializer = TypeMouvementSerializer(types, many=True)
         return Response(serializer.data)
 
@@ -69,8 +70,27 @@ class MouvementViewSet(viewsets.ModelViewSet):
 
 
 class TypeMouvementViewSet(viewsets.ModelViewSet):
-    queryset = TypeMouvementManuel.objects.filter(effacer=False)
+    """
+    ViewSet pour gérer les types de mouvements automatiques
+    """
+    permission_classes = [IsAuthenticated]
+    queryset = TypeMouvementAutomatique.objects.filter(effacer=False)
     serializer_class = TypeMouvementSerializer
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['lib_type_mouvement', 'id_type_mvt']
+    ordering_fields = ['lib_type_mouvement']
+    ordering = ['lib_type_mouvement']
+    
+    def perform_create(self, serializer):
+        # Génération ID automatique
+        import uuid
+        generated_id = f"TMVT{str(uuid.uuid4().hex[:6]).upper()}"
+        serializer.save(id_type_mvt=generated_id)
+
+    def perform_destroy(self, instance):
+        # Soft delete
+        instance.effacer = True
+        instance.save()
 
 
 class CaisseViewSet(viewsets.ModelViewSet):

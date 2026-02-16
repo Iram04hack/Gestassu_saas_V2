@@ -36,6 +36,7 @@ class Mouvement(models.Model):
     class Meta:
         managed = False
         db_table = 'mouvements'
+        app_label = 'finances'
         ordering = ['-datemouvement', '-date_enreg_mvt']
 
     def __str__(self):
@@ -65,10 +66,39 @@ class TypeMouvementManuel(models.Model):
     type_op = models.BooleanField(db_column='typeOP', default=False) # 0 = débit, 1 = crédit selon convention?
     effacer = models.BooleanField(db_column='Effacer', default=False)
     acteur = models.CharField(max_length=255, db_column='Acteur', blank=True, null=True)
-    
+    id_utilisateur_save = models.CharField(max_length=255, db_column='IDUTILISATEUR_save', blank=True, null=True)
+    date_enreg = models.DateTimeField(db_column='date_enreg', blank=True, null=True)
+    date_modif = models.DateTimeField(db_column='date_modif', blank=True, null=True)
+    date_synchro = models.DateTimeField(db_column='date_synchro', blank=True, null=True)
+    daterecupserveur = models.DateTimeField(db_column='daterecupserveur', blank=True, null=True)
+
     class Meta:
         managed = False
         db_table = 'type_mvt_manuel'
+        app_label = 'finances'
+        ordering = ['lib_type_mouvement']
+
+    def __str__(self):
+        return self.lib_type_mouvement
+
+
+class TypeMouvementAutomatique(models.Model):
+    """
+    Modèle pour la table TYPE_MVT_AUTOMATIQUE
+    Types de mouvements générés automatiquement par le système
+    """
+    id_type_mvt = models.CharField(max_length=255, primary_key=True, db_column='IDTYPE_MVT')
+    lib_type_mouvement = models.CharField(max_length=255, db_column='LibType_Mouvement', blank=True, null=True)
+    type_op = models.BooleanField(db_column='typeOP', default=False)  # 0 = débit, 1 = crédit
+    acteur = models.CharField(max_length=255, db_column='Acteur', blank=True, null=True)
+    date_synchro = models.DateTimeField(db_column='date_synchro', blank=True, null=True)
+    effacer = models.BooleanField(db_column='effacer', default=False)
+    daterecupserveur = models.DateTimeField(db_column='daterecupserveur', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'type_mvt_automatique'
+        app_label = 'finances'
         ordering = ['lib_type_mouvement']
 
     def __str__(self):
@@ -86,6 +116,7 @@ class Caisse(models.Model):
     class Meta:
         managed = False
         db_table = 'caisse'
+        app_label = 'finances'
         ordering = ['lib_caisse']
 
     def __str__(self):

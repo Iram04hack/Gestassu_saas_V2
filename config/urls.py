@@ -24,11 +24,11 @@ urlpatterns = [
     path('api/finances/', include('finances.urls')),
     path('api/documents/', include('documents.urls')),
     path('api/taches/', include('taches.urls')),
+    path('api/commerciaux/', include('commerciaux.urls')),
     
     # Autres APIs (à ajouter progressivement):
     # path('api/reversement/', include('reversement.urls')),
     # path('api/sinistres/', include('sinistres.urls')),
-    # path('api/commerciaux/', include('commerciaux.urls')),
     # path('api/dashboard/', include('dashboard.urls')),
     # path('api/statistiques/', include('statistiques.urls')),
 ]

@@ -329,3 +329,103 @@ class CommissionCategorie(models.Model):
     def __str__(self):
         return f"{self.code_cat} - {self.id_compagnie}"
 
+
+class Attestation(models.Model):
+    """
+    Modèle pour la table ATTESTATION existante.
+    Note: Nous utilisons id_attestation comme PK dans Django car id_compagnie 
+    peut avoir des doublons dans cette table (contrairement à ce qu'indique le schéma SQL).
+    """
+    id_attestation = models.CharField(
+        max_length=255,
+        primary_key=True,
+        db_column='id_attestation'
+    )
+    id_compagnie = models.CharField(
+        max_length=255,
+        db_column='id_compagnie'
+    )
+    Num_attestation = models.CharField(
+        max_length=255,
+        db_column='Num_attestation',
+        blank=True,
+        null=True
+    )
+    Etat_attestation = models.IntegerField(
+        db_column='Etat_attestation',
+        blank=True,
+        null=True,
+        help_text="0=Neutre, 1=Utilisé, 2=Endommagé"
+    )
+    Remarque_attestation = models.TextField(
+        db_column='Remarque_attestation',
+        blank=True,
+        null=True
+    )
+    type_attestation = models.CharField(
+        max_length=255,
+        db_column='type_attestation',
+        blank=True,
+        null=True,
+        help_text="653=Rose, 652=Jaune"
+    )
+    ref_lot = models.CharField(
+        max_length=255,
+        db_column='ref_lot',
+        blank=True,
+        null=True
+    )
+    CodeAgence = models.CharField(
+        max_length=255,
+        db_column='CodeAgence',
+        blank=True,
+        null=True
+    )
+    
+    # Champs de gestion
+    date_enreg = models.DateTimeField(
+        db_column='date_enreg',
+        auto_now_add=True,
+        blank=True,
+        null=True
+    )
+    date_modif = models.DateTimeField(
+        db_column='date_modif',
+        auto_now=True,
+        blank=True,
+        null=True
+    )
+    effacer = models.BooleanField(
+        db_column='effacer',
+        default=False
+    )
+    sync = models.BooleanField(
+        db_column='sync',
+        default=False
+    )
+    date_synchro = models.DateTimeField(
+        db_column='date_synchro',
+        blank=True,
+        null=True
+    )
+    idutilisateur_save = models.CharField(
+        max_length=255,
+        db_column='IDUTILISATEUR_save',
+        blank=True,
+        null=True
+    )
+    daterecupserveur = models.DateTimeField(
+        db_column='daterecupserveur',
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        app_label = 'produits'
+        managed = False
+        db_table = 'attestation'
+        ordering = ['-date_enreg']
+
+    def __str__(self):
+        return f"{self.type_attestation} - {self.Num_attestation}"
+
