@@ -1,0 +1,611 @@
+/* GarantiesModal.css - Premium Design V2 */
+
+/* --- Variables & Theming --- */
+:root {
+    --primary-color: #5d4037;
+    --primary-hover: #4e342e;
+    --accent-color: #8d6e63;
+    --bg-light: #f8f9fa;
+    --border-color: #e9ecef;
+    --text-dark: #2c3e50;
+    --text-muted: #6c757d;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --radius-md: 10px;
+}
+
+/* --- Modal Overlay & Container --- */
+.garanties-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    transition: all 0.3s ease;
+}
+
+.garanties-modal {
+    background: #ffffff;
+    border-radius: var(--radius-md);
+    width: 95%;
+    /* Slightly wider default */
+    max-width: 1200px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-md);
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px) scale(0.98);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* --- Header --- */
+.garanties-modal-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #3e2723 100%);
+    color: white;
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.garanties-modal-header h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-close-modal {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-close-modal:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* --- Body --- */
+.garanties-modal-body {
+    padding: 2rem;
+    overflow-y: auto;
+    background-color: var(--bg-light);
+    flex: 1;
+}
+
+/* --- Toolbar --- */
+.garanties-toolbar {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-add-garantie {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(93, 64, 55, 0.25);
+}
+
+.btn-add-garantie:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(93, 64, 55, 0.35);
+}
+
+/* --- Table Styles --- */
+.garanties-table-container {
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.garanties-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.garanties-table th {
+    background: #f1f3f5;
+    color: #495057;
+    font-weight: 600;
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.garanties-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f3f5;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+.garanties-table tr:last-child td {
+    border-bottom: none;
+}
+
+.garanties-table tr:hover {
+    background-color: #fafafa;
+}
+
+.garantie-label {
+    font-weight: 500;
+    color: #212529;
+}
+
+/* --- Form Styles --- */
+.form-section-title {
+    color: var(--primary-color);
+    border-bottom: 2px solid rgba(93, 64, 55, 0.1);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.garanties-modal .form-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.garanties-modal .form-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.garanties-modal .form-label {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.garanties-modal .form-control,
+.garanties-modal .form-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    background-color: white;
+}
+
+.garanties-modal .form-control:focus,
+.garanties-modal .form-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.15);
+}
+
+.garanties-modal .form-control[readonly] {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border-color: #e9ecef;
+}
+
+/* --- Checkbox Groups & Cards --- */
+.garanties-modal .form-container-box {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px;
+    height: 100%;
+}
+
+.garanties-modal .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    background: white;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s;
+}
+
+.garanties-modal .checkbox-wrapper:hover {
+    background: #f1f3f5;
+    border-color: var(--accent-color);
+}
+
+.garanties-modal .checkbox-wrapper input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.garanties-modal .checkbox-label {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    font-weight: 500;
+    cursor: pointer;
+    flex: 1;
+    user-select: none;
+}
+
+/* --- Footer --- */
+.modal-footer {
+    padding: 1.5rem 2rem;
+    background-color: white;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--text-dark);
+    border: 1px solid #ced4da;
+    padding: 10px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #3e2723 100%);
+    color: white;
+    border: none;
+    padding: 10px 32px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(93, 64, 55, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(93, 64, 55, 0.4);
+}
+
+/* --- Utilities --- */
+.text-end {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.fw-bold {
+    font-weight: 700;
+}
+
+.text-danger {
+    color: #d32f2f;
+}
+
+.text-success {
+    color: #2e7d32;
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+/* --- Action Buttons --- */
+.btn-icon-action {
+    background: transparent;
+    border: 1px solid transparent;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.btn-icon-action:hover.delete {
+    background: #ffebee;
+    color: #d32f2f;
+    border-color: #ffcdd2;
+}
+
+.btn-icon-sm {
+    padding: 4px;
+    font-size: 1rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-icon-sm:hover {
+    color: #b71c1c;
+}
+
+.garanties-modal {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 1200px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+    overflow: hidden;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.garanties-modal-header {
+    background-color: #5d4037;
+    color: white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.garanties-modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-close-modal {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.btn-close-modal:hover {
+    opacity: 1;
+}
+
+.garanties-modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    flex: 1;
+}
+
+/* Toolbar */
+.garanties-toolbar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-add-garantie {
+    background: #6d4c41;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(109, 76, 65, 0.2);
+}
+
+.btn-add-garantie:hover {
+    background: #5d4037;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(109, 76, 65, 0.3);
+}
+
+/* Table */
+.garanties-table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.garanties-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.garanties-table th {
+    background: #efebe9;
+    color: #5d4037;
+    font-weight: 600;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #d7ccc8;
+    font-size: 0.9rem;
+}
+
+.garanties-table th.text-center {
+    text-align: center;
+}
+
+.garanties-table th.text-end {
+    text-align: right;
+}
+
+.garanties-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f5f5f5;
+    color: #3e2723;
+    vertical-align: middle;
+}
+
+.garanties-table tr:hover {
+    background-color: #fff8e1;
+    cursor: pointer;
+}
+
+.garanties-table td.text-center {
+    text-align: center;
+}
+
+.garanties-table td.text-end {
+    text-align: right;
+}
+
+.garantie-label {
+    font-weight: 500;
+}
+
+/* Form Modal Styling - Scoped */
+.garanties-modal .form-section-title {
+    color: #5d4037;
+    border-bottom: 1px solid #d7ccc8;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+    margin-top: 16px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.garanties-modal .checkbox-label.bold {
+    font-weight: 700;
+    color: #212529;
+}
+
+.modal-footer {
+    padding: 1.5rem;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.btn-secondary {
+    background: #e9ecef;
+    color: #495057;
+    border: 1px solid #ced4da;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: #dee2e6;
+    color: #212529;
+}
+
+.btn-primary {
+    background: #6d4c41;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(109, 76, 65, 0.2);
+}
+
+.btn-primary:hover {
+    background: #5d4037;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(109, 76, 65, 0.3);
+}
+
+.text-end {
+    text-align: right;
+}
+
+.fw-bold {
+    font-weight: bold;
+}

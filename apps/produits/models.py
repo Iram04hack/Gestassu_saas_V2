@@ -429,3 +429,147 @@ class Attestation(models.Model):
     def __str__(self):
         return f"{self.type_attestation} - {self.Num_attestation}"
 
+
+    def __str__(self):
+        return f"{self.type_attestation} - {self.Num_attestation}"
+
+
+class Garantie(models.Model):
+    """
+    Modèle pour la table GARANTIES existante (Legacy)
+    Mapped from actual DB columns found via diagnosis.
+    """
+    id_garantie = models.CharField(
+        max_length=255,
+        primary_key=True,
+        db_column='ID_Garantie'
+    )
+    id_produit = models.CharField(
+        max_length=255,
+        db_column='Id_produit',
+        blank=True,
+        null=True
+    )
+    libelle_garantie = models.CharField(
+        max_length=255,
+        db_column='lib_garantie',
+        blank=True,
+        null=True
+    )
+    # Fields found in DB:
+    # capital_deces, capital_invalidite, capital_fraismedicaux
+    capital_deces = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        db_column='capital_deces',
+        blank=True,
+        null=True
+    )
+    capital_invalidite = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        db_column='capital_invalidite',
+        blank=True,
+        null=True
+    )
+    capital_fraismedicaux = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        db_column='capital_fraismedicaux',
+        blank=True,
+        null=True
+    )
+    
+    # Nouveaux champs découverts (Legacy)
+    num_ordre = models.IntegerField(
+        db_column='num_ordre',
+        blank=True,
+        null=True
+    )
+    est_obligatoire = models.BooleanField(
+        db_column='est_obligatoire',
+        default=False
+    )
+    tx_commision = models.DecimalField(
+        max_digits=5, # Supposé
+        decimal_places=2,
+        db_column='tx_commision',
+        blank=True,
+        null=True
+    )
+    tx_taxe = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        db_column='tx_taxe',
+        blank=True,
+        null=True
+    )
+    code_groupe_garantie = models.CharField(
+        max_length=255,
+        db_column='code_groupe_garantie',
+        blank=True,
+        null=True
+    )
+    inclus_PF = models.BooleanField(
+        db_column='inclus_PF',
+        default=False
+    )
+    inclus_ValeurVenal = models.BooleanField(
+        db_column='inclus_ValeurVenal',
+        default=False
+    )
+    inclus_surprime = models.BooleanField(
+        db_column='inclus_surprime',
+        default=False
+    )
+    reduc_com_flotte = models.BooleanField(
+        db_column='reduc_com_flotte', # Ou autre type si pas booleen
+        default=False
+    )
+
+    # Champs audit
+    date_enreg = models.DateTimeField(
+        db_column='date_enreg',
+        auto_now_add=True,
+        blank=True,
+        null=True
+    )
+    date_modif = models.DateTimeField(
+        db_column='date_modif',
+        auto_now=True,
+        blank=True,
+        null=True
+    )
+    effacer = models.BooleanField(
+        db_column='effacer',
+        default=False
+    )
+    sync = models.BooleanField(
+        db_column='sync',
+        default=False
+    )
+    date_synchro = models.DateTimeField(
+        db_column='date_synchro',
+        blank=True,
+        null=True
+    )
+    idutilisateur_save = models.CharField(
+        max_length=255,
+        db_column='IDUTILISATEUR_save',
+        blank=True,
+        null=True
+    )
+    daterecupserveur = models.DateTimeField(
+        db_column='daterecupserveur',
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'garanties' # Plural !
+        ordering = ['libelle_garantie']
+
+    def __str__(self):
+        return self.libelle_garantie or self.id_garantie
+
