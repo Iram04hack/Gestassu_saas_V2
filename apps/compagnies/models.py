@@ -195,3 +195,66 @@ class ContactCompagnie(models.Model):
 
     def __str__(self):
         return f"{self.nom_contact} - {self.fonction_contact or ''}"
+
+
+class FraisAccessoire(models.Model):
+    """
+    Model pour la table FRAIS_ACCESSOIRE existante
+    Représente les frais accessoires d'une compagnie
+    """
+    idfraisaccess = models.CharField(
+        max_length=255,
+        primary_key=True,
+        db_column='IDFRAISACCESS'
+    )
+    id_compagnie = models.CharField(
+        max_length=255,
+        db_column='Id_compagnie',
+        blank=True,
+        null=True
+    )
+    interv_min = models.IntegerField(
+        db_column='INTERV_MIN',
+        blank=True,
+        null=True
+    )
+    interv_max = models.IntegerField(
+        db_column='INTERV_MAX',
+        blank=True,
+        null=True
+    )
+    montant = models.IntegerField(
+        db_column='MONTANT',
+        blank=True,
+        null=True
+    )
+    
+    # Champs de gestion
+    effacer = models.BooleanField(
+        db_column='effacer',
+        default=False
+    )
+    sync = models.BooleanField(
+        db_column='sync',
+        default=False
+    )
+    date_synchro = models.DateTimeField(
+        db_column='date_synchro',
+        blank=True,
+        null=True
+    )
+    daterecupserveur = models.DateTimeField(
+        db_column='daterecupserveur',
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        app_label = 'compagnies'
+        managed = False
+        db_table = 'frais_accessoire'
+        ordering = ['interv_min']
+
+    def __str__(self):
+        return f"Accessoire {self.interv_min}-{self.interv_max}: {self.montant}"
+

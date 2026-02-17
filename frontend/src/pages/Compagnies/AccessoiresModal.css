@@ -1,0 +1,113 @@
+/* AccessoiresModal.css */
+.accessoires-modal {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 1100px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+.accessoires-toolbar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-new-accessoire {
+    background: #6d4c41;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(109, 76, 65, 0.2);
+}
+
+.btn-new-accessoire:hover {
+    background: #5d4037;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(109, 76, 65, 0.3);
+}
+
+.accessoires-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.accessoires-table th {
+    text-align: left;
+    padding: 12px;
+    background: #efebe9;
+    color: #5d4037;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-bottom: 2px solid #d7ccc8;
+}
+
+.accessoires-table th:first-child {
+    border-radius: 8px 0 0 0;
+}
+
+.accessoires-table th:last-child {
+    border-radius: 0 8px 0 0;
+}
+
+.accessoires-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 0.9rem;
+    color: #3e2723;
+}
+
+.accessoires-table tr:hover td {
+    background: #fff8e1;
+}
+
+.accessoires-table .font-bold {
+    font-weight: 700;
+    color: #6d4c41;
+}
+
+/* Form Styles */
+.accessoire-form {
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.accessoire-form h3 {
+    margin: 0 0 20px 0;
+    color: #5d4037;
+    font-size: 1.1rem;
+}
+
+.form-info {
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #1565c0;
+}
+
+.form-info i {
+    font-size: 1.2rem;
+}
+
+.form-info p {
+    margin: 0;
+    font-size: 0.9rem;
+}

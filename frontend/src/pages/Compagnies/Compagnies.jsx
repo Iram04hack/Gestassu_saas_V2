@@ -1,11 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import './Compagnies.css';
 import CompagnieFormModal from './CompagnieFormModal';
+import ContactsModal from './ContactsModal';
+import CompteCompagnieModal from './CompteCompagnieModal';
+import AccessoiresModal from './AccessoiresModal';
+import CompagnieFilters from './CompagnieFilters';
 import compagniesService from '../../services/compagnies';
 
 const Compagnies = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingCompagnie, setEditingCompagnie] = useState(null);
+
+    // Modal states
+    const [isContactsModalOpen, setIsContactsModalOpen] = useState(false);
+    const [isCompteModalOpen, setIsCompteModalOpen] = useState(false);
+    const [isAccessoiresModalOpen, setIsAccessoiresModalOpen] = useState(false);
+    const [selectedCompagnie, setSelectedCompagnie] = useState(null);
+
+    // Filter states
+    const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+    const [filters, setFilters] = useState({
+        nom: '',
+        numero: '',
+        adresse: ''
+    });
+    const [appliedFilters, setAppliedFilters] = useState({
+        nom: '',
+        numero: '',
+        adresse: ''
+    });
 
     // State for Companies
     const [compagnies, setCompagnies] = useState([]);
@@ -33,7 +57,7 @@ const Compagnies = () => {
                 telephone: comp.tel_compagnie || '-',
                 email: comp.email_compagnie || '-',
                 logo: comp.url_logo || comp.logo || null,
-                contacts: 0, // À calculer plus tard avec les contacts
+                contacts: comp.contacts_count || 0, // Utiliser le comptage du backend
                 details: comp
             })) : [];
 
@@ -50,10 +74,21 @@ const Compagnies = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
-    const filteredCompagnies = compagnies.filter(comp =>
-        comp.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        comp.numero.includes(searchTerm)
-    );
+    const filteredCompagnies = compagnies.filter(comp => {
+        // Search term filter
+        const matchesSearch = comp.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            comp.numero.includes(searchTerm);
+
+        // Advanced filters
+        const matchesNom = !appliedFilters.nom ||
+            comp.nom.toLowerCase().includes(appliedFilters.nom.toLowerCase());
+        const matchesNumero = !appliedFilters.numero ||
+            comp.numero.includes(appliedFilters.numero);
+        const matchesAdresse = !appliedFilters.adresse ||
+            comp.adresse.toLowerCase().includes(appliedFilters.adresse.toLowerCase());
+
+        return matchesSearch && matchesNom && matchesNumero && matchesAdresse;
+    });
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -78,6 +113,45 @@ const Compagnies = () => {
         }
     };
 
+    const handleOpenContacts = (compagnie) => {
+        setSelectedCompagnie(compagnie);
+        setIsContactsModalOpen(true);
+    };
+
+    const handleOpenCompte = (compagnie) => {
+        setSelectedCompagnie(compagnie);
+        setIsCompteModalOpen(true);
+    };
+
+    const handleOpenAccessoires = (compagnie) => {
+        setSelectedCompagnie(compagnie);
+        setIsAccessoiresModalOpen(true);
+    };
+
+    const handleEditCompagnie = (compagnie) => {
+        setEditingCompagnie(compagnie.details);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setEditingCompagnie(null);
+    };
+
+    const handleApplyFilters = () => {
+        setAppliedFilters({ ...filters });
+        setIsFiltersOpen(false);
+        setCurrentPage(1); // Reset to first page
+    };
+
+    const handleResetFilters = () => {
+        const emptyFilters = { nom: '', numero: '', adresse: '' };
+        setFilters(emptyFilters);
+        setAppliedFilters(emptyFilters);
+        setIsFiltersOpen(false);
+        setCurrentPage(1);
+    };
+
     return (
         <div className="compagnies-container">
             <div className="compagnies-header-strip">
@@ -95,16 +169,31 @@ const Compagnies = () => {
                     />
                 </div>
 
-                <div className="actions-group">
-                    <button className="btn-icon-action" title="Filtrer">
+                <div className="actions-group" style={{ position: 'relative' }}>
+                    <button
+                        className="btn-icon-action"
+                        title="Filtrer"
+                        onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+                    >
                         <i className="bi bi-funnel"></i>
                     </button>
                     <button className="btn-icon-action" title="Actualiser" onClick={loadCompagnies}>
                         <i className="bi bi-arrow-clockwise"></i>
                     </button>
-                    <button className="btn-new" onClick={() => setIsModalOpen(true)}>
+                    <button className="btn-new" onClick={() => {
+                        setEditingCompagnie(null);
+                        setIsModalOpen(true);
+                    }}>
                         <i className="bi bi-plus-lg"></i> Nouvelle compagnie
                     </button>
+
+                    <CompagnieFilters
+                        filters={filters}
+                        setFilters={setFilters}
+                        onApply={handleApplyFilters}
+                        onReset={handleResetFilters}
+                        isOpen={isFiltersOpen}
+                    />
                 </div>
             </div>
 
@@ -148,13 +237,13 @@ const Compagnies = () => {
                                         </div>
                                     </td>
                                     <td>
-                                        <span className="contact-badge">{comp.contacts} Contacts <i className="bi bi-caret-down-fill"></i></span>
+                                        <span className="contact-badge" onClick={() => handleOpenContacts(comp)} style={{ cursor: 'pointer' }}>{comp.contacts} Contacts <i className="bi bi-caret-down-fill"></i></span>
                                     </td>
                                     <td>
                                         <div className="action-buttons">
-                                            <button className="btn-action pill">Compte courant</button>
-                                            <button className="btn-action pill">Accessoires</button>
-                                            <button className="btn-action pill">Modifier</button>
+                                            <button className="btn-action pill" onClick={() => handleOpenCompte(comp)}>Compte courant</button>
+                                            <button className="btn-action pill" onClick={() => handleOpenAccessoires(comp)}>Accessoires</button>
+                                            <button className="btn-action pill" onClick={() => handleEditCompagnie(comp)}>Modifier</button>
                                             <button
                                                 className="btn-action pill delete"
                                                 onClick={() => handleDeleteCompagnie(comp.id)}
@@ -206,8 +295,27 @@ const Compagnies = () => {
 
             <CompagnieFormModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={handleCloseModal}
                 onSave={handleSaveCompagnie}
+                compagnie={editingCompagnie}
+            />
+
+            <ContactsModal
+                isOpen={isContactsModalOpen}
+                onClose={() => setIsContactsModalOpen(false)}
+                compagnie={selectedCompagnie}
+            />
+
+            <CompteCompagnieModal
+                isOpen={isCompteModalOpen}
+                onClose={() => setIsCompteModalOpen(false)}
+                compagnie={selectedCompagnie}
+            />
+
+            <AccessoiresModal
+                isOpen={isAccessoiresModalOpen}
+                onClose={() => setIsAccessoiresModalOpen(false)}
+                compagnie={selectedCompagnie}
             />
         </div>
     );

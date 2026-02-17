@@ -109,6 +109,64 @@ const compagniesService = {
         const response = await api.delete(`/compagnies/contacts/${id}/`);
         return response.data;
     },
+
+    // ========== MOUVEMENTS COMPAGNIE ==========
+
+    /**
+     * Récupérer les mouvements d'une compagnie
+     * @param {string} id - ID de la compagnie
+     * @param {Object} params - Paramètres de filtrage (date_debut, date_fin)
+     */
+    getCompagnieMouvements: async (id, params = {}) => {
+        const queryParams = new URLSearchParams({
+            idtransfert: id,  // ID de la compagnie dans le champ idtransfert
+            nature_compte: 'COMPAGNIE',
+            ...params
+        }).toString();
+        const response = await api.get(`/finances/mouvements/?${queryParams}`);
+        return response.data;
+    },
+
+    // ========== FRAIS ACCESSOIRES ==========
+
+    /**
+     * Récupérer les frais accessoires d'une compagnie
+     * @param {string} id - ID de la compagnie
+     */
+    getAccessoires: async (id) => {
+        const response = await api.get('/compagnies/accessoires/', {
+            params: { id_compagnie: id }
+        });
+        return response.data;
+    },
+
+    /**
+     * Créer un frais accessoire
+     * @param {Object} accessoireData - Données du frais accessoire
+     */
+    createAccessoire: async (accessoireData) => {
+        const response = await api.post('/compagnies/accessoires/', accessoireData);
+        return response.data;
+    },
+
+    /**
+     * Mettre à jour un frais accessoire
+     * @param {string} id - ID du frais accessoire
+     * @param {Object} accessoireData - Données à mettre à jour
+     */
+    updateAccessoire: async (id, accessoireData) => {
+        const response = await api.put(`/compagnies/accessoires/${id}/`, accessoireData);
+        return response.data;
+    },
+
+    /**
+     * Supprimer un frais accessoire
+     * @param {string} id - ID du frais accessoire
+     */
+    deleteAccessoire: async (id) => {
+        const response = await api.delete(`/compagnies/accessoires/${id}/`);
+        return response.data;
+    },
 };
 
 export default compagniesService;

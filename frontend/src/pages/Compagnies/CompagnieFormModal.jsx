@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CompagnieFormModal.css';
 
-const CompagnieFormModal = ({ isOpen, onClose, onSave }) => {
+const CompagnieFormModal = ({ isOpen, onClose, onSave, compagnie }) => {
     const [activeTab, setActiveTab] = useState('general'); // 'general' or 'accessoire'
     const [formData, setFormData] = useState({
         numero: '',
@@ -19,6 +19,30 @@ const CompagnieFormModal = ({ isOpen, onClose, onSave }) => {
         montant: ''
     });
     const [accessoiresList, setAccessoiresList] = useState([]);
+
+    // Pre-fill form when editing
+    useEffect(() => {
+        if (compagnie) {
+            setFormData({
+                numero: compagnie.codification_compagnie || '',
+                nom: compagnie.nom_compagnie || '',
+                adresse: compagnie.adresse_compagnie || '',
+                telephone: compagnie.tel_compagnie || '',
+                email: compagnie.email_compagnie || '',
+                logo: compagnie.url_logo || compagnie.logo || null
+            });
+        } else {
+            // Reset form for new company
+            setFormData({
+                numero: '',
+                nom: '',
+                adresse: '',
+                telephone: '',
+                email: '',
+                logo: null
+            });
+        }
+    }, [compagnie, isOpen]);
 
     if (!isOpen) return null;
 
@@ -51,7 +75,7 @@ const CompagnieFormModal = ({ isOpen, onClose, onSave }) => {
         <div className="modal-overlay">
             <div className="compagnies-modal-container">
                 <div className="compagnies-modal-header">
-                    <h2>Fiche Compagnie</h2>
+                    <h2>{compagnie ? 'Modifier la compagnie' : 'Nouvelle compagnie'}</h2>
                     <button className="close-btn" onClick={onClose}>
                         <i className="bi bi-x-lg"></i>
                     </button>

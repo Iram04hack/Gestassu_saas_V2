@@ -88,3 +88,40 @@ class ContactCompagnieViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         instance.effacer = True
         instance.save()
+
+
+class FraisAccessoireViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet pour gérer les frais accessoires des compagnies
+    """
+    serializer_class = 'FraisAccessoireSerializer'
+    permission_classes = [IsAuthenticated]
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['interv_min', 'interv_max']
+    ordering = ['interv_min']
+    
+    def get_queryset(self):
+        """
+        Filtrage par compagnie
+        """
+        from django.db.models import Q
+        from .models import FraisAccessoire
+        
+        queryset = FraisAccessoire.objects.filter(Q(effacer=False) | Q(effacer__isnull=True))
+        
+        # Filtre par compagnie
+        id_compagnie = self.request.query_params.get('id_compagnie', None)
+        if id_compagnie:
+            queryset = queryset.filter(id_compagnie=id_compagnie)
+            
+        return queryset
+    
+    def get_serializer_class(self):
+        from .serializers import FraisAccessoireSerializer
+        return FraisAccessoireSerializer
+
+    def perform_destroy(self, instance):
+        """Soft delete"""
+        instance.effacer = True
+        instance.save()
+
