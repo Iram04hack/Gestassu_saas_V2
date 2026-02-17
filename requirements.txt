@@ -1,21 +1,34 @@
+# =============================================================
+# Gestassu - Requirements (compatible Debian / Linux)
+# =============================================================
+# Prérequis système Debian (à installer avant pip install) :
+#   sudo apt update
+#   sudo apt install python3-dev python3-venv default-libmysqlclient-dev build-essential pkg-config
+# =============================================================
+
 # Django Core
 Django==4.2.9
 python-decouple==3.8
 
-# Database (using PyMySQL for Windows compatibility)
+# Database
 pymysql==1.1.0
+mysqlclient==2.2.1
 cryptography==41.0.7
 
 # REST Framework
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.1
+django-filter==23.5
 
 # CORS Headers
 django-cors-headers==4.3.1
 
+# Serveur WSGI pour production (Debian)
+gunicorn==21.2.0
+
 # Pour la génération de PDF (contrats, attestations)
 reportlab==4.0.7
-Pillow>=10.2.0 
+Pillow>=10.2.0
 
 # Pour Excel exports (statistiques)
 openpyxl==3.1.2
