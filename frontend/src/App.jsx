@@ -5,6 +5,7 @@ import Login from './pages/Login/Login';
 import CRM from './pages/CRM/CRM';
 import ClientDetails from './pages/CRM/ClientDetails';
 import Compagnies from './pages/Compagnies/Compagnies';
+import Produits from './pages/Produits/Produits';
 import VehicleCategories from './pages/BaseDonnees/VehicleCategories/VehicleCategories';
 import CommissionCategories from './pages/BaseDonnees/CommissionCategories/CommissionCategories';
 import AttestationsList from './pages/BaseDonnees/Attestations/AttestationsList';
@@ -36,7 +37,7 @@ function App() {
             <Route path="/base/commissions" element={<CommissionCategories />} />
             <Route path="/base/attestations" element={<AttestationsList />} />
             <Route path="/base/affectation-attestations" element={<AffectationAttestations />} />
-            <Route path="/produits" element={<div>Module Produits (À venir)</div>} />
+            <Route path="/produits" element={<Produits />} />
             <Route path="/tarifs/auto" element={<div>Tarif automobile (À venir)</div>} />
             <Route path="/tarifs/mrh" element={<div>Tarif Multirisque Habitation (À venir)</div>} />
             <Route path="/contrats/auto" element={<div>Assurance Auto (À venir)</div>} />

@@ -1,0 +1,827 @@
+C:\Users\hp\Gestassu app web\apps\finances\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\finances\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\finances\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\finances\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\finances\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 52
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 52
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 52
+C:\Users\hp\Gestassu app web\apps\finances\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\finances\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\finances\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\finances\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 299
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 299
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 299
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 299
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 52
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 52
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 52
+Watching for file changes with StatReloader
+"POST /api/auth/login/ HTTP/1.1" 200 655
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/produits/commissions/ HTTP/1.1" 200 2999
+"GET /api/produits/attestations/stats/ HTTP/1.1" 200 501
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/produits/commissions/ HTTP/1.1" 200 2999
+"GET /api/produits/attestations/stats/ HTTP/1.1" 200 501
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/produits/attestations/?type_attestation=653 HTTP/1.1" 200 29778
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/contrats/contrats/?page=1&page_size=20 HTTP/1.1" 200 39249
+"GET /api/commerciaux/apporteurs/?search= HTTP/1.1" 200 1738
+"GET /api/commerciaux/apporteurs/5085d03f-42aa-4097-8def-a70cf53b8963/ HTTP/1.1" 200 462
+"GET /api/commerciaux/apporteurs/5085d03f-42aa-4097-8def-a70cf53b8963/ HTTP/1.1" 200 462
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/contrats/contrats/?code_apporteur=5085d03f-42aa-4097-8def-a70cf53b8963 HTTP/1.1" 200 6544
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/contrats/contrats/?code_apporteur=5085d03f-42aa-4097-8def-a70cf53b8963 HTTP/1.1" 200 6544
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 52
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 2587
+C:\Users\hp\Gestassu app web\apps\finances\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\finances\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 2282
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 2282
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 2282
+C:\Users\hp\Gestassu app web\apps\finances\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 2282
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 2282
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 2282
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 2282
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 2282
+Bad Request: /api/finances/types-mouvements/
+"POST /api/finances/types-mouvements/ HTTP/1.1" 400 45
+C:\Users\hp\Gestassu app web\apps\finances\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Bad Request: /api/finances/types-mouvements/
+"POST /api/finances/types-mouvements/ HTTP/1.1" 400 45
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 1715
+Bad Request: /api/finances/types-mouvements/
+"POST /api/finances/types-mouvements/ HTTP/1.1" 400 45
+C:\Users\hp\Gestassu app web\apps\finances\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+"POST /api/finances/types-mouvements/ HTTP/1.1" 201 146
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 1863
+"PUT /api/finances/types-mouvements/TMVTB7B79B/ HTTP/1.1" 200 145
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 1862
+"DELETE /api/finances/types-mouvements/TMVTB7B79B/ HTTP/1.1" 204 0
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 1715
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/produits/commissions/ HTTP/1.1" 200 2999
+"GET /api/produits/attestations/stats/ HTTP/1.1" 200 501
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/produits/commissions/ HTTP/1.1" 200 2999
+"GET /api/produits/attestations/stats/ HTTP/1.1" 200 501
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/produits/attestations/?type_attestation=653 HTTP/1.1" 200 29778
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/commerciaux/apporteurs/?search= HTTP/1.1" 200 1738
+"GET /api/contrats/contrats/?page=1&page_size=20 HTTP/1.1" 200 39249
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 1715
+"GET /api/produits/attestations/stats/ HTTP/1.1" 200 501
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/produits/attestations/stats/ HTTP/1.1" 200 501
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/produits/attestations/?type_attestation=653 HTTP/1.1" 200 29778
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 4051
+C:\Users\hp\Gestassu app web\apps\compagnies\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\compagnies\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\compagnies\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\compagnies\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5366
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5366
+"GET /api/compagnies/compagnies/2b13bd51-2e9e-4d29-9a59-64489ac73c1d/contacts/ HTTP/1.1" 200 2454
+"GET /api/compagnies/compagnies/2b13bd51-2e9e-4d29-9a59-64489ac73c1d/contacts/ HTTP/1.1" 200 2454
+"GET /api/compagnies/compagnies/2b13bd51-2e9e-4d29-9a59-64489ac73c1d/contacts/ HTTP/1.1" 200 2454
+Bad Request: /api/compagnies/contacts/3d519604-153d-49e3-b251-705a5ae3b180/
+"PUT /api/compagnies/contacts/3d519604-153d-49e3-b251-705a5ae3b180/ HTTP/1.1" 400 53
+Bad Request: /api/compagnies/contacts/3d519604-153d-49e3-b251-705a5ae3b180/
+"PUT /api/compagnies/contacts/3d519604-153d-49e3-b251-705a5ae3b180/ HTTP/1.1" 400 53
+"GET /api/finances/mouvements/?compagnie_id=2b13bd51-2e9e-4d29-9a59-64489ac73c1d&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/finances/mouvements/?compagnie_id=2b13bd51-2e9e-4d29-9a59-64489ac73c1d&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/finances/mouvements/?compagnie_id=2b13bd51-2e9e-4d29-9a59-64489ac73c1d&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/compagnies/accessoires/?id_compagnie=2b13bd51-2e9e-4d29-9a59-64489ac73c1d HTTP/1.1" 200 52
+C:\Users\hp\Gestassu app web\apps\compagnies\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/f8d6828b-1260-4ee3-9f4b-963943e24af2/contacts/ HTTP/1.1" 200 1030
+"GET /api/compagnies/accessoires/?id_compagnie=f8d6828b-1260-4ee3-9f4b-963943e24af2 HTTP/1.1" 200 1336
+"GET /api/finances/mouvements/?compagnie_id=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/finances/mouvements/?compagnie_id=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/finances/mouvements/?compagnie_id=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/finances/mouvements/?compagnie_id=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2026-01-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/finances/mouvements/?compagnie_id=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2025-12-30&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/finances/mouvements/?idtransfert=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/finances/mouvements/?idtransfert=30918b78-e878-462d-a624-31b58bebeff3&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/finances/mouvements/?idtransfert=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/finances/mouvements/?idtransfert=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/finances/mouvements/?idtransfert=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/f8d6828b-1260-4ee3-9f4b-963943e24af2/contacts/ HTTP/1.1" 200 1030
+"GET /api/finances/mouvements/?idtransfert=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/finances/mouvements/?idtransfert=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+C:\Users\hp\Gestassu app web\apps\reversement\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\finances\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\reversement\models.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/finances/mouvements/?idtransfert=f8d6828b-1260-4ee3-9f4b-963943e24af2&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 377
+"GET /api/finances/mouvements/?idtransfert=30918b78-e878-462d-a624-31b58bebeff3&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 379
+"GET /api/compagnies/accessoires/?id_compagnie=f8d6828b-1260-4ee3-9f4b-963943e24af2 HTTP/1.1" 200 1336
+"GET /api/finances/mouvements/?idtransfert=84e3f1c0-7853-4dcb-915c-8e8e61f98cb6&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 376
+"GET /api/finances/mouvements/?idtransfert=84e3f1c0-7853-4dcb-915c-8e8e61f98cb6&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 376
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\views.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\views.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+"GET /api/produits/produits/ HTTP/1.1" 200 36101
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\views.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\views.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\urls.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\urls.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /admin/ HTTP/1.1" 200 7100
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+"GET /static/admin/css/base.css HTTP/1.1" 304 0
+"GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+"GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+"GET /static/admin/js/theme.js HTTP/1.1" 304 0
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 3484
+"GET /admin/ HTTP/1.1" 200 7100
+Watching for file changes with StatReloader
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+Internal Server Error: /api/produits/produits/
+Traceback (most recent call last):
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 822, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1054, "Unknown column 'garanties.Libelle_Garantie' in 'ORDER BY'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\hp\Gestassu app web\apps\produits\views.py", line 69, in list
+    for g in garanties:
+             ^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\models\query.py", line 208, in __iter__
+    for row in compiler.results_iter(
+               ~~~~~~~~~~~~~~~~~~~~~^
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1513, in results_iter
+    results = self.execute_sql(
+        MULTI, chunked_fetch=chunked_fetch, chunk_size=chunk_size
+    )
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 822, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.OperationalError: (1054, "Unknown column 'garanties.Libelle_Garantie' in 'ORDER BY'")
+"GET /api/produits/produits/ HTTP/1.1" 500 287218
+Internal Server Error: /api/produits/produits/
+Traceback (most recent call last):
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 822, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1054, "Unknown column 'garanties.Libelle_Garantie' in 'ORDER BY'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\hp\Gestassu app web\apps\produits\views.py", line 69, in list
+    for g in garanties:
+             ^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\models\query.py", line 208, in __iter__
+    for row in compiler.results_iter(
+               ~~~~~~~~~~~~~~~~~~~~~^
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1513, in results_iter
+    results = self.execute_sql(
+        MULTI, chunked_fetch=chunked_fetch, chunk_size=chunk_size
+    )
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 822, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\hp\Gestassu app web\venv\Lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.OperationalError: (1054, "Unknown column 'garanties.Libelle_Garantie' in 'ORDER BY'")
+"GET /api/produits/produits/ HTTP/1.1" 500 287218
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+C:\Users\hp\Gestassu app web\apps\produits\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+Watching for file changes with StatReloader
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Unauthorized: /api/produits/garanties/
+"GET /api/produits/garanties/?id_produit=undefined HTTP/1.1" 401 58
+Watching for file changes with StatReloader
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Unauthorized: /api/produits/garanties/
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 401 58
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Unauthorized: /api/produits/garanties/
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 401 58
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+Watching for file changes with StatReloader
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Unauthorized: /api/produits/garanties/
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 401 58
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Unauthorized: /api/produits/garanties/
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 401 58
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Unauthorized: /api/produits/garanties/
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 401 58
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Unauthorized: /api/produits/garanties/
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 401 58
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Unauthorized: /api/produits/garanties/
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 401 58
+Watching for file changes with StatReloader
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Unauthorized: /api/produits/garanties/
+"GET /api/produits/garanties/?id_produit=a5486b62-759d-4ad5-84cd-9f9ff12ddb06 HTTP/1.1" 401 58
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Watching for file changes with StatReloader
+Unauthorized: /api/produits/produits/
+Watching for file changes with StatReloader
+"POST /api/auth/login/ HTTP/1.1" 200 655
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/commissions/ HTTP/1.1" 200 2999
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/attestations/stats/ HTTP/1.1" 200 501
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/produits/commissions/ HTTP/1.1" 200 2999
+"GET /api/produits/attestations/stats/ HTTP/1.1" 200 501
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/attestations/?type_attestation=653 HTTP/1.1" 200 29778
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/contrats/contrats/?page=1&page_size=20 HTTP/1.1" 200 39249
+"GET /api/contrats/contrats/?page=2&page_size=20 HTTP/1.1" 200 41838
+"GET /api/commerciaux/apporteurs/?search= HTTP/1.1" 200 1738
+"GET /api/commerciaux/apporteurs/?search= HTTP/1.1" 200 1738
+"GET /api/commerciaux/apporteurs/?search= HTTP/1.1" 200 1738
+"GET /api/commerciaux/apporteurs/?search= HTTP/1.1" 200 1738
+"GET /api/finances/types-mouvements/?search= HTTP/1.1" 200 1715
+"GET /api/crm/clients/?est_entreprise=false&search= HTTP/1.1" 200 15250
+"GET /api/crm/clients/108580ae-f151-4153-955e-20859da394a9/details/ HTTP/1.1" 200 784
+"GET /api/crm/clients/108580ae-f151-4153-955e-20859da394a9/details/ HTTP/1.1" 200 784
+"GET /api/crm/interactions/?id_client=108580ae-f151-4153-955e-20859da394a9 HTTP/1.1" 200 52
+"GET /api/crm/interactions/?id_client=108580ae-f151-4153-955e-20859da394a9 HTTP/1.1" 200 52
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/contrats/contrats/?ID_Client=108580ae-f151-4153-955e-20859da394a9 HTTP/1.1" 200 2169
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/contrats/contrats/?ID_Client=108580ae-f151-4153-955e-20859da394a9 HTTP/1.1" 200 2169
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/finances/mouvements/?client_id=undefined&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 52
+"GET /api/documents/documents/?client_id=undefined HTTP/1.1" 200 52
+"GET /api/documents/documents/?client_id=undefined HTTP/1.1" 200 52
+"GET /api/taches/taches/?client_id=undefined&statut=en_attente HTTP/1.1" 200 52
+"GET /api/taches/taches/?client_id=undefined&statut=en_attente HTTP/1.1" 200 52
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/contrats/contrats/?ID_Client=108580ae-f151-4153-955e-20859da394a9 HTTP/1.1" 200 2169
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/core/agences/ HTTP/1.1" 200 1040
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/contrats/contrats/?ID_Client=108580ae-f151-4153-955e-20859da394a9 HTTP/1.1" 200 2169
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/crm/clients/?est_entreprise=false&search= HTTP/1.1" 200 15250
+"GET /api/crm/clients/?est_entreprise=false&search= HTTP/1.1" 200 15250
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/f8d6828b-1260-4ee3-9f4b-963943e24af2/contacts/ HTTP/1.1" 200 1030
+"GET /api/finances/mouvements/?idtransfert=30918b78-e878-462d-a624-31b58bebeff3&nature_compte=COMPAGNIE&date_debut=2026-02-01&date_fin=2026-02-28 HTTP/1.1" 200 379
+"GET /api/compagnies/accessoires/?id_compagnie=ff20c841-7a65-4caa-8aef-ee01401d5e74 HTTP/1.1" 200 52
+"GET /api/compagnies/accessoires/?id_compagnie=f8d6828b-1260-4ee3-9f4b-963943e24af2 HTTP/1.1" 200 1336
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Unauthorized: /api/produits/garanties/
+"GET /api/produits/garanties/?id_produit=3f313959-0074-455c-8bb1-ead90def56eb HTTP/1.1" 401 58
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+Unauthorized: /api/produits/garanties/
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 401 58
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 200 1963
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/garanties/?id_produit=3f313959-0074-455c-8bb1-ead90def56eb HTTP/1.1" 200 6509
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 200 1963
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 200 1963
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 200 1963
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/groupes/ HTTP/1.1" 200 3392
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 200 1963
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 200 1963
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 200 1963
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 200 1963
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/produits/ HTTP/1.1" 200 37108
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 200 1963
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 200 1963
+"GET /api/produits/garanties/?id_produit=f2bd128b-bb1e-4fa5-b07b-3c87952b8f47 HTTP/1.1" 200 1963
+"GET /api/produits/produits/ HTTP/1.1" 200 37108

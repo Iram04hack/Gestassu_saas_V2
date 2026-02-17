@@ -6,11 +6,12 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Count, Q
-from .models import Produit, GroupeProduit, CatVehicule, CommissionCategorie, Attestation
+from .models import Produit, GroupeProduit, CatVehicule, CommissionCategorie, Attestation, Garantie
 from .serializers import (
     ProduitSerializer, GroupeProduitSerializer, CatVehiculeSerializer, 
     CommissionCategorieSerializer, AttestationSerializer, 
-    AttestationBulkCreateSerializer, AttestationStatsSerializer
+    AttestationBulkCreateSerializer, AttestationStatsSerializer,
+    GarantieSerializer
 )
 
 
@@ -37,6 +38,60 @@ class ProduitViewSet(viewsets.ModelViewSet):
     search_fields = ['lib_produit', 'codification_produit']
     ordering_fields = ['lib_produit']
     ordering = ['lib_produit']
+
+    def list(self, request, *args, **kwargs):
+        """
+        Custom list to manually count warranties
+        Avoids ForeignKey/Annotation errors with legacy DB structure
+        """
+        response = super().list(request, *args, **kwargs)
+        
+        # If response.data is pagination object (results list inside)
+        if isinstance(response.data, dict) and 'results' in response.data:
+            products = response.data['results']
+        else:
+            products = response.data
+            
+        # Get all product IDs in the current page
+        product_ids = [p['id_produit'] for p in products]
+        
+        # Fetch counts using a separate query (safe, no join)
+        # We group by id_produit in Python or iterate
+        from django.db.models import Count
+        # Since id_produit is CharField, we can filter by __in
+        # But we can't easily annotate without a Relation. 
+        # So we fetch the relevant garanties and count in Python.
+        
+        garanties = Garantie.objects.filter(id_produit__in=product_ids, effacer=False).values('id_produit')
+        
+        # Count in memory
+        counts = {}
+        for g in garanties:
+            pid = g['id_produit']
+            counts[pid] = counts.get(pid, 0) + 1
+            
+        # Attach counts to response data
+        for p in products:
+            p['garanties_count'] = counts.get(p['id_produit'], 0)
+            
+        return response
+
+
+class GarantieViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet pour gérer les garanties
+    """
+    queryset = Garantie.objects.filter(effacer=False)
+    serializer_class = GarantieSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['id_produit']
+    search_fields = ['libelle_garantie']
+    ordering_fields = ['libelle_garantie']
+    ordering = ['libelle_garantie']
+
+    def perform_destroy(self, instance):
+        instance.effacer = True
+        instance.save()
 
 
 class CatVehiculeViewSet(viewsets.ModelViewSet):

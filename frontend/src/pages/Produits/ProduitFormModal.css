@@ -1,0 +1,179 @@
+/* ProduitFormModal.css - Updated */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.produit-modal-container {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.produit-modal-header {
+    background: linear-gradient(135deg, #6d4c41 0%, #5d4037 100%);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px 12px 0 0;
+    position: relative;
+}
+
+.produit-modal-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.close-btn {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.produit-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 16px 24px;
+}
+
+.produit-modal-container .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+}
+
+.produit-modal-container .form-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px;
+    align-items: center;
+}
+
+.produit-modal-container .form-row.full-width {
+    grid-column: 1 / -1;
+}
+
+.produit-modal-container .form-row label {
+    font-size: 0.85rem;
+    color: #5d4037;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.produit-modal-container .form-row input,
+.produit-modal-container .form-row select {
+    padding: 8px 12px;
+    border: 1px solid #d7ccc8;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s;
+    background: white;
+    width: 100%;
+}
+
+.produit-modal-container .form-row input:focus,
+.produit-modal-container .form-row select:focus {
+    border-color: #6d4c41;
+    box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
+}
+
+.produit-modal-container .form-row input::placeholder {
+    color: #bcaaa4;
+    font-style: italic;
+}
+
+.produit-modal-container .section-title {
+    grid-column: 1 / -1;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #6d4c41;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #efebe9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.produit-modal-footer {
+    padding: 14px 24px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-footer-cancel,
+.btn-footer-save {
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    border: none;
+}
+
+.btn-footer-cancel {
+    background: white;
+    color: #5d4037;
+    border: 1px solid #d7ccc8;
+}
+
+.btn-footer-cancel:hover:not(:disabled) {
+    background: #efebe9;
+}
+
+.btn-footer-save {
+    background: #6d4c41;
+    color: white;
+}
+
+.btn-footer-save:hover:not(:disabled) {
+    background: #5d4037;
+    transform: translateY(-1px);
+}
+
+.btn-footer-save:disabled,
+.btn-footer-cancel:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

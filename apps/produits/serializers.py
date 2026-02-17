@@ -2,7 +2,7 @@
 Serializers pour le module Produits
 """
 from rest_framework import serializers
-from .models import Produit, GroupeProduit, CatVehicule, CommissionCategorie, Attestation
+from .models import Produit, GroupeProduit, CatVehicule, CommissionCategorie, Attestation, Garantie
 
 
 class GroupeProduitSerializer(serializers.ModelSerializer):
@@ -12,9 +12,19 @@ class GroupeProduitSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
+class GarantieSerializer(serializers.ModelSerializer):
+    """Serializer pour le modèle Garantie"""
+    class Meta:
+        model = Garantie
+        fields = '__all__'
+
+
 class ProduitSerializer(serializers.ModelSerializer):
     """Serializer pour le modèle Produit"""
     nom_groupe = serializers.SerializerMethodField()
+    nom_compagnie = serializers.SerializerMethodField()
+    garanties_count = serializers.IntegerField(read_only=True)
     
     class Meta:
         model = Produit
@@ -25,6 +35,16 @@ class ProduitSerializer(serializers.ModelSerializer):
             if obj.code_groupe_prod:
                 groupe = GroupeProduit.objects.filter(code_groupe_prod=obj.code_groupe_prod).first()
                 return groupe.lib_groupe_prod if groupe else None
+            return None
+        except Exception:
+            return None
+    
+    def get_nom_compagnie(self, obj):
+        from compagnies.models import Compagnie
+        try:
+            if obj.Id_compagnie:
+                comp = Compagnie.objects.filter(id_compagnie=obj.Id_compagnie).first()
+                return comp.nom_compagnie if comp else obj.Id_compagnie
             return None
         except Exception:
             return None
