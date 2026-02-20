@@ -1,3 +1,6 @@
+ssh yodi@51.38.250.151
+ssh -o ServerAliveInterval=60 yodi@51.38.250.151
+
 # Gestassu SaaS
 
 Projet de gestion d'assurance SaaS.

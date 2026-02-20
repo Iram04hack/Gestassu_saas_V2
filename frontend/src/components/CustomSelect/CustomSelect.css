@@ -1,0 +1,175 @@
+/* ══ CustomSelect ══════════════════════════════════════════════════════════ */
+
+.cs-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.cs-disabled {
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+/* ── Trigger ── */
+.cs-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 12px;
+    border: 1px solid #d7ccc8;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #3e2723;
+    text-align: left;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.cs-trigger:hover {
+    border-color: #a1887f;
+}
+
+.cs-trigger.cs-open {
+    border-color: #6d4c41;
+    box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
+}
+
+.cs-value {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cs-placeholder {
+    color: #bdbdbd;
+}
+
+.cs-arrow {
+    font-size: 0.75rem;
+    color: #a1887f;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+/* ── Popup ── */
+.cs-popup {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #e0d6d0;
+    border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(90, 60, 50, 0.14);
+    overflow: hidden;
+    animation: csSlideIn 0.15s ease;
+    min-width: 220px;
+}
+
+@keyframes csSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Recherche ── */
+.cs-search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #f0ebe8;
+}
+
+.cs-search-icon {
+    color: #a1887f;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.cs-search {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 0.85rem;
+    color: #3e2723;
+    background: transparent;
+}
+
+.cs-search::placeholder {
+    color: #c4b5b0;
+}
+
+/* ── Liste ── */
+.cs-list {
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 4px 0;
+}
+
+.cs-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.cs-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.cs-list::-webkit-scrollbar-thumb {
+    background: #d7ccc8;
+    border-radius: 4px;
+}
+
+/* ── Option ── */
+.cs-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    font-size: 0.88rem;
+    color: #3e2723;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+}
+
+.cs-option:hover {
+    background: #fdf8f6;
+}
+
+.cs-option.cs-selected {
+    background: #fdf3ef;
+    color: #6d4c41;
+    font-weight: 600;
+}
+
+.cs-option.cs-empty {
+    color: #bdbdbd;
+    font-style: italic;
+}
+
+.cs-check {
+    color: #6d4c41;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.cs-no-results {
+    padding: 14px;
+    text-align: center;
+    color: #a1887f;
+    font-size: 0.83rem;
+    font-style: italic;
+}

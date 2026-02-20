@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import productsService from '../../../services/products';
+import productsService from '../../services/products';
 import './GarantiesModal.css';
-import '../ProduitFormModal.css';
+import '../../pages/Produits/ProduitFormModal.css';
 
 const GarantieFormModal = ({ show, onHide, garantie, produit }) => {
     const [formData, setFormData] = useState({

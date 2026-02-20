@@ -14,6 +14,8 @@ import Commerciaux from './pages/Commerciaux/Commerciaux';
 import CommercialDetails from './pages/Commerciaux/CommercialDetails';
 import TransactionReasonsList from './pages/BaseDonnees/TransactionReasons/TransactionReasonsList';
 import Dashboard from './pages/Dashboard/Dashboard';
+import TarifsAuto from './pages/Tarifs/TarifsAuto/TarifsAuto';
+import TarifsMRH from './pages/Tarifs/TarifsMRH/TarifsMRH';
 import Layout from './components/Layout/Layout';
 import './App.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -38,8 +40,8 @@ function App() {
             <Route path="/base/attestations" element={<AttestationsList />} />
             <Route path="/base/affectation-attestations" element={<AffectationAttestations />} />
             <Route path="/produits" element={<Produits />} />
-            <Route path="/tarifs/auto" element={<div>Tarif automobile (À venir)</div>} />
-            <Route path="/tarifs/mrh" element={<div>Tarif Multirisque Habitation (À venir)</div>} />
+            <Route path="/tarifs/auto" element={<TarifsAuto />} />
+            <Route path="/tarifs/mrh" element={<TarifsMRH />} />
             <Route path="/contrats/auto" element={<div>Assurance Auto (À venir)</div>} />
             <Route path="/contrats/mrh" element={<div>Assurance Multirisque Habitation (À venir)</div>} />
             <Route path="/contrats/autres-iard" element={<div>Autres IARD (À venir)</div>} />

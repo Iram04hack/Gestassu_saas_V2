@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'reversement',    # ONGLET 7: Reversement
     'sinistres',      # ONGLET 8: Sinistres
     'commerciaux',    # Module sans onglet dédié
+    'tarifs',         # Module Tarifs (Auto, MRH)
     'dashboard',      # ONGLET 1: Tableau de bord
     # 'statistiques',   # Bouton header (Peut-être intégré au dashboard ?)
 ]

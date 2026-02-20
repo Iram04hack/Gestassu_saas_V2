@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import productsService from '../../../services/products';
+import productsService from '../../services/products';
 import GarantieFormModal from './GarantieFormModal';
 import './GarantiesModal.css';
 

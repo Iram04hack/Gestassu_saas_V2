@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/documents/', include('documents.urls')),
     path('api/taches/', include('taches.urls')),
     path('api/commerciaux/', include('commerciaux.urls')),
+    path('api/tarifs/', include('apps.tarifs.urls')),
     
     # Autres APIs (à ajouter progressivement):
     # path('api/reversement/', include('reversement.urls')),

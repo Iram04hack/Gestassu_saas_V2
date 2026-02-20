@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Produits.css';
 import ProduitFormModal from './ProduitFormModal';
-import GarantiesModal from './components/GarantiesModal';
+import GarantiesModal from '../../components/Produits/GarantiesModal';
 import productsService from '../../services/products';
 import compagniesService from '../../services/compagnies';
 

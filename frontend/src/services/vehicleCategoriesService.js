@@ -2,8 +2,9 @@ import api from './api';
 
 const VEHICLE_CATEGORIES_API_URL = '/produits/categories-vehicules/';
 
-const getAll = (params = {}) => {
-    return api.get(VEHICLE_CATEGORIES_API_URL, { params });
+const getAll = async (params = {}) => {
+    const response = await api.get(VEHICLE_CATEGORIES_API_URL, { params });
+    return response.data;
 };
 
 const get = (id) => {
