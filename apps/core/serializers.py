@@ -24,21 +24,19 @@ class AgenceSerializer(serializers.ModelSerializer):
 
 class InfoSocieteSerializer(serializers.ModelSerializer):
     """Serializer pour le modèle InfoSociete"""
-    
+
     class Meta:
         model = InfoSociete
         fields = [
-            'codesociete',
-            'nomsociete',
+            'raisonsocial',
             'adressesociete',
             'telsociete',
             'emailsociete',
             'logosociete',
-            'siteweb',
-            'forme_juridique',
-            'numero_registre',
-            'numero_orias',
-            'date_enreg',
-            'date_modif',
+            'bp_courtier',
+            'fax_courtier',
+            'basdepage',
+            'param_CEMAC',
+            'param_CCA',
         ]
-        read_only_fields = ['codesociete', 'date_enreg', 'date_modif']
+        read_only_fields = ['raisonsocial']

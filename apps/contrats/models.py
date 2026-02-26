@@ -340,8 +340,17 @@ class Risques(models.Model):
     veh_immat = models.CharField(max_length=255, db_column='veh_immat', blank=True, null=True)
     veh_chassis = models.CharField(max_length=255, db_column='veh_chassis', blank=True, null=True)
     veh_type = models.CharField(max_length=255, db_column='veh_type', blank=True, null=True)
+    veh_carrosserie = models.CharField(max_length=255, db_column='veh_carrosserie', blank=True, null=True)
     veh_puissance = models.CharField(max_length=255, db_column='veh_puissance', blank=True, null=True)
     veh_nbplace = models.IntegerField(db_column='veh_nbplace', blank=True, null=True)
+    veh_cat = models.CharField(max_length=255, db_column='veh_cat', blank=True, null=True)
+    veh_energie = models.CharField(max_length=255, db_column='veh_energie', blank=True, null=True)
+    veh_usage = models.CharField(max_length=255, db_column='veh_usage', blank=True, null=True)
+    # Note: colonnes DB = veh_valeurneuve / veh_valeurvenale (sans underscore)
+    veh_valeur_neuve = models.CharField(max_length=255, db_column='veh_valeurneuve', blank=True, null=True)
+    veh_valeur_venale = models.CharField(max_length=255, db_column='veh_valeurvenale', blank=True, null=True)
+    veh_nbremorque = models.IntegerField(db_column='veh_nbremorque', blank=True, null=True)
+    veh_datemisecircul = models.DateField(db_column='veh_datemisecircul', blank=True, null=True)
     
     # Champs audit
     effacer = models.BooleanField(db_column='effacer', default=False)

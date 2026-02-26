@@ -1,0 +1,1592 @@
+/* ── Page container ── */
+.nca-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fdfbf7;
+  overflow: hidden;
+}
+
+/* ── Header strip (même style que tarifs-header-strip) ── */
+.nca-header-strip {
+  background: #6d4c41;
+  padding: 12px 30px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nca-header-strip h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.nca-hdr-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nca-badge {
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  white-space: nowrap;
+}
+
+.nca-badge-type {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.nca-badge-projet {
+  background: #fff3e0;
+  color: #6d4c41;
+}
+
+/* ── Toolbar (même style que tarifs-toolbar) ── */
+.nca-toolbar {
+  padding: 12px 30px;
+  background: white;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.nca-btn-back {
+  background: white;
+  border: 1px solid #d7ccc8;
+  color: #5d4037;
+  padding: 8px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all .2s;
+}
+
+.nca-btn-back:hover {
+  background: #efebe9;
+  border-color: #a1887f;
+}
+
+/* ── Accordion wrap (même style que form-accordion-container) ── */
+.nca-accordion-wrap {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 30px;
+  background: #fdfbf7;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nca-accordion-wrap::-webkit-scrollbar {
+  width: 5px;
+}
+
+.nca-accordion-wrap::-webkit-scrollbar-thumb {
+  background: #d7ccc8;
+  border-radius: 4px;
+}
+
+/* ── Section (accordion-section) ── */
+.nca-section {
+  background: white;
+  border: 1px solid #e8e0db;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+
+.nca-section.open {
+  box-shadow: 0 2px 8px rgba(109, 76, 65, 0.08);
+}
+
+/* ── Section header cliquable (accordion-header) ── */
+.nca-section-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  cursor: pointer;
+  user-select: none;
+  background: #faf8f6;
+  border-bottom: 1px solid transparent;
+  transition: background .15s;
+}
+
+.nca-section.open .nca-section-hd {
+  border-bottom-color: #efebe9;
+  background: white;
+}
+
+.nca-section-hd:hover {
+  background: #f5ebe6;
+}
+
+.nca-section-hd-l {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #5d4037;
+}
+
+.nca-section-hd-l>i {
+  font-size: 1.05rem;
+  color: #6d4c41;
+}
+
+.nca-section-hd-r {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Chevron animé */
+.nca-chev {
+  font-size: 0.85rem;
+  color: #a1887f;
+  transition: transform .25s ease;
+  flex-shrink: 0;
+}
+
+.nca-chev.open {
+  transform: rotate(180deg);
+}
+
+/* Compteur en ligne dans le header */
+.nca-count-chip {
+  background: #efebe9;
+  color: #6d4c41;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 9px;
+}
+
+/* Chip affiché quand la section est fermée */
+.nca-inline-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #fdf5f0;
+  border: 1px solid #e8ddd8;
+  border-radius: 50px;
+  padding: 2px 10px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #5d4037;
+}
+
+/* ── Section body (accordion-body) ── */
+.nca-section-bd {
+  padding: 20px;
+}
+
+.nca-section-bd-veh {
+  padding: 0;
+}
+
+/* ══════════════════════════════════════════════
+   GRILLES DE CHAMPS (accordion-fields-grid)
+   ══════════════════════════════════════════════ */
+.nca-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.nca-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.nca-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.nca-span-2 {
+  grid-column: 1 / -1;
+}
+
+/* form-group */
+.nca-fg {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Labels */
+.nca-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #8d6e63;
+}
+
+.nca-req {
+  color: #d32f2f;
+}
+
+/* Inputs */
+.nca-input {
+  padding: 9px 12px;
+  border: 1px solid #d7ccc8;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #3e2723;
+  background: white;
+  transition: border-color .2s, box-shadow .2s;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.nca-input:focus {
+  border-color: #6d4c41;
+  box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
+}
+
+.nca-input-ro {
+  background: #f5f5f5;
+  color: #8d6e63;
+  cursor: default;
+}
+
+.nca-input-ro:focus {
+  border-color: #d7ccc8;
+  box-shadow: none;
+}
+
+/* Champ calculé automatiquement (fond jaune, non modifiable) */
+.nca-input-calc {
+  background: #fffde7;
+  color: #5d4037;
+  cursor: default;
+  font-weight: 600;
+  border-color: #ffe082;
+}
+
+.nca-input-calc:focus {
+  border-color: #ffc107;
+  box-shadow: none;
+}
+
+/* ══════════════════════════════════════════════
+   SECTION 1 — SOUSCRIPTEUR
+   ══════════════════════════════════════════════ */
+.nca-client-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Barre de recherche */
+.nca-srch-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 440px;
+  margin-bottom: 14px;
+}
+
+.nca-srch-ico {
+  position: absolute;
+  left: 14px;
+  color: #8d6e63;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.nca-srch-inp {
+  width: 100%;
+  padding: 10px 38px 10px 38px;
+  border: 1px solid #d7ccc8;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  background: #fafafa;
+  outline: none;
+  transition: all .2s;
+}
+
+.nca-srch-inp:focus {
+  border-color: #6d4c41;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
+}
+
+.nca-srch-cls {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #a1887f;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+
+.nca-srch-cls:hover {
+  color: #5d4037;
+}
+
+/* Onglets physique / entreprise */
+.nca-ctabs {
+  display: flex;
+  border-bottom: 1px solid #e8e0db;
+  background: #fdfbf7;
+}
+
+.nca-ctab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  color: #a1887f;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all .15s;
+}
+
+.nca-ctab.active {
+  color: #6d4c41;
+  border-bottom-color: #6d4c41;
+  background: white;
+}
+
+.nca-ctab:hover:not(.active) {
+  background: #f5ede9;
+  color: #5d4037;
+}
+
+.nca-cbadge {
+  background: #e8e0db;
+  color: #6d4c41;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 1px 7px;
+}
+
+.nca-ctab.active .nca-cbadge {
+  background: #6d4c41;
+  color: white;
+}
+
+/* Message chargement / vide */
+.nca-clist-msg {
+  padding: 24px;
+  text-align: center;
+  color: #a1887f;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid #e8e0db;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Liste des clients */
+.nca-clist {
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1px solid #e8e0db;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  background: white;
+}
+
+.nca-clist::-webkit-scrollbar {
+  width: 4px;
+}
+
+.nca-clist::-webkit-scrollbar-thumb {
+  background: #d7ccc8;
+  border-radius: 4px;
+}
+
+.nca-crow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  border-bottom: 1px solid #f5f0ed;
+  transition: background .12s;
+}
+
+.nca-crow:last-child {
+  border-bottom: none;
+}
+
+.nca-crow:hover {
+  background: #fdf5f0;
+}
+
+.nca-crow-av {
+  width: 32px;
+  height: 32px;
+  background: #efebe9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6d4c41;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.nca-crow-inf {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.nca-crow-nm {
+  font-weight: 600;
+  color: #3e2723;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nca-crow-nm em {
+  font-style: normal;
+  color: #8d6e63;
+  font-weight: 400;
+}
+
+.nca-crow-sub {
+  font-size: 0.75rem;
+  color: #a1887f;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nca-crow-arr {
+  color: #d7ccc8;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* Conteneur sélection complète */
+.nca-sc-selected {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Chargement détail */
+.nca-detail-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 0.82rem;
+  color: #8d6e63;
+  background: #fdfbf7;
+  border: 1px solid #e8e0db;
+  border-radius: 8px;
+}
+
+/* Grille infos détail */
+.nca-sc-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 14px 16px;
+  background: #fdfbf7;
+  border: 1px solid #e8e0db;
+  border-radius: 8px;
+}
+
+.nca-sc-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 9px 12px;
+  background: white;
+  border: 1px solid #f0ebe7;
+  border-radius: 6px;
+}
+
+/* Champ pleine largeur (représentant, autres infos) */
+.nca-sc-info-span {
+  grid-column: 1 / -1;
+}
+
+.nca-sc-info-lbl {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #8d6e63;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nca-sc-info-val {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #3e2723;
+  word-break: break-word;
+}
+
+.nca-sc-info-role {
+  font-style: normal;
+  color: #8d6e63;
+  font-weight: 400;
+}
+
+/* Client sélectionné — chip */
+.nca-sc-chip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: #fdfbf7;
+  border: 1px solid #e8e0db;
+  border-radius: 8px;
+}
+
+.nca-sc-chip-av {
+  width: 40px;
+  height: 40px;
+  background: #6d4c41;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.nca-sc-chip-inf {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #3e2723;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.nca-qualite {
+  color: #8d6e63;
+  font-weight: 400;
+}
+
+.nca-tag-ent {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+  border-radius: 50px;
+  font-size: 0.67rem;
+  font-weight: 700;
+  padding: 2px 8px;
+}
+
+.nca-sc-chip-chg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid #d7ccc8;
+  border-radius: 6px;
+  background: white;
+  color: #8d6e63;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+
+.nca-sc-chip-chg:hover {
+  background: #f5ede9;
+  color: #5d4037;
+  border-color: #a1887f;
+}
+
+/* ══════════════════════════════════════════════
+   SECTION 2 — COUVERTURE
+   ══════════════════════════════════════════════ */
+
+/* Toggle Mono / Flotte */
+.nca-toggle-grp {
+  display: flex;
+  border: 1px solid #d7ccc8;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 38px;
+}
+
+.nca-toggle-btn {
+  flex: 1;
+  padding: 0 16px;
+  border: none;
+  background: white;
+  color: #8d6e63;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.nca-toggle-btn+.nca-toggle-btn {
+  border-left: 1px solid #d7ccc8;
+}
+
+.nca-toggle-btn.active {
+  background: #6d4c41;
+  color: white;
+}
+
+.nca-toggle-btn:not(.active):hover {
+  background: #efebe9;
+}
+
+/* Badge fractionnement */
+.nca-fract-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  border: 1.5px solid;
+}
+
+.fract-low,
+.fract-med,
+.fract-high,
+.fract-full {
+  background: #f5f5f5;
+  border-color: #d7ccc8;
+  color: #3e2723;
+}
+
+.nca-fract-pct {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.nca-fract-lbl {
+  font-size: 0.78rem;
+  opacity: .85;
+}
+
+/* Note N° Police */
+.nca-police-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  background: #f9f5f3;
+  border: 1px dashed #d7ccc8;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: #a1887f;
+  font-style: italic;
+  height: 38px;
+  box-sizing: border-box;
+}
+
+/* ══════════════════════════════════════════════
+   SECTION 4 — VÉHICULES
+   ══════════════════════════════════════════════ */
+.nca-btn-add-veh {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border: none;
+  border-radius: 50px;
+  background: #6d4c41;
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+}
+
+.nca-btn-add-veh:hover {
+  background: #5d4037;
+}
+
+.nca-veh-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 40px 20px;
+  color: #a1887f;
+  text-align: center;
+}
+
+.nca-veh-empty .bi {
+  font-size: 2.5rem;
+  opacity: .3;
+}
+
+.nca-veh-empty p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* ─── Tableau véhicules (Option A) ─── */
+.nca-veh-table-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.nca-veh-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+}
+
+.nca-veh-table thead tr {
+  background: #efebe9;
+}
+
+.nca-veh-table th {
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #5d4037;
+  white-space: nowrap;
+  border-bottom: 2px solid #d7ccc8;
+}
+
+.nca-veh-table td {
+  padding: 9px 12px;
+  color: #3e2723;
+  border-bottom: 1px solid #f3ede9;
+  vertical-align: middle;
+}
+
+.nca-veh-table tbody tr:hover {
+  background: #fdf8f5;
+}
+
+.nca-veh-table tbody tr.nca-veh-row-active {
+  background: #fff8e1;
+  border-left: 3px solid #8d6e63;
+}
+
+.nca-veh-td-num {
+  width: 36px;
+  font-weight: 700;
+  color: #8d6e63;
+  text-align: center;
+}
+
+.nca-veh-td-immat {
+  font-weight: 600;
+  font-family: monospace;
+  letter-spacing: 0.04em;
+}
+
+.nca-veh-td-val {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.nca-veh-td-actions {
+  width: 72px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.nca-veh-empty-cell {
+  color: #bcaaa4;
+}
+
+.nca-veh-btn-edit,
+.nca-veh-btn-del {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #d7ccc8;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.78rem;
+  transition: all .18s;
+  color: #6d4c41;
+}
+
+.nca-veh-btn-edit:hover,
+.nca-veh-btn-edit.active {
+  background: #6d4c41;
+  color: white;
+  border-color: #6d4c41;
+}
+
+.nca-veh-btn-del {
+  margin-left: 4px;
+  color: #c62828;
+  border-color: #ffcdd2;
+}
+
+.nca-veh-btn-del:hover {
+  background: #c62828;
+  color: white;
+  border-color: #c62828;
+}
+
+/* ─── Panneau d'édition inline ─── */
+.nca-veh-edit-panel {
+  border-top: 2px solid #8d6e63;
+  background: #fffde7;
+  border-radius: 0 0 8px 8px;
+}
+
+.nca-veh-edit-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #fff8e1;
+  border-bottom: 1px solid #ffe082;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #3e2723;
+}
+
+.nca-veh-edit-hd em {
+  font-style: normal;
+  color: #8d6e63;
+  font-weight: 500;
+}
+
+.nca-veh-edit-close {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border: 1px solid #d7ccc8;
+  border-radius: 50px;
+  background: white;
+  color: #6d4c41;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .18s;
+}
+
+.nca-veh-edit-close:hover {
+  background: #efebe9;
+}
+
+/* Grille champs véhicule */
+.nca-veh-fields {
+  padding: 14px 20px;
+}
+
+/* ─── Garanties ─── */
+.nca-gar-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px 14px;
+  font-size: 0.82rem;
+  color: #a1887f;
+  font-style: italic;
+}
+
+.nca-gar-section {
+  padding: 0 20px 16px;
+}
+
+.nca-gar-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-top: 4px;
+}
+
+.nca-gar-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #8d6e63;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.nca-gar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 0 4px;
+  align-items: flex-end;
+}
+
+/* ── Alertes calcul ── */
+.nca-calc-alert {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-size: .82rem;
+  line-height: 1.45;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+}
+
+.nca-calc-alert i { flex-shrink: 0; margin-top: 1px; }
+
+.nca-calc-alert--ok   { background: #f1f8e9; border-color: #aed581; color: #33691e; }
+.nca-calc-alert--err  { background: #fff8e1; border-color: #ffe082; color: #e65100; }
+.nca-calc-alert--warn { background: #fff3e0; border-color: #ffcc80; color: #bf360c; }
+
+/* ── Spinner inline bouton ── */
+.nca-calc-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #d7ccc8;
+  border-top-color: #6d4c41;
+  border-radius: 50%;
+  animation: nca-spin .7s linear infinite;
+}
+
+@keyframes nca-spin {
+  to { transform: rotate(360deg); }
+}
+
+.nca-gar-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid #6d4c41;
+  border-radius: 50px;
+  background: white;
+  color: #6d4c41;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.nca-gar-save-btn:hover:not(:disabled) {
+  background: #f5ede9;
+}
+
+.nca-gar-save-btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.nca-gar-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #e8e0db;
+  border-radius: 8px;
+}
+
+.nca-gar-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+}
+
+.nca-gar-table thead tr {
+  background: #fdfbf7;
+}
+
+.nca-gar-table th {
+  padding: 9px 12px;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #8d6e63;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border-bottom: 1px solid #e8e0db;
+  white-space: nowrap;
+}
+
+.nca-gar-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid #f5f0ed;
+  vertical-align: middle;
+}
+
+.nca-gar-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.nca-gar-table tbody tr:hover {
+  background: #fdfbf7;
+}
+
+.nca-gar-disabled {
+  opacity: .4;
+}
+
+.nca-gar-nom {
+  font-weight: 600;
+  color: #3e2723;
+  white-space: nowrap;
+}
+
+.nca-gar-oblig {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 1px 6px;
+  background: #fff3e0;
+  border: 1px solid #ffb74d;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #6d4c41;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  vertical-align: middle;
+}
+
+.nca-gar-input {
+  width: 110px;
+  padding: 5px 8px;
+  border: 1px solid #d7ccc8;
+  border-radius: 6px;
+  font-size: 0.83rem;
+  color: #3e2723;
+  text-align: right;
+  background: white;
+  outline: none;
+}
+
+.nca-gar-input:focus {
+  border-color: #6d4c41;
+}
+
+.nca-gar-input:disabled {
+  background: #f9f5f3;
+  cursor: default;
+}
+
+.nca-gar-periode {
+  font-weight: 700;
+  color: #6d4c41;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════
+   SECTION 5 — RÉDUCTIONS
+   ══════════════════════════════════════════════ */
+.nca-red-empty {
+  font-size: 0.875rem;
+  color: #a1887f;
+  font-style: italic;
+  margin: 0 0 12px;
+}
+
+.nca-red-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin-bottom: 12px;
+}
+
+.nca-red-table th {
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #8d6e63;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: 0 8px 8px;
+}
+
+.nca-red-table td {
+  padding: 5px 8px;
+  vertical-align: middle;
+}
+
+.nca-red-mont {
+  font-weight: 700;
+  color: #3e2723;
+  white-space: nowrap;
+  text-align: right;
+  padding-right: 12px;
+}
+
+.nca-red-del {
+  border: none;
+  background: transparent;
+  color: #bcaaa4;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  transition: all .15s;
+}
+
+.nca-red-del:hover {
+  background: #efebe9;
+  color: #6d4c41;
+}
+
+.nca-red-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nca-red-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px dashed #8d6e63;
+  border-radius: 50px;
+  background: transparent;
+  color: #6d4c41;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.nca-red-add-btn:hover {
+  background: #f5ede9;
+  border-style: solid;
+}
+
+.nca-red-total {
+  font-size: 0.875rem;
+  color: #6d4c41;
+}
+
+.nca-red-total strong {
+  color: #3e2723;
+}
+
+/* ══════════════════════════════════════════════
+   SECTION 6 — SYNTHÈSE FINANCIÈRE
+   ══════════════════════════════════════════════ */
+.nca-synth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.nca-synth-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nca-synth-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 12px;
+  background: #f9f5f3;
+  border-radius: 6px;
+}
+
+.nca-synth-lbl {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #8d6e63;
+}
+
+.nca-synth-val {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #3e2723;
+}
+
+.nca-synth-hl {
+  color: #5d4037;
+  font-size: 1rem;
+}
+
+.nca-synth-sep {
+  height: 1px;
+  background: #e8e0db;
+  margin: 2px 0;
+}
+
+.nca-frais-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #a1887f;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin: 0 0 10px;
+}
+
+/* Prime TTC */
+.nca-prime-ttc {
+  background: linear-gradient(135deg, #5d4037, #6d4c41);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.nca-ptc-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+}
+
+.nca-ptc-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.nca-ptc-val {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: white;
+}
+
+/* ══════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════ */
+.nca-footer {
+  flex-shrink: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  background: #3e2723;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.nca-footer-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 7px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+  border: none;
+}
+
+.nca-footer-btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.nca-footer-cancel {
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.nca-footer-cancel:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.13);
+  color: white;
+}
+
+/* Message zone (erreur ou succès) */
+.nca-footer-mid {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.nca-footer-err {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: #ef9a9a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 420px;
+}
+
+.nca-footer-success {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: #a5d6a7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 420px;
+}
+
+/* Groupe droit : Prime TTC + séparateur + boutons action */
+.nca-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.nca-footer-total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+}
+
+.nca-footer-total-lbl {
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  font-weight: 600;
+}
+
+.nca-footer-total-val {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: white;
+}
+
+/* Séparateur vertical */
+.nca-footer-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+}
+
+.nca-footer-projet {
+  background: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+}
+
+.nca-footer-projet:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.18);
+  color: white;
+}
+
+.nca-footer-valider {
+  background: #6d4c41;
+  color: white;
+  padding: 10px 22px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+.nca-footer-valider:hover:not(:disabled) {
+  background: #7c5248;
+}
+
+/* ══════════════════════════════════════════════
+   SPINNER
+   ══════════════════════════════════════════════ */
+@keyframes nca-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.nca-spin {
+  display: inline-block;
+  animation: nca-rotate .7s linear infinite;
+}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════ */
+@media (max-width: 1280px) {
+  .nca-grid-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .nca-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nca-grid-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .nca-synth-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nca-sc-details {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .nca-accordion-wrap {
+    padding: 12px 14px;
+  }
+
+  .nca-grid-2,
+  .nca-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .nca-sc-details {
+    grid-template-columns: 1fr;
+  }
+
+  .nca-footer {
+    padding: 0 12px;
+    gap: 6px;
+  }
+
+  .nca-footer-mid {
+    display: none;
+  }
+
+  .nca-footer-right {
+    gap: 6px;
+  }
+
+  .nca-footer-divider {
+    display: none;
+  }
+
+  .nca-footer-total {
+    display: none;
+  }
+
+  .nca-footer-btn span {
+    display: none;
+  }
+}
+
+/* ─── Bouton Import Excel ─── */
+.nca-btn-excel-import {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1.5px solid #388e3c;
+  border-radius: 50px;
+  background: #f1f8e9;
+  color: #2e7d32;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.nca-btn-excel-import:hover:not(:disabled) {
+  background: #dcedc8;
+  box-shadow: 0 2px 8px rgba(56, 142, 60, .18);
+  transform: translateY(-1px);
+}
+.nca-btn-excel-import:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+
+/* ─── Bandeau résultat import Excel ─── */
+.nca-import-result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 0.83rem;
+  border-top: 1px solid transparent;
+  flex-wrap: wrap;
+}
+.nca-import-result--ok  { background: #f1f8e9; border-color: #aed581; color: #2e7d32; }
+.nca-import-result--err { background: #fff8e1; border-color: #ffe082; color: #e65100; }
+.nca-import-result i { flex-shrink: 0; }
+.nca-import-result-cls {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: .6;
+  padding: 0 2px;
+  font-size: 1rem;
+  line-height: 1;
+}
+.nca-import-result-cls:hover { opacity: 1; }
+
+/* ─── Bouton Bibliothèque véhicules ─── */
+.nca-btn-import-veh {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1.5px solid #8d6e63;
+  border-radius: 50px;
+  background: transparent;
+  color: #6d4c41;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+
+.nca-btn-import-veh:hover {
+  background: #f5ede9;
+  box-shadow: 0 2px 8px rgba(109, 76, 65, .15);
+  transform: translateY(-1px);
+}

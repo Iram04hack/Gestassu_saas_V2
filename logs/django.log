@@ -1,0 +1,27 @@
+Watching for file changes with StatReloader
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+Bad Request: /api/auth/logout/
+"POST /api/auth/login/ HTTP/1.1" 200 655
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/tarifs/auto/ HTTP/1.1" 200 44147
+"GET /api/tarifs/auto/ HTTP/1.1" 200 44147
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/produits/categories-vehicules/ HTTP/1.1" 200 10571
+"GET /api/compagnies/compagnies/ HTTP/1.1" 200 5556
+"GET /api/tarifs/auto/ HTTP/1.1" 200 44147
+"GET /api/tarifs/auto/ HTTP/1.1" 200 44147

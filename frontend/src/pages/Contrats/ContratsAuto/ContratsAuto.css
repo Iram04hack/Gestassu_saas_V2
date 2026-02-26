@@ -1,0 +1,747 @@
+/* ContratsAuto.css - Page listing des contrats automobile */
+
+/* ===== CONTAINER ===== */
+.contrats-auto-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fdfbf7;
+  overflow: visible;
+  padding: 0;
+}
+
+/* ===== HEADER STRIP ===== */
+.contrats-header-strip {
+  background: #6d4c41;
+  padding: 12px 30px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.contrats-header-strip h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+
+/* ===== FILTER BAR (Compagnie, Agence, Projet toggle) ===== */
+.contrats-filter-bar {
+  padding: 5px 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #faf8f6;
+  border-bottom: 1px solid #e8e0db;
+  flex-shrink: 0;
+}
+
+.contrats-filter-bar .filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.contrats-filter-bar .filter-item label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #8d6e63;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.contrats-filter-spacer {
+  flex: 1;
+}
+
+/* Nouveau Projet button */
+.nouveau-projet-wrapper {
+  position: relative;
+}
+
+.contrats-nouveau-projet-btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 50px;
+  background: #6d4c41;
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.contrats-nouveau-projet-btn:hover {
+  background: #5d4037;
+}
+
+.action-dropdown-menu.nouveau-projet-menu {
+  right: 0;
+  left: auto;
+  min-width: 430px;
+  top: calc(100% + 6px);
+}
+
+.action-dropdown-menu.nouveau-projet-menu .dropdown-item {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #4a2c21;
+  padding: 9px 16px;
+}
+
+/* ===== TOOLBAR (Search, Date, Statut, Filter/Reset) ===== */
+.contrats-toolbar {
+  padding: 12px 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.contrats-search-group {
+  position: relative;
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.contrats-search-group i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8d6e63;
+  font-size: 0.85rem;
+}
+
+.contrats-search-group input {
+  width: 100%;
+  padding: 8px 14px 8px 36px;
+  border: 1px solid #d7ccc8;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  outline: none;
+  transition: all 0.2s;
+  background: #fafafa;
+}
+
+.contrats-search-group input:focus {
+  border-color: #6d4c41;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
+}
+
+/* Date range */
+.contrats-date-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.contrats-date-group label {
+  font-size: 0.8rem;
+  color: #8d6e63;
+  white-space: nowrap;
+}
+
+.contrats-date-group input[type="date"] {
+  padding: 7px 10px;
+  border: 1px solid #d7ccc8;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: #3e2723;
+  background: white;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.contrats-date-group input[type="date"]:focus {
+  border-color: #6d4c41;
+  box-shadow: 0 0 0 2px rgba(109, 76, 65, 0.1);
+}
+
+/* Statut select */
+.contrats-statut-select {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.contrats-statut-select label {
+  font-size: 0.8rem;
+  color: #8d6e63;
+  white-space: nowrap;
+}
+
+.contrats-statut-select select {
+  padding: 7px 10px;
+  border: 1px solid #d7ccc8;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: #3e2723;
+  background: white;
+  outline: none;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+.contrats-statut-select select:focus {
+  border-color: #6d4c41;
+}
+
+/* Toolbar buttons */
+.contrats-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.btn-filter {
+  background: #6d4c41;
+  color: white;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-filter:hover {
+  background: #5d4037;
+}
+
+.btn-reset {
+  background: white;
+  color: #8d6e63;
+  border: 1px solid #d7ccc8;
+  padding: 7px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-reset:hover {
+  background: #efebe9;
+  border-color: #a1887f;
+}
+
+/* ===== TABLE ===== */
+.contrats-table-container {
+  flex: 1;
+  overflow: auto;
+  background: white;
+  min-height: 0;
+}
+
+.contrats-table {
+  table-layout: fixed;
+  width: 100%;
+  min-width: 1500px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.contrats-table th {
+  text-align: left;
+  padding: 12px 10px;
+  font-size: 0.78rem;
+  color: #8d6e63;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.contrats-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.contrats-table th.sortable:hover {
+  color: #5d4037;
+}
+
+.contrats-table th .sort-icon {
+  margin-left: 4px;
+  font-size: 0.7rem;
+  opacity: 0.5;
+}
+
+.contrats-table th.sorted .sort-icon {
+  opacity: 1;
+  color: #6d4c41;
+}
+
+.contrats-table td {
+  padding: 10px 10px;
+  border-bottom: 1px solid #f5f5f5;
+  vertical-align: middle;
+  font-size: 0.84rem;
+  color: #3e2723;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Cellules avec tooltip : override overflow pour que le popup soit visible */
+.contrats-table td[data-tip] {
+  overflow: visible;
+  position: relative;
+}
+
+/* Contenu tronqué à l'intérieur des cellules tooltip */
+.cell-inner {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Tooltip CSS — affichage immédiat, sans délai navigateur */
+.contrats-table td[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  background: #3e2723;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.78rem;
+  font-weight: 400;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 360px;
+  min-width: 80px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.08s ease;
+  z-index: 999;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  line-height: 1.4;
+}
+
+.contrats-table td[data-tip]:hover::after {
+  opacity: 1;
+}
+
+/* Actions : boutons non tronqués */
+.contrats-table td:nth-child(14) {
+  overflow: visible;
+  white-space: normal;
+}
+
+/* Survol ligne : transition fluide */
+.contrats-table tbody tr {
+  transition: background-color 0.07s;
+}
+
+.contrats-table tr:hover td {
+  background: #fff8e1;
+}
+
+.contrats-num-cell {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.contrats-table-empty {
+  text-align: center;
+  padding: 48px !important;
+  color: #8d6e63;
+}
+
+.contrats-table-empty i {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 10px;
+  opacity: 0.5;
+}
+
+.contrats-table-empty span {
+  display: block;
+}
+
+/* ===== STATUT BADGES ===== */
+.statut-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.statut-badge.statut-actif {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.statut-badge.statut-projet {
+  background: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffcc80;
+}
+
+.statut-badge.statut-resilie {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+.statut-badge.statut-suspendu {
+  background: #f5f5f5;
+  color: #616161;
+  border: 1px solid #e0e0e0;
+}
+
+.statut-badge.statut-inconnu {
+  background: #f5f5f5;
+  color: #9e9e9e;
+  border: 1px solid #e0e0e0;
+}
+
+/* ===== ACTION BUTTONS (in table) ===== */
+.contrats-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.contrats-actions .btn-action-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  border: none;
+  background: transparent;
+  color: #6d4c41;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+/* Bouton avec flèche dropdown */
+.contrats-actions .btn-with-caret {
+  width: auto;
+  padding: 0 6px;
+  gap: 2px;
+}
+
+.action-caret {
+  font-size: 0.5rem;
+  opacity: 0.6;
+}
+
+/* Wrapper pour positionner le dropdown */
+.action-dropdown-wrapper {
+  position: relative;
+}
+
+/* Menu dropdown */
+.action-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: white;
+  border: 1px solid #e8ddd8;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(62, 39, 35, 0.18);
+  z-index: 1000;
+  min-width: 220px;
+  overflow: hidden;
+  animation: dropdownFade 0.1s ease;
+}
+
+@keyframes dropdownFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.action-dropdown-menu .dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  color: #3e2723;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.1s;
+  white-space: nowrap;
+}
+
+.action-dropdown-menu .dropdown-item:hover {
+  background: #fdf0ea;
+  color: #6d4c41;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: #f0e8e4;
+  margin: 3px 0;
+}
+
+.contrats-actions .btn-action-icon:hover {
+  background: #efebe9;
+  color: #3e2723;
+}
+
+.contrats-actions .btn-action-icon.danger {
+  color: #c62828;
+}
+
+.contrats-actions .btn-action-icon.danger:hover {
+  background: #ffebee;
+}
+
+.btn-generer-quittance {
+  padding: 3px 8px;
+  border: 1px solid #a5d6a7;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-generer-quittance:hover {
+  background: #c8e6c9;
+  border-color: #81c784;
+}
+
+.btn-generer-quittance:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+  color: #9e9e9e;
+}
+
+.btn-generer-quittance:disabled:hover {
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+}
+
+/* ===== ERROR MESSAGE ===== */
+.contrats-error-message {
+  padding: 12px 30px;
+  background: #ffebee;
+  color: #d32f2f;
+  border-left: 4px solid #d32f2f;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* ===== PAGINATION ===== */
+.contrats-pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-top: 1px solid #efebe9;
+  background: #fdfbf7;
+  flex-shrink: 0;
+}
+
+.contrats-pagination-info {
+  font-size: 0.82rem;
+  color: #8d6e63;
+  font-weight: 500;
+}
+
+.contrats-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.contrats-pagination-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #d7ccc8;
+  border-radius: 6px;
+  background: white;
+  color: #6d4c41;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+}
+
+.contrats-pagination-btn:hover:not(:disabled) {
+  background: #efebe9;
+  border-color: #a1887f;
+}
+
+.contrats-pagination-btn:disabled {
+  color: #d7ccc8;
+  cursor: not-allowed;
+  background: #fafafa;
+  border-color: #eee;
+}
+
+.contrats-pagination-page {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #5d4037;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+/* ===== LOADING SPINNER ===== */
+.contrats-loading-spinner {
+  display: inline-block;
+  animation: contratsSpin 1s linear infinite;
+}
+
+@keyframes contratsSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+[data-theme="dark"] .contrats-auto-container {
+  background: var(--bg-primary);
+}
+
+[data-theme="dark"] .contrats-header-strip {
+  background: #3e2723;
+}
+
+[data-theme="dark"] .contrats-filter-bar {
+  background: var(--bg-tertiary);
+  border-color: #2d3748;
+}
+
+[data-theme="dark"] .contrats-filter-bar .filter-item label {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .contrats-nouveau-projet-btn {
+  background: #5d4037;
+  color: white;
+}
+
+[data-theme="dark"] .contrats-toolbar {
+  background: var(--bg-secondary);
+  border-color: #2d3748;
+}
+
+[data-theme="dark"] .contrats-search-group input {
+  background: var(--bg-tertiary);
+  border-color: #4a5568;
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .contrats-date-group input[type="date"],
+[data-theme="dark"] .contrats-statut-select select {
+  background: var(--bg-tertiary);
+  border-color: #4a5568;
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .contrats-date-group label,
+[data-theme="dark"] .contrats-statut-select label {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .contrats-table-container {
+  background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .contrats-table th {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-color: #2d3748;
+}
+
+[data-theme="dark"] .contrats-table td {
+  color: var(--text-primary);
+  border-color: #1e293b;
+}
+
+[data-theme="dark"] .contrats-table tr:hover td {
+  background: rgba(109, 76, 65, 0.1);
+}
+
+[data-theme="dark"] .contrats-pagination-bar {
+  background: var(--bg-primary);
+  border-color: #2d3748;
+}
+
+[data-theme="dark"] .contrats-pagination-info,
+[data-theme="dark"] .contrats-pagination-page {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .contrats-pagination-btn {
+  background: var(--bg-secondary);
+  border-color: #4a5568;
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .contrats-pagination-btn:disabled {
+  background: var(--bg-tertiary);
+  border-color: #2d3748;
+  color: #4a5568;
+}
+
+[data-theme="dark"] .contrats-actions .btn-action-icon {
+  background: var(--bg-tertiary);
+  border-color: #4a5568;
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .btn-generer-quittance {
+  background: rgba(46, 125, 50, 0.15);
+  border-color: #388e3c;
+  color: #66bb6a;
+}

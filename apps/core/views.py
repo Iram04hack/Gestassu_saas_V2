@@ -27,4 +27,4 @@ class InfoSocieteViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = InfoSociete.objects.filter(effacer=False)
     serializer_class = InfoSocieteSerializer
     permission_classes = [permissions.IsAuthenticated]
-    lookup_field = 'codesociete'
+    lookup_field = 'raisonsocial'

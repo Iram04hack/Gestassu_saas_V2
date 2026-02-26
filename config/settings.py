@@ -134,7 +134,7 @@ DATABASES = {
         'NAME': config('DB_NAME', default='gestassu_db'),
         'USER': config('DB_USER', default='admin'),
         'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST', default='51.38.250.151'),
+        'HOST': config('DB_HOST', default='127.0.0.1'),
         'PORT': config('DB_PORT', default='3306'),
         'OPTIONS': {
             'charset': 'utf8mb4',

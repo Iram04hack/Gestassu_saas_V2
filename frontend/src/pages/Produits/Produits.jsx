@@ -35,8 +35,9 @@ const Produits = () => {
 
             const response = await productsService.getProducts();
 
-            // Transformer les données de l'API
-            const transformedProduits = response.results ? response.results.map(prod => ({
+            // Transformer les données de l'API (Gestion paginée ou brute)
+            const results = response.results || response.data?.results || (Array.isArray(response) ? response : []);
+            const transformedProduits = results.map(prod => ({
                 id: prod.id_produit,
                 numero: prod.codification_produit || prod.id_produit,
                 libelle: prod.lib_produit || '-',
@@ -52,7 +53,7 @@ const Produits = () => {
                 taux_com_premiere_an: prod.taux_com_premiere_an || 0,
                 taux_com_an_suivant: prod.taux_com_an_suivant || 0,
                 details: prod
-            })) : [];
+            }));
 
             setProduits(transformedProduits);
         } catch (err) {
@@ -66,7 +67,8 @@ const Produits = () => {
     const loadCompagnies = async () => {
         try {
             const response = await compagniesService.getCompagnies();
-            setCompagnies(response.results || []);
+            const results = response.results || response.data?.results || (Array.isArray(response) ? response : []);
+            setCompagnies(results);
         } catch (err) {
             console.error('Erreur lors du chargement des compagnies:', err);
         }

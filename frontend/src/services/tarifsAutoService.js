@@ -50,6 +50,14 @@ const tarifsAutoService = {
         const response = await api.delete(`/tarifs/auto/${id}/`);
         return response.data;
     },
+    /**
+     * Calculer les primes depuis le tarif_auto (logique calcul_prime_tout)
+     * @param {Object} payload - { id_compagnie, id_produit, est_entreprise, fractionnement, vehicules }
+     */
+    calculerPrimes: async (payload) => {
+        const response = await api.post('/tarifs/auto/calculer_primes/', payload);
+        return response.data;
+    },
 };
 
 export default tarifsAutoService;

@@ -37,7 +37,7 @@ const VehicleCategories = () => {
 
             const response = await VehicleCategoriesService.getAll(params);
             // Handle pagination (DRF returns { count, next, previous, results })
-            const data = response.data.results || response.data;
+            const data = response.results || response.data?.results || response.data || response;
             setCategories(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Erreur lors du chargement des catégories", error);

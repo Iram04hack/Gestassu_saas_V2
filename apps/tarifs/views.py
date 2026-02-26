@@ -2,25 +2,25 @@
 Views pour le module Tarifs
 """
 from rest_framework import viewsets, filters, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
-from django.core.cache import cache
 from .models import TarifAuto, TarifMRH
 from .serializers import TarifAutoSerializer, TarifMRHSerializer
 
 
 class TarifPagination(PageNumberPagination):
     """Pagination optimisée pour les tarifs"""
-    page_size = 50  # 50 résultats par page par défaut
+    page_size = 50
     page_size_query_param = 'page_size'
-    max_page_size = 200  # Maximum 200 résultats par page
+    max_page_size = 200
 
 
 class TarifAutoViewSet(viewsets.ModelViewSet):
     """
-    ViewSet pour gérer les tarifs automobile
-    Optimisé avec pagination et cache
+    ViewSet pour gérer les tarifs automobile.
+    Optimisé avec pagination et cache.
     """
     serializer_class = TarifAutoSerializer
     pagination_class = TarifPagination
@@ -32,6 +32,8 @@ class TarifAutoViewSet(viewsets.ModelViewSet):
             'idtarif', 'id_compagnie', 'id_produit', 'groupe', 'code_cat',
             'energie', 'id_garantie', 'puissance_fiscale', 'valeur_vehicule',
             'prime_fixe', 'prime_taux', 'prime_minimun', 'capital',
+            'prime_taux_sur', 'prime_taux_garantie',
+            'surprime_passager', 'surprime_remorque',
             'franchise_fixe', 'taux_franchise', 'franchise_min', 'franchise_max'
         )
 
@@ -67,6 +69,202 @@ class TarifAutoViewSet(viewsets.ModelViewSet):
                 {"error": f"Erreur serveur: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+    @action(detail=False, methods=['post'], url_path='calculer_primes')
+    def calculer_primes(self, request):
+        """
+        Calcule les primes pour chaque véhicule × garantie selon calcul_prime_tout().
+
+        Body JSON attendu :
+        {
+            "id_compagnie": "CMP01",
+            "id_produit": "PRD01",
+            "est_entreprise": false,
+            "fractionnement": 1.0,
+            "vehicules": [
+                {
+                    "veh_idx": 0,
+                    "cat": "A1",
+                    "energie": "Essence",
+                    "puissance_fiscale": 7,
+                    "valeur_venale": 5000000,
+                    "valeur_neuve": 6000000,
+                    "nbplace": 5,
+                    "nbremorque": 0,
+                    "garanties": [
+                        {
+                            "id_garantie": "G001",
+                            "inclus_pf": false,
+                            "inclus_vv": false,
+                            "inclus_surprime": false
+                        }
+                    ]
+                }
+            ]
+        }
+
+        Retourne :
+        {
+            "vehicules": [
+                {
+                    "veh_idx": 0,
+                    "garanties": [
+                        {
+                            "id_garantie": "G001",
+                            "prime_annuelle": 15000,
+                            "franchise": 50000,
+                            "capital": 0,
+                            "prime_periode": 15000,
+                            "tarif_trouve": true
+                        }
+                    ]
+                }
+            ]
+        }
+        """
+        data = request.data
+        id_compagnie = data.get('id_compagnie', '')
+        id_produit = data.get('id_produit', '')
+        est_entreprise = data.get('est_entreprise', False)
+        fractionnement = float(data.get('fractionnement', 1.0))
+        vehicules_input = data.get('vehicules', [])
+
+        groupe = 'Groupe B' if est_entreprise else 'Groupe A'
+
+        result_vehicules = []
+
+        for veh in vehicules_input:
+            veh_idx = veh.get('veh_idx', 0)
+            cat = veh.get('cat', '')
+            energie = veh.get('energie', '')
+            pf = int(veh.get('puissance_fiscale', 0) or 0)
+            valeur_venale = float(veh.get('valeur_venale', 0) or 0)
+            valeur_neuve = float(veh.get('valeur_neuve', 0) or 0)
+            nbplace = int(veh.get('nbplace', 0) or 0)
+            nbremorque = int(veh.get('nbremorque', 0) or 0)
+            garanties_input = veh.get('garanties', [])
+
+            # Stocke les primes déjà calculées (mode "Autres garantie")
+            primes_par_garantie = {}
+
+            result_garanties = []
+
+            for gar in garanties_input:
+                id_garantie = gar.get('id_garantie', '')
+                inclus_pf = gar.get('inclus_pf', False)
+                inclus_vv = gar.get('inclus_vv', False)
+                inclus_surprime = gar.get('inclus_surprime', False)
+
+                # Clé composite : PF et VV mis à 0 si non inclus
+                pf_key = pf if inclus_pf else 0
+                vv_key = int(valeur_venale) if inclus_vv else 0
+
+                # Recherche dans tarif_auto
+                tarif = TarifAuto.objects.filter(
+                    effacer=False,
+                    id_produit=id_produit,
+                    id_compagnie=id_compagnie,
+                    groupe=groupe,
+                    code_cat=cat,
+                    energie=energie,
+                    id_garantie=id_garantie,
+                    puissance_fiscale=pf_key,
+                    valeur_vehicule=vv_key,
+                ).first()
+
+                if tarif is None:
+                    # Aucune ligne tarifaire : garantie ignorée
+                    result_garanties.append({
+                        'id_garantie': id_garantie,
+                        'prime_annuelle': 0,
+                        'franchise': 0,
+                        'capital': 0,
+                        'prime_periode': 0,
+                        'tarif_trouve': False,
+                    })
+                    primes_par_garantie[id_garantie] = 0
+                    continue
+
+                # ── §5 : Calcul prime de base ────────────────────────────
+                prime_fixe = float(tarif.prime_fixe or 0)
+                prime_taux = float(tarif.prime_taux or 0)
+                prime_taux_sur = (tarif.prime_taux_sur or '').strip().lower()
+                prime_taux_garantie_ref = (tarif.prime_taux_garantie or '').strip()
+
+                if prime_fixe > 0:
+                    nPrime = prime_fixe
+                else:
+                    if prime_taux_sur in ('valeur vénale', 'valeur venale', 'valeur_venale'):
+                        base = valeur_venale
+                    elif prime_taux_sur in ('valeur neuve', 'valeur_neuve'):
+                        base = valeur_neuve
+                    elif prime_taux_sur in ('autres garantie', 'autres_garantie', 'autre garantie'):
+                        base = primes_par_garantie.get(prime_taux_garantie_ref, 0)
+                    else:
+                        base = 0
+                    nPrime = prime_taux * base
+
+                # ── §6 : Surprimes ───────────────────────────────────────
+                surprime_passager = float(tarif.surprime_passager or 0)
+                surprime_remorque = float(tarif.surprime_remorque or 0)
+
+                if inclus_surprime and surprime_passager > 0 and valeur_venale > 0:
+                    # Surprime valeur vénale : utilise le taux surprime_passager
+                    nPrime = nPrime * (1 + surprime_passager)
+                elif surprime_passager > 0 and nbplace > 0:
+                    # Surprime passagers ordinaire
+                    nPrime = nPrime * (1 + nbplace * surprime_passager)
+
+                if surprime_remorque > 0 and nbremorque > 0:
+                    nPrime = nPrime * (1 + nbremorque * surprime_remorque)
+
+                # ── §7 : Minimum de prime ────────────────────────────────
+                prime_minimun = float(tarif.prime_minimun or 0)
+                if prime_minimun > 0 and nPrime < prime_minimun:
+                    nPrime = prime_minimun
+
+                nPrime = round(nPrime)
+
+                # ── §8 : Franchise ───────────────────────────────────────
+                franchise_fixe = float(tarif.franchise_fixe or 0)
+                taux_franchise = float(tarif.taux_franchise or 0)
+                franchise_min = float(tarif.franchise_min or 0)
+                franchise_max = float(tarif.franchise_max or 0)
+
+                if franchise_fixe > 0:
+                    nFranchise = franchise_fixe
+                else:
+                    base_fr = valeur_venale if (inclus_vv and valeur_venale > 0) else valeur_neuve
+                    nFranchise = taux_franchise * base_fr
+
+                if franchise_min > 0 and nFranchise < franchise_min:
+                    nFranchise = franchise_min
+                if franchise_max > 0 and nFranchise > franchise_max:
+                    nFranchise = franchise_max
+
+                nFranchise = round(nFranchise)
+
+                # ── §9 : Prime de période ────────────────────────────────
+                nPrimePeriode = round(nPrime * fractionnement)
+
+                capital = int(tarif.capital or 0)
+                primes_par_garantie[id_garantie] = nPrime
+
+                result_garanties.append({
+                    'id_garantie': id_garantie,
+                    'prime_annuelle': nPrime,
+                    'franchise': nFranchise,
+                    'capital': capital,
+                    'prime_periode': nPrimePeriode,
+                    'tarif_trouve': True,
+                })
+
+            result_vehicules.append({
+                'veh_idx': veh_idx,
+                'garanties': result_garanties,
+            })
+
+        return Response({'vehicules': result_vehicules}, status=status.HTTP_200_OK)
 
     def perform_destroy(self, instance):
         """Soft delete"""

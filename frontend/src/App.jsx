@@ -16,6 +16,8 @@ import TransactionReasonsList from './pages/BaseDonnees/TransactionReasons/Trans
 import Dashboard from './pages/Dashboard/Dashboard';
 import TarifsAuto from './pages/Tarifs/TarifsAuto/TarifsAuto';
 import TarifsMRH from './pages/Tarifs/TarifsMRH/TarifsMRH';
+import ContratsAuto from './pages/Contrats/ContratsAuto/ContratsAuto';
+import NouveauContratAuto from './pages/Contrats/NouveauContratAuto/NouveauContratAuto';
 import Layout from './components/Layout/Layout';
 import './App.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -42,7 +44,8 @@ function App() {
             <Route path="/produits" element={<Produits />} />
             <Route path="/tarifs/auto" element={<TarifsAuto />} />
             <Route path="/tarifs/mrh" element={<TarifsMRH />} />
-            <Route path="/contrats/auto" element={<div>Assurance Auto (À venir)</div>} />
+            <Route path="/contrats/auto" element={<ContratsAuto />} />
+            <Route path="/contrats/auto/nouveau" element={<NouveauContratAuto />} />
             <Route path="/contrats/mrh" element={<div>Assurance Multirisque Habitation (À venir)</div>} />
             <Route path="/contrats/autres-iard" element={<div>Autres IARD (À venir)</div>} />
             <Route path="/contrats/vie" element={<div>Assurance Vie (À venir)</div>} />

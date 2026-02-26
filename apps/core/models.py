@@ -155,7 +155,19 @@ class InfoSociete(models.Model):
         db_column='basdepage',
         verbose_name='Pied de page'
     )
-    
+    param_CEMAC = models.IntegerField(
+        blank=True,
+        null=True,
+        db_column='param_CEMAC',
+        verbose_name='Contribution CEMAC',
+    )
+    param_CCA = models.IntegerField(
+        blank=True,
+        null=True,
+        db_column='param_CCA',
+        verbose_name='Contribution CCA',
+    )
+
     # Champs d'audit
     effacer = models.BooleanField(
         default=False,
