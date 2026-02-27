@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(venv/Scripts/python.exe manage.py shell:*)",
+      "Bash(\"c:/Users/hp/Gestassu app web/venv/Scripts/python.exe\" \"c:/Users/hp/Gestassu app web/manage.py\" shell:*)"
     ]
   }
 }

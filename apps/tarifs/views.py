@@ -132,6 +132,7 @@ class TarifAutoViewSet(viewsets.ModelViewSet):
         groupe = 'Groupe B' if est_entreprise else 'Groupe A'
 
         result_vehicules = []
+        debug_mismatches = []  # Pour aider au diagnostic
 
         for veh in vehicules_input:
             veh_idx = veh.get('veh_idx', 0)
@@ -155,12 +156,23 @@ class TarifAutoViewSet(viewsets.ModelViewSet):
                 inclus_vv = gar.get('inclus_vv', False)
                 inclus_surprime = gar.get('inclus_surprime', False)
 
-                # Clé composite : PF et VV mis à 0 si non inclus
-                pf_key = pf if inclus_pf else 0
-                vv_key = int(valeur_venale) if inclus_vv else 0
+                # ── Recherche tarifaire (clé composite) ──────────────────────
+                #
+                # La BD tarif_auto ne stocke pas toutes les PF exhaustivement.
+                # Elle stocke des PF représentatives définissant des tranches.
+                # L'ancienne interface WinDev utilise la tranche inférieure (PF
+                # stockée la plus haute ≤ PF du véhicule).
+                #
+                # Ordre de priorité :
+                #  1. PF exacte                   (correspondance parfaite)
+                #  2. Tranche inférieure (pf ≤ X)  (comportement WinDev)
+                #  3. Tranche supérieure (pf ≥ X)  (dernier recours, PF min de la table)
+                #
+                # • inclus_pf=False → PAS de filtre sur puissance_fiscale du tout
+                # • inclus_vv=False → filtre valeur_vehicule=0
+                # • inclus_vv=True  → PAS de filtre sur valeur_vehicule
 
-                # Recherche dans tarif_auto
-                tarif = TarifAuto.objects.filter(
+                base_filters = dict(
                     effacer=False,
                     id_produit=id_produit,
                     id_compagnie=id_compagnie,
@@ -168,12 +180,37 @@ class TarifAutoViewSet(viewsets.ModelViewSet):
                     code_cat=cat,
                     energie=energie,
                     id_garantie=id_garantie,
-                    puissance_fiscale=pf_key,
-                    valeur_vehicule=vv_key,
-                ).first()
+                )
+                if not inclus_vv:
+                    base_filters['valeur_vehicule'] = 0
+
+                if not inclus_pf:
+                    # Pas de contrainte PF — prendre la ligne la plus ancienne (comportement WinDev)
+                    tarif = TarifAuto.objects.filter(**base_filters).order_by('date_modif').first()
+                else:
+                    # 1. PF exacte — prendre la ligne la plus ancienne en cas de doublons
+                    tarif = TarifAuto.objects.filter(**base_filters, puissance_fiscale=pf).order_by('date_modif').first()
+                    if tarif is None:
+                        # 2. Tranche inférieure : max(PF_BD) ≤ pf véhicule
+                        tarif = TarifAuto.objects.filter(
+                            **base_filters, puissance_fiscale__lte=pf
+                        ).order_by('-puissance_fiscale', 'date_modif').first()
+                    if tarif is None:
+                        # 3. Tranche supérieure : min(PF_BD) ≥ pf véhicule
+                        tarif = TarifAuto.objects.filter(
+                            **base_filters, puissance_fiscale__gte=pf
+                        ).order_by('puissance_fiscale', 'date_modif').first()
 
                 if tarif is None:
-                    # Aucune ligne tarifaire : garantie ignorée
+                    debug_mismatches.append({
+                        'veh_idx': veh_idx,
+                        'id_garantie': id_garantie,
+                        'clé_envoyée': {
+                            'groupe': groupe, 'code_cat': cat, 'energie': energie,
+                            'puissance_fiscale': pf if inclus_pf else '(ignoré)',
+                            'valeur_vehicule': 0 if not inclus_vv else '(ignoré)',
+                        },
+                    })
                     result_garanties.append({
                         'id_garantie': id_garantie,
                         'prime_annuelle': 0,
@@ -194,11 +231,13 @@ class TarifAutoViewSet(viewsets.ModelViewSet):
                 if prime_fixe > 0:
                     nPrime = prime_fixe
                 else:
-                    if prime_taux_sur in ('valeur vénale', 'valeur venale', 'valeur_venale'):
+                    if prime_taux_sur in ('valeur vénale', 'valeur venale', 'valeur_venale',
+                                          'valeur v\u00e9nale'):
                         base = valeur_venale
                     elif prime_taux_sur in ('valeur neuve', 'valeur_neuve'):
                         base = valeur_neuve
-                    elif prime_taux_sur in ('autres garantie', 'autres_garantie', 'autre garantie'):
+                    elif prime_taux_sur in ('autres garantie', 'autres_garantie',
+                                            'autre garantie', 'autres garanties'):
                         base = primes_par_garantie.get(prime_taux_garantie_ref, 0)
                     else:
                         base = 0
@@ -264,7 +303,12 @@ class TarifAutoViewSet(viewsets.ModelViewSet):
                 'garanties': result_garanties,
             })
 
-        return Response({'vehicules': result_vehicules}, status=status.HTTP_200_OK)
+        response_data = {'vehicules': result_vehicules}
+        if debug_mismatches:
+            # Limiter à 5 entrées uniques pour ne pas surcharger la réponse
+            unique = {m['id_garantie']: m for m in debug_mismatches}
+            response_data['debug_non_trouvees'] = list(unique.values())[:5]
+        return Response(response_data, status=status.HTTP_200_OK)
 
     def perform_destroy(self, instance):
         """Soft delete"""

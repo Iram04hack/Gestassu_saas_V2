@@ -812,22 +812,79 @@
   border-left: 3px solid #8d6e63;
 }
 
-.nca-veh-td-num {
+/* Ligne véhicule sélectionnée pour vue garanties */
+.nca-veh-table tbody tr.nca-veh-row-selected {
+  background: #f3e5f5;
+}
+
+/* Colonne checkbox garanties */
+.nca-veh-th-gar,
+.nca-veh-td-gar {
   width: 36px;
-  font-weight: 700;
-  color: #8d6e63;
   text-align: center;
+  color: #8d6e63;
+  font-size: 0.9rem;
 }
 
-.nca-veh-td-immat {
-  font-weight: 600;
-  font-family: monospace;
-  letter-spacing: 0.04em;
+.nca-veh-gar-cb {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #6d4c41;
 }
 
-.nca-veh-td-val {
+/* Bandeau d'info au-dessus du tableau véhicules */
+.nca-veh-gar-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: #6d4c41;
+  background: #f9f4f1;
+  border: 1px solid #e8ddd7;
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.nca-veh-gar-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding: 3px 10px;
+  border: 1px solid #8d6e63;
+  border-radius: 50px;
+  background: transparent;
+  color: #6d4c41;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.nca-veh-gar-reset:hover {
+  background: #ede0d8;
+}
+
+/* ── Colonnes tableau véhicules ── */
+.nca-veh-th-idx,
+.nca-veh-td-idx   { width: 32px; text-align: center; color: #8d6e63; font-weight: 700; }
+.nca-veh-th-immat,
+.nca-veh-td-immat { width: 120px; font-weight: 600; font-family: monospace; letter-spacing: 0.04em; white-space: nowrap; }
+.nca-veh-th-chassis,
+.nca-veh-td-chassis { width: 160px; font-family: monospace; font-size: 0.78rem; color: #5d4037; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+.nca-veh-th-marque,
+.nca-veh-td-marque  { min-width: 120px; color: #3e2723; }
+.nca-veh-td-marque strong { font-weight: 600; }
+.nca-veh-th-cat     { width: 60px; }
+.nca-veh-th-energie { width: 80px; }
+.nca-veh-th-num,
+.nca-veh-td-num {
+  width: 80px;
   text-align: right;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .nca-veh-td-actions {
@@ -1022,6 +1079,14 @@
   cursor: not-allowed;
 }
 
+/* Sélecteur de véhicule dans la section Garanties */
+.nca-gar-th-hint {
+  font-weight: 400;
+  font-size: 0.68rem;
+  color: #8d6e63;
+  font-style: italic;
+}
+
 .nca-gar-table-wrap {
   overflow-x: auto;
   border: 1px solid #e8e0db;
@@ -1173,10 +1238,16 @@
   color: #6d4c41;
 }
 
+.nca-red-label {
+  font-weight: 600;
+  color: #4e342e;
+  font-size: 0.875rem;
+}
+
 .nca-red-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-top: 10px;
   flex-wrap: wrap;
   gap: 8px;
@@ -1589,4 +1660,27 @@
   background: #f5ede9;
   box-shadow: 0 2px 8px rgba(109, 76, 65, .15);
   transform: translateY(-1px);
+}
+/* ─── §13 Accessoires — hint auto-lookup ─── */
+.nca-acc-auto-hint {
+  font-size: 0.72rem;
+  color: #6d4c41;
+  margin-top: 4px;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ─── §11.2 Réductions flotte — badge AUTO ─── */
+.nca-red-auto-badge {
+  font-size: 0.65rem;
+  background: #f3e5f5;
+  color: #6a1b9a;
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-left: 6px;
+  font-weight: 600;
+  vertical-align: middle;
+  letter-spacing: 0.03em;
 }

@@ -8,6 +8,7 @@ import commerciauxService from '../../../services/commerciauxService';
 import VehicleCategoriesService from '../../../services/vehicleCategoriesService';
 import productsService from '../../../services/products';
 import tarifsAutoService from '../../../services/tarifsAutoService';
+import compagniesService from '../../../services/compagnies';
 import './NouveauContratAuto.css';
 
 /* ─── Helpers ─── */
@@ -80,10 +81,11 @@ const makeGarantieRow = (g) => ({
     id_garantie: g.id_garantie || g.ID_Garantie || '',
     nom: g.libelle_garantie || g.lib_garantie || g.nom_garantie || g.id_garantie || '—',
     est_obligatoire: !!g.est_obligatoire,
-    selected: true,  // toutes cochées par défaut, l'agent peut décocher
+    selected: !!g.est_obligatoire,  // seules les obligatoires cochées par défaut (comme WinDev)
     inclus_pf: !!(g.inclus_pf || g.inclus_PF),
     inclus_vv: !!(g.inclus_vv || g.inclus_ValeurVenal),
     inclus_surprime: !!g.inclus_surprime,
+    reduc_com_flotte: !!g.reduc_com_flotte,  // §11.2 : éligibilité réduction commerciale flotte
     capital: '',
     franchise: '',
     prime_annuelle: '',
@@ -105,6 +107,32 @@ const makeVehicle = (garantiesTemplate = []) => ({
     veh_nbremorque: '',
     garanties: garantiesTemplate.map(makeGarantieRow),
 });
+
+/* ─── §11.2 Helpers réductions flotte ─── */
+const getTauxRedFlotte = (nb) => {
+    if (nb < 10) return 0;
+    if (nb <= 30) return 5;
+    return 10;
+};
+
+const getTauxRedCom = (nb) => {
+    if (nb < 11) return 0;
+    if (nb <= 30) return 10;
+    if (nb <= 50) return 15;
+    if (nb <= 100) return 20;
+    if (nb <= 200) return 25;
+    if (nb <= 500) return 30;
+    return 35;
+};
+
+/* 5 lignes de réduction fixes — libellés identiques au desktop WinDev */
+const REDUCTIONS_INITIALES = [
+    { key: 'bonus',      label: 'Bonus',      taux: 0 },
+    { key: 'red_com',    label: 'Red Com',     taux: 0 },
+    { key: 'red_flotte', label: 'Red Flotte',  taux: 0 },
+    { key: 'stat_auto',  label: 'Stat Auto',   taux: 0 },
+    { key: 'stat_ip',    label: 'Stat IP',     taux: 0 },
+];
 
 /* ════════════════════════════════════════════════
    COMPOSANT PRINCIPAL
@@ -147,7 +175,7 @@ const NouveauContratAuto = () => {
     /* ── Formulaire ── */
     const [formData, setFormData] = useState({ ...INITIAL_FORM });
     const [vehicules, setVehicules] = useState([]);
-    const [reductions, setReductions] = useState([]);
+    const [reductions, setReductions] = useState(REDUCTIONS_INITIALES);
 
     /* ── UI ── */
     const [saveMode, setSaveMode] = useState(null); // 'projet' | 'contrat' | null
@@ -164,8 +192,14 @@ const NouveauContratAuto = () => {
     /* ── Véhicule en cours d'édition (table inline) ── */
     const [editingVehicleIdx, setEditingVehicleIdx] = useState(null);
 
+    /* ── Véhicule sélectionné dans la vue Garanties (null = totaux) ── */
+    const [selectedVehiculeIdx, setSelectedVehiculeIdx] = useState(null);
+
     /* ── Taux de taxe produit (%) — auto-rempli depuis produit, modifiable ── */
     const [tauxTaxe, setTauxTaxe] = useState(0);
+
+    /* ── §13 Accessoires — message d'auto-lookup ── */
+    const [accessoireAutoMsg, setAccessoireAutoMsg] = useState(null);
 
     const toggleSection = (key) => setOpenSections(p => ({ ...p, [key]: !p[key] }));
 
@@ -241,6 +275,7 @@ const NouveauContratAuto = () => {
 
     /* ══ Garanties liées au produit sélectionné ══ */
     useEffect(() => {
+        setSelectedVehiculeIdx(null); // réinitialiser la sélection au changement de produit
         if (!formData.Id_produit) {
             setGarantiesTemplate([]);
             setGarantiesRows([]);
@@ -268,6 +303,37 @@ const NouveauContratAuto = () => {
             setTauxTaxe(parseFloat(produit.taux_taxe) || 0);
         }
     }, [formData.Id_produit, produits]);
+
+    /* ══ §13 Accessoires — auto-lookup depuis FRAIS_ACCESSOIRE ══
+       Déclenché dès que la prime nette brute change ou que la compagnie change.
+       Cherche la tranche [interv_min, interv_max] correspondant à la PNB et pré-remplit
+       le champ Accessoires. L'utilisateur peut corriger manuellement. */
+    useEffect(() => {
+        const pnb = parseFloat(formData.prime_nette_brute) || 0;
+        if (!formData.Id_compagnie || pnb <= 0) {
+            setAccessoireAutoMsg(null);
+            return;
+        }
+        compagniesService.getAccessoires(formData.Id_compagnie)
+            .then(res => {
+                const list = toArray(res);
+                const found = list.find(a =>
+                    pnb >= (parseInt(a.interv_min) || 0) &&
+                    pnb <= (parseInt(a.interv_max) || Infinity)
+                );
+                if (found) {
+                    setFormData(p => ({ ...p, accessoires: found.montant }));
+                    setAccessoireAutoMsg(
+                        `Auto : ${parseInt(found.montant).toLocaleString('fr-FR')} F` +
+                        ` (tranche ${parseInt(found.interv_min).toLocaleString('fr-FR')}` +
+                        ` – ${parseInt(found.interv_max).toLocaleString('fr-FR')} F)`
+                    );
+                } else {
+                    setAccessoireAutoMsg('Aucune tranche trouvée pour cette prime — saisie manuelle requise.');
+                }
+            })
+            .catch(() => setAccessoireAutoMsg(null));
+    }, [formData.prime_nette_brute, formData.Id_compagnie]);
 
     /* ══ Helper : met à jour une garantie dans garantiesRows ET dans tous les véhicules ══ */
     const updateGarantieRow = (gIdx, field, value) => {
@@ -301,6 +367,11 @@ const NouveauContratAuto = () => {
             Date_echeance: d.toISOString().split('T')[0],
             fractionnement: fract.taux,
         }));
+        // §3.7 — Avertissement si durée hors plage barème (> 12 mois)
+        const n = parseInt(formData.duree_contrat) || 0;
+        if (n > 12) {
+            setCalcMsg({ type: 'warn', text: `Durée de ${n} mois : le barème de fractionnement couvre 1 à 12 mois maximum. Le taux appliqué est 100 % (≥ 7 mois). Vérifiez la durée saisie.` });
+        }
     }, [formData.date_effet, formData.duree_contrat]);
 
     /* ══ Montant total des réductions ══ */
@@ -308,6 +379,10 @@ const NouveauContratAuto = () => {
         const pnb = parseFloat(formData.prime_nette_brute) || 0;
         const total = reductions.reduce((s, r) => s + pnb * (parseFloat(r.taux) || 0) / 100, 0);
         setFormData(p => ({ ...p, montant_reductions: Math.round(total) }));
+        // §19.8 — Alerte si le total des réductions dépasse la prime nette brute
+        if (pnb > 0 && total > pnb) {
+            setCalcMsg({ type: 'warn', text: `Total réductions (${Math.round(total).toLocaleString('fr-FR')} F) supérieur à la prime nette brute (${pnb.toLocaleString('fr-FR')} F). La prime nette réduite sera ramenée à 0.` });
+        }
     }, [reductions, formData.prime_nette_brute]);
 
     /* ══ calcul_synthese ══
@@ -322,7 +397,7 @@ const NouveauContratAuto = () => {
         const acc = parseFloat(formData.accessoires) || 0;
         const base = pnr + acc;
         const cssAmt = Math.round(0.01 * base);
-        const taxeAmt = Math.round((tauxTaxe / 100) * base);
+        const taxeAmt = Math.round(tauxTaxe * base);  // tauxTaxe est déjà un taux décimal (ex: 0.08 = 8%)
         const tsvl = parseFloat(formData.TSVL) || 0;
         const cemac = parseFloat(formData.CEMAC) || 0;
         const cca = parseFloat(formData.CCA) || 0;
@@ -551,17 +626,27 @@ const NouveauContratAuto = () => {
                     };
                 }));
 
-                // Synchroniser garantiesRows avec le 1er véhicule (retour visuel)
+                // Synchroniser garantiesRows avec les TOTAUX sur tous les véhicules
                 if (result.vehicules.length > 0) {
-                    const firstRes = result.vehicules[0];
-                    const pbg = {};
-                    firstRes.garanties.forEach(gr => { pbg[gr.id_garantie] = gr; });
+                    // Agréger prime_annuelle et franchise par id_garantie (somme sur tous véhicules)
+                    const totaux = {};
+                    result.vehicules.forEach(vRes => {
+                        vRes.garanties.forEach(gr => {
+                            if (!gr.tarif_trouve) return;
+                            if (!totaux[gr.id_garantie]) {
+                                totaux[gr.id_garantie] = { prime_annuelle: 0, franchise: gr.franchise, capital: gr.capital || 0 };
+                            }
+                            totaux[gr.id_garantie].prime_annuelle += gr.prime_annuelle;
+                        });
+                    });
                     setGarantiesRows(prev => prev.map(row => {
-                        const gr = pbg[row.id_garantie];
-                        if (!gr || !gr.tarif_trouve) return row;
-                        return { ...row, prime_annuelle: gr.prime_annuelle, franchise: gr.franchise, capital: gr.capital || row.capital };
+                        const t = totaux[row.id_garantie];
+                        if (!t) return row;
+                        return { ...row, prime_annuelle: t.prime_annuelle, franchise: t.franchise, capital: t.capital || row.capital };
                     }));
                 }
+                // Réinitialiser la sélection de véhicule → vue totaux
+                setSelectedVehiculeIdx(null);
 
                 // Prime nette brute = somme des prime_periode — doc §9
                 const total = result.vehicules.reduce((s, vRes) =>
@@ -573,6 +658,20 @@ const NouveauContratAuto = () => {
 
                 setFormData(p => ({ ...p, prime_nette_brute: Math.round(total) }));
                 setCalcLoading(false);
+
+                // Affichage des infos de debug si des garanties n'ont pas été trouvées
+                if (result.debug_non_trouvees?.length > 0) {
+                    console.group('[NCA] Garanties non trouvées — diagnostic');
+                    result.debug_non_trouvees.forEach(d => {
+                        console.warn(`Garantie ${d.id_garantie} — clé envoyée:`, d.clé_envoyée);
+                        if (d.ligne_proche) {
+                            console.info(`  → Ligne proche trouvée avec groupe="${d.ligne_proche.groupe}", pf=${d.ligne_proche.puissance_fiscale}, vv=${d.ligne_proche.valeur_vehicule}`);
+                        } else {
+                            console.error(`  → Aucune ligne proche (vérifiez code_cat, energie, id_compagnie, id_produit)`);
+                        }
+                    });
+                    console.groupEnd();
+                }
 
                 if (trouvees === 0) {
                     setCalcMsg({ type: 'warn', text: `Aucun tarif trouvé (${totalGar} garantie(s) testée(s)). Vérifiez que catégorie, énergie et compagnie correspondent bien aux lignes tarifaires.` });
@@ -597,11 +696,31 @@ const NouveauContratAuto = () => {
         setCalcMsg({ type: 'warn', text: `Calcul local appliqué (API indisponible) : ${totalArrondi.toLocaleString('fr-FR')} F. Vérifiez les primes saisies manuellement.` });
     };
 
-    /* ── Handlers réductions ── */
-    const addReduction = () => setReductions(p => [...p, { label: '', taux: 0 }]);
-    const removeReduction = (idx) => setReductions(p => p.filter((_, i) => i !== idx));
-    const handleReductionChange = (idx, name, value) =>
-        setReductions(p => p.map((r, i) => i !== idx ? r : { ...r, [name]: value }));
+    /* ══ §11.2 Réductions flotte — pré-calcul automatique des lignes Red Flotte et Red Com ══
+       En mode Flotte, met à jour les taux de 'red_flotte' et 'red_com' dans les lignes fixes.
+       En mode Mono ou sans véhicule, remet ces taux à 0. */
+    useEffect(() => {
+        if (formData.type_contrat !== 'Flotte' || vehicules.length === 0) {
+            setReductions(prev => prev.map(r =>
+                (r.key === 'red_flotte' || r.key === 'red_com') ? { ...r, taux: 0 } : r
+            ));
+            return;
+        }
+        const nb = vehicules.length;
+        const tauxFlotte = getTauxRedFlotte(nb);
+        const hasRedCom = garantiesRows.some(g => g.selected && g.reduc_com_flotte);
+        const tauxCom = hasRedCom ? getTauxRedCom(nb) : 0;
+
+        setReductions(prev => prev.map(r => {
+            if (r.key === 'red_flotte') return { ...r, taux: tauxFlotte };
+            if (r.key === 'red_com')    return { ...r, taux: tauxCom };
+            return r;
+        }));
+    }, [formData.type_contrat, vehicules.length, garantiesRows]);
+
+    /* ── Handler réductions — seul le taux est modifiable, ciblé par key ── */
+    const handleReductionChange = (key, value) =>
+        setReductions(p => p.map(r => r.key !== key ? r : { ...r, taux: value }));
 
     /* ── Changement de type Mono / Flotte ── */
     const handleTypeContratChange = (type) => {
@@ -669,6 +788,13 @@ const NouveauContratAuto = () => {
 
     /* ── Valeurs dérivées ── */
     const fract = getTauxFractionnement(formData.duree_contrat);
+
+    // Données affichées dans la table Garanties :
+    // - si un véhicule est sélectionné → ses garanties propres
+    // - sinon → garantiesRows (totaux post-calcul, ou template vide avant calcul)
+    const garantiesAffichees = selectedVehiculeIdx !== null && vehicules[selectedVehiculeIdx]
+        ? vehicules[selectedVehiculeIdx].garanties
+        : garantiesRows;
 
     const filteredClients = {
         physique: allClients.physique.filter(c => {
@@ -1205,32 +1331,71 @@ const NouveauContratAuto = () => {
                             ) : (
                                 <div className="nca-veh-table-wrap">
                                     {/* ── Tableau récapitulatif ── */}
+                                    {/* Légende colonne Garanties (visible après calcul) */}
+                                    {vehicules.some(v => v.garanties.some(g => g.prime_annuelle !== '')) && (
+                                        <div className="nca-veh-gar-hint">
+                                            <i className="bi bi-info-circle"></i>
+                                            Cochez un véhicule pour voir ses garanties individuelles — sans sélection, le total s'affiche.
+                                            {selectedVehiculeIdx !== null && (
+                                                <button className="nca-veh-gar-reset" onClick={() => setSelectedVehiculeIdx(null)}>
+                                                    <i className="bi bi-x-circle"></i> Revenir au total
+                                                </button>
+                                            )}
+                                        </div>
+                                    )}
                                     <table className="nca-veh-table">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Immatriculation</th>
-                                                <th>Marque</th>
-                                                <th>Modèle</th>
-                                                <th>Catégorie</th>
-                                                <th>Usage</th>
-                                                <th>Val. Vénale (F)</th>
+                                                <th className="nca-veh-th-gar" title="Sélectionner pour voir les garanties">
+                                                    {vehicules.some(v => v.garanties.some(g => g.prime_annuelle !== '')) ? (
+                                                        <i className="bi bi-shield-check" title="Garanties"></i>
+                                                    ) : ''}
+                                                </th>
+                                                <th className="nca-veh-th-idx">#</th>
+                                                <th className="nca-veh-th-immat">Immatriculation</th>
+                                                <th className="nca-veh-th-chassis">N° Châssis</th>
+                                                <th className="nca-veh-th-marque">Marque / Modèle</th>
+                                                <th className="nca-veh-th-cat">Cat.</th>
+                                                <th className="nca-veh-th-energie">Énergie</th>
+                                                <th className="nca-veh-th-num">PF</th>
+                                                <th className="nca-veh-th-num">VV (F)</th>
+                                                <th className="nca-veh-th-num">VN (F)</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {vehicules.map((v, vIdx) => (
+                                            {vehicules.map((v, vIdx) => {
+                                                const calculEffectue = v.garanties.some(g => g.prime_annuelle !== '');
+                                                return (
                                                 <tr
                                                     key={v._id}
-                                                    className={editingVehicleIdx === vIdx ? 'nca-veh-row-active' : ''}
+                                                    className={`${editingVehicleIdx === vIdx ? 'nca-veh-row-active' : ''} ${selectedVehiculeIdx === vIdx ? 'nca-veh-row-selected' : ''}`}
                                                 >
-                                                    <td className="nca-veh-td-num">{vIdx + 1}</td>
+                                                    <td className="nca-veh-td-gar">
+                                                        {calculEffectue && (
+                                                            <input
+                                                                type="checkbox"
+                                                                className="nca-veh-gar-cb"
+                                                                checked={selectedVehiculeIdx === vIdx}
+                                                                onChange={() => setSelectedVehiculeIdx(prev => prev === vIdx ? null : vIdx)}
+                                                                title="Voir les garanties de ce véhicule"
+                                                            />
+                                                        )}
+                                                    </td>
+                                                    <td className="nca-veh-th-idx">{vIdx + 1}</td>
                                                     <td className="nca-veh-td-immat">{v.veh_immat || <span className="nca-veh-empty-cell">—</span>}</td>
-                                                    <td>{v.veh_marque || <span className="nca-veh-empty-cell">—</span>}</td>
-                                                    <td>{v.veh_modele || <span className="nca-veh-empty-cell">—</span>}</td>
+                                                    <td className="nca-veh-td-chassis">{v.veh_chassis || <span className="nca-veh-empty-cell">—</span>}</td>
+                                                    <td className="nca-veh-td-marque">
+                                                        {v.veh_marque || v.veh_modele
+                                                            ? <>{v.veh_marque && <strong>{v.veh_marque}</strong>}{v.veh_marque && v.veh_modele && ' '}{v.veh_modele}</>
+                                                            : <span className="nca-veh-empty-cell">—</span>
+                                                        }
+                                                    </td>
                                                     <td>{v.veh_cat || <span className="nca-veh-empty-cell">—</span>}</td>
-                                                    <td>{v.veh_usage || <span className="nca-veh-empty-cell">—</span>}</td>
-                                                    <td className="nca-veh-td-val">{v.veh_valeur_venale ? fmtNum(v.veh_valeur_venale) : <span className="nca-veh-empty-cell">—</span>}</td>
+                                                    <td>{v.veh_energie || <span className="nca-veh-empty-cell">—</span>}</td>
+                                                    <td className="nca-veh-td-num">{v.veh_puissance_fiscale || <span className="nca-veh-empty-cell">—</span>}</td>
+                                                    <td className="nca-veh-td-num">{v.veh_valeur_venale ? fmtNum(v.veh_valeur_venale) : <span className="nca-veh-empty-cell">—</span>}</td>
+                                                    <td className="nca-veh-td-num">{v.veh_valeur_neuve ? fmtNum(v.veh_valeur_neuve) : <span className="nca-veh-empty-cell">—</span>}</td>
                                                     <td className="nca-veh-td-actions">
                                                         <button
                                                             className={`nca-veh-btn-edit ${editingVehicleIdx === vIdx ? 'active' : ''}`}
@@ -1248,7 +1413,8 @@ const NouveauContratAuto = () => {
                                                         </button>
                                                     </td>
                                                 </tr>
-                                            ))}
+                                                );
+                                            })}
                                         </tbody>
                                     </table>
 
@@ -1373,12 +1539,17 @@ const NouveauContratAuto = () => {
                                                     <th>Garantie</th>
                                                     <th>Capital</th>
                                                     <th>Franchise</th>
-                                                    <th>Prime Annuelle</th>
+                                                    <th>
+                                                        Prime Annuelle
+                                                        {selectedVehiculeIdx === null && vehicules.length > 1 && (
+                                                            <span className="nca-gar-th-hint"> (total)</span>
+                                                        )}
+                                                    </th>
                                                     <th>Prime ({fract.pct}%)</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {garantiesRows.map((row, gIdx) => (
+                                                {garantiesAffichees.map((row, gIdx) => (
                                                     <tr key={gIdx} className={!row.selected ? 'nca-gar-disabled' : ''}>
                                                         <td>
                                                             <input
@@ -1445,9 +1616,9 @@ const NouveauContratAuto = () => {
                         <div className="nca-section-hd-l">
                             <i className="bi bi-tag-fill"></i>
                             <span>Réductions</span>
-                            {reductions.length > 0 && (
+                            {formData.montant_reductions > 0 && (
                                 <span className="nca-count-chip">
-                                    {reductions.length} réduction{reductions.length > 1 ? 's' : ''}
+                                    -{fmtNum(formData.montant_reductions)} F
                                 </span>
                             )}
                         </div>
@@ -1456,50 +1627,48 @@ const NouveauContratAuto = () => {
 
                     {openSections.reductions && (
                         <div className="nca-section-bd">
-                            {reductions.length === 0 ? (
-                                <p className="nca-red-empty">Aucune réduction appliquée.</p>
-                            ) : (
-                                <table className="nca-red-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Réduction</th>
-                                            <th>Taux (%)</th>
-                                            <th>Montant</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {reductions.map((r, idx) => {
-                                            const montant = Math.round((parseFloat(formData.prime_nette_brute) || 0) * (parseFloat(r.taux) || 0) / 100);
-                                            return (
-                                                <tr key={idx}>
-                                                    <td>
-                                                        <input type="text" className="nca-input" value={r.label} onChange={e => handleReductionChange(idx, 'label', e.target.value)} placeholder="Libellé" />
-                                                    </td>
-                                                    <td style={{ width: 110 }}>
-                                                        <input type="number" className="nca-input" value={r.taux} onChange={e => handleReductionChange(idx, 'taux', e.target.value)} min="0" max="100" step="0.5" />
-                                                    </td>
-                                                    <td className="nca-red-mont">{fmtNum(montant)} F</td>
-                                                    <td>
-                                                        <button className="nca-red-del" onClick={() => removeReduction(idx)}>
-                                                            <i className="bi bi-x-lg"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
+                            {/* §11.2 — Notice flotte si des taux ont été pré-calculés */}
+                            {formData.type_contrat === 'Flotte' && vehicules.length > 0 && (
+                                <div className="nca-calc-alert nca-calc-alert--ok" style={{ marginBottom: 10 }}>
+                                    <i className="bi bi-calculator"></i>
+                                    Réductions flotte pré-calculées pour <strong>{vehicules.length} véhicule{vehicules.length > 1 ? 's' : ''}</strong> — taux modifiables.
+                                </div>
                             )}
+                            <table className="nca-red-table">
+                                <thead>
+                                    <tr>
+                                        <th>Réduction</th>
+                                        <th style={{ width: 130 }}>Taux (%)</th>
+                                        <th style={{ width: 160 }}>Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {reductions.map((r) => {
+                                        const montant = Math.round((parseFloat(formData.prime_nette_brute) || 0) * (parseFloat(r.taux) || 0) / 100);
+                                        return (
+                                            <tr key={r.key}>
+                                                <td className="nca-red-label">{r.label}</td>
+                                                <td>
+                                                    <input
+                                                        type="number"
+                                                        className="nca-input"
+                                                        value={r.taux}
+                                                        onChange={e => handleReductionChange(r.key, e.target.value)}
+                                                        min="0"
+                                                        max="100"
+                                                        step="0.5"
+                                                    />
+                                                </td>
+                                                <td className="nca-red-mont">{fmtNum(montant)} F</td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
                             <div className="nca-red-footer">
-                                <button className="nca-red-add-btn" onClick={addReduction}>
-                                    <i className="bi bi-plus"></i> Ajouter une réduction
-                                </button>
-                                {reductions.length > 0 && (
-                                    <span className="nca-red-total">
-                                        Total : <strong>{fmtNum(formData.montant_reductions)} F</strong>
-                                    </span>
-                                )}
+                                <span className="nca-red-total">
+                                    Total : <strong>{fmtNum(formData.montant_reductions)} F</strong>
+                                </span>
                             </div>
                         </div>
                     )}
@@ -1539,22 +1708,27 @@ const NouveauContratAuto = () => {
                                 <div className="nca-synth-col">
                                     <p className="nca-frais-title">Frais &amp; taxes</p>
                                     <div className="nca-grid-3">
-                                        {/* Accessoires — saisie libre */}
+                                        {/* Accessoires — §13 auto-lookup FRAIS_ACCESSOIRE, saisie modifiable */}
                                         <div className="nca-fg">
                                             <label className="nca-label">Accessoires</label>
-                                            <input type="number" className="nca-input" name="accessoires" value={formData.accessoires} onChange={handleChange} min="0" />
+                                            <input type="number" className="nca-input" name="accessoires" value={formData.accessoires} onChange={e => { setAccessoireAutoMsg(null); handleChange(e); }} min="0" />
+                                            {accessoireAutoMsg && (
+                                                <div className="nca-acc-auto-hint">
+                                                    <i className="bi bi-table"></i> {accessoireAutoMsg}
+                                                </div>
+                                            )}
                                         </div>
-                                        {/* Taxe (taux) — auto depuis produit, modifiable */}
+                                        {/* Taxe (taux) — auto depuis produit, modifiable (valeur décimale ex: 0.08 = 8%) */}
                                         <div className="nca-fg">
-                                            <label className="nca-label">Taxe (taux) %</label>
+                                            <label className="nca-label">Taxe (taux) : {(tauxTaxe * 100).toFixed(2)} %</label>
                                             <input
                                                 type="number"
                                                 className="nca-input"
                                                 value={tauxTaxe}
                                                 onChange={e => setTauxTaxe(parseFloat(e.target.value) || 0)}
                                                 min="0"
-                                                max="100"
-                                                step="0.01"
+                                                max="1"
+                                                step="0.0001"
                                             />
                                         </div>
                                         {/* Taxe — calculée automatiquement */}

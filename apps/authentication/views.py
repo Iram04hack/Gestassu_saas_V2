@@ -23,8 +23,10 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 from django.db.models import Q
 
-import traceback
-import sys
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -98,10 +100,7 @@ def login_view(request):
                 status=status.HTTP_401_UNAUTHORIZED
             )
     except Exception as e:
-        # Log the full traceback to a file
-        with open('c:/projets_django/Gestassu_saas_V2/login_debug.log', 'w') as f:
-            f.write(f"Error in login_view: {str(e)}\n")
-            traceback.print_exc(file=f)
+        logger.exception("Erreur inattendue dans login_view")
         raise e
 
 
