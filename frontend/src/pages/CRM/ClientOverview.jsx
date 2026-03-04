@@ -175,7 +175,7 @@ const ClientOverview = ({ client, onEdit }) => {
                 </div>
             </div>
 
-            <style jsx>{`
+            <style>{`
                 .client-overview {
                     max-width: 1200px;
                 }

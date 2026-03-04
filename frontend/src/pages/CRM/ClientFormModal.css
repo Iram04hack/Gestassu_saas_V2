@@ -261,13 +261,32 @@
 }
 
 .modal-footer {
-    padding: 20px;
+    padding: 12px 20px;
     border-top: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    background: #fafafa;
+}
+
+.modal-save-error {
+    background: #fdecea;
+    color: #c62828;
+    border: 1px solid #f5c6c6;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.modal-footer-actions {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 16px;
-    background: #fafafa;
 }
 
 .btn-cancel {

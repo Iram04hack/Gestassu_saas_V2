@@ -17,7 +17,11 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import TarifsAuto from './pages/Tarifs/TarifsAuto/TarifsAuto';
 import TarifsMRH from './pages/Tarifs/TarifsMRH/TarifsMRH';
 import ContratsAuto from './pages/Contrats/ContratsAuto/ContratsAuto';
-import NouveauContratAuto from './pages/Contrats/NouveauContratAuto/NouveauContratAuto';
+import NouveauContratAuto from './pages/Contrats/ContratsAuto/formulaires/NouveauContratAuto/NouveauContratAuto';
+import AvenantChangementImmat from './pages/Contrats/ContratsAuto/formulaires/Avenants/AvenantChangementImmat';
+import AvenantChangementIdentite from './pages/Contrats/ContratsAuto/formulaires/Avenants/AvenantChangementIdentite';
+import Parametres from './pages/Parametres/Parametres';
+import Quittances from './pages/Quittances/Quittances';
 import Layout from './components/Layout/Layout';
 import './App.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -46,16 +50,21 @@ function App() {
             <Route path="/tarifs/mrh" element={<TarifsMRH />} />
             <Route path="/contrats/auto" element={<ContratsAuto />} />
             <Route path="/contrats/auto/nouveau" element={<NouveauContratAuto />} />
+            <Route path="/contrats/auto/avenant/immat" element={<AvenantChangementImmat />} />
+            <Route path="/contrats/auto/avenant/immat/:contratId" element={<AvenantChangementImmat />} />
+            <Route path="/contrats/auto/avenant/identite" element={<AvenantChangementIdentite />} />
+            <Route path="/contrats/auto/avenant/identite/:contratId" element={<AvenantChangementIdentite />} />
             <Route path="/contrats/mrh" element={<div>Assurance Multirisque Habitation (À venir)</div>} />
             <Route path="/contrats/autres-iard" element={<div>Autres IARD (À venir)</div>} />
             <Route path="/contrats/vie" element={<div>Assurance Vie (À venir)</div>} />
-            <Route path="/quittances" element={<div>Module Quittances (À venir)</div>} />
+            <Route path="/quittances" element={<Quittances />} />
             <Route path="/finances" element={<div>Module Finances (À venir)</div>} />
             <Route path="/reversement" element={<div>Module Reversement (À venir)</div>} />
             <Route path="/sinistres" element={<div>Module Sinistres (À venir)</div>} />
             <Route path="/base/commerciaux" element={<Commerciaux />} />
             <Route path="/base/commerciaux/:id" element={<CommercialDetails />} />
             <Route path="/base/motifs-transactions" element={<TransactionReasonsList />} />
+            <Route path="/parametres/societe" element={<Parametres />} />
           </Route>
 
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

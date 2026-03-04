@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ClientList from './ClientList';
 import ClientFormModal from './ClientFormModal';
 import ClientFilters from './ClientFilters';
@@ -10,6 +10,7 @@ const CRM = () => {
     const [activeTab, setActiveTab] = useState('personnes');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalType, setModalType] = useState('personne');
+    const [editingClient, setEditingClient] = useState(null); // données brutes API pour l'édition
 
     // Lifted State for Clients
     const [clients, setClients] = useState([]);
@@ -30,14 +31,13 @@ const CRM = () => {
         }, 500);
 
         return () => clearTimeout(timer);
-    }, [searchTerm, activeTab, filters]); // loadClients is stable now
+    }, [searchTerm, activeTab, filters]);
 
     const loadClients = useCallback(async () => {
         try {
             setLoading(true);
             setError(null);
 
-            // Filtrer par type selon l'onglet actif et terme de recherche
             const params = {
                 est_entreprise: activeTab === 'entreprises' ? 'true' : 'false',
                 search: searchTerm
@@ -45,16 +45,17 @@ const CRM = () => {
 
             const response = await crmService.getClients(params);
 
-            // Transformer les données de l'API pour correspondre au format attendu par ClientList
             let transformedClients = response.results ? response.results.map(client => ({
                 id: client.id_client,
-                type: client.type_client || (client.est_entreprise ? 'Entreprise' : 'Client'), // Badge type (Client/Prospect)
+                // Conserver les données brutes pour l'édition
+                _raw: client,
+                type: client.type_client || (client.est_entreprise ? 'Entreprise' : 'Client'),
                 qualite: client.civilite || '-',
                 nom: client.nom_complet || `${client.prenom_client || ''} ${client.nom_client || ''}`.trim(),
                 adresse: client.adresse || '-',
                 origine: client.source || '-',
                 createur: client.enregistre_par || '-',
-                conseiller: '-', // À implémenter plus tard
+                conseiller: '-',
                 contacts: [
                     client.telephone && { type: 'phone', value: client.telephone },
                     client.email && { type: 'email', value: client.email }
@@ -65,7 +66,6 @@ const CRM = () => {
                 }
             })) : [];
 
-            // Filtrage frontend pour typeClient et qualite (Optimisation: fait ici pour éviter trop de requêtes)
             if (filters.typeClient) {
                 transformedClients = transformedClients.filter(c => c.type === filters.typeClient);
             }
@@ -86,7 +86,6 @@ const CRM = () => {
         if (window.confirm('Voulez-vous vraiment supprimer ce client ?')) {
             try {
                 await crmService.deleteClient(id);
-                // Rafraîchir la liste
                 loadClients();
             } catch (err) {
                 console.error('Erreur lors de la suppression du client:', err);
@@ -96,37 +95,37 @@ const CRM = () => {
     };
 
     const handleOpenModal = () => {
-        // Set modal type based on active tab
+        setEditingClient(null);
         setModalType(activeTab === 'personnes' ? 'personne' : 'entreprise');
         setIsModalOpen(true);
     };
 
-    const handleSaveClient = (newClient) => {
-        setClients(prev => [newClient, ...prev]);
-        // Also ensure we switch to the tab relevant to the new client if needed, or just let it appear
-        if (newClient.type === 'Entreprise' && activeTab !== 'entreprises') {
-            setActiveTab('entreprises');
-        } else if (newClient.type === 'Client' && activeTab !== 'personnes') { // Assuming 'Client' is Personne
-            // Actually badge logic: Client/Prospect. 
-            // Logic: Personne vs Entreprise is usually a different filter or tab.
-            // If tabs filter by type (Personne/Entreprise), we should ensure data has that distinction.
-            // In mockData/ClientForm, we used 'type' for Badge (Client/Prospect). 
-            // We need a 'category' or similar for Personne vs Entreprise.
-            // For now, let's assume 'nom' vs 'raisonSocial' distinguishes, or add a category field.
-            // In ClientFormModal I added 'type' (Personne/Entreprise) to details.
+    const handleEditClient = (clientRaw) => {
+        setEditingClient(clientRaw);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setEditingClient(null);
+    };
+
+    const handleSaveClient = async (apiData) => {
+        if (editingClient) {
+            await crmService.updateClient(editingClient.id_client, apiData);
+        } else {
+            await crmService.createClient(apiData);
         }
+        handleCloseModal();
+        loadClients();
     };
 
     const handleApplyFilters = () => {
         setShowFilters(false);
-        // loadClients will be called automatically via useEffect
     };
 
     const handleResetFilters = () => {
-        setFilters({
-            typeClient: '',
-            qualite: ''
-        });
+        setFilters({ typeClient: '', qualite: '' });
         setShowFilters(false);
     };
 
@@ -214,15 +213,18 @@ const CRM = () => {
                     searchTerm={searchTerm}
                     activeTab={activeTab}
                     onDelete={handleDeleteClient}
+                    onEdit={handleEditClient}
                 />
             )}
 
             {/* Modal */}
             <ClientFormModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={handleCloseModal}
                 onSave={handleSaveClient}
-                defaultType={modalType}
+                defaultType={editingClient ? (editingClient.est_entreprise ? 'entreprise' : 'personne') : modalType}
+                initialData={editingClient}
+                isEditMode={!!editingClient}
             />
         </div>
     );

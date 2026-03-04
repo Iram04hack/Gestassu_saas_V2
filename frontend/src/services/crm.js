@@ -45,6 +45,17 @@ const crmService = {
     },
 
     /**
+     * Mettre à jour partiellement un client — PATCH
+     * Utilisé lors d'un avenant de changement d'identité.
+     * @param {string} id - ID du client
+     * @param {Object} clientData - Champs à mettre à jour
+     */
+    patchClient: async (id, clientData) => {
+        const response = await api.patch(`/crm/clients/${id}/`, clientData);
+        return response.data;
+    },
+
+    /**
      * Supprimer un client (soft delete)
      * @param {string} id - ID du client
      */

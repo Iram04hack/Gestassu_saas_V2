@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './CompagnieFormModal.css';
+import compagniesService from '../../services/compagnies';
 
 const CompagnieFormModal = ({ isOpen, onClose, onSave, compagnie }) => {
     const [activeTab, setActiveTab] = useState('general'); // 'general' or 'accessoire'
+    const [saving, setSaving] = useState(false);
+    const [saveError, setSaveError] = useState(null);
     const [formData, setFormData] = useState({
         numero: '',
         nom: '',
@@ -22,6 +25,7 @@ const CompagnieFormModal = ({ isOpen, onClose, onSave, compagnie }) => {
 
     // Pre-fill form when editing
     useEffect(() => {
+        setSaveError(null);
         if (compagnie) {
             setFormData({
                 numero: compagnie.codification_compagnie || '',
@@ -57,10 +61,44 @@ const CompagnieFormModal = ({ isOpen, onClose, onSave, compagnie }) => {
         setAccessoiresList(accessoiresList.filter(item => item.id !== id));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSave({ ...formData, accessoires: accessoiresList });
-        onClose();
+        setSaveError(null);
+        setSaving(true);
+
+        const apiData = {
+            codification_compagnie: formData.numero,
+            nom_compagnie: formData.nom,
+            adresse_compagnie: formData.adresse,
+            tel_compagnie: formData.telephone,
+            email_compagnie: formData.email,
+        };
+
+        try {
+            if (compagnie) {
+                await compagniesService.updateCompagnie(compagnie.id_compagnie, apiData);
+            } else {
+                await compagniesService.createCompagnie(apiData);
+            }
+            onSave();
+            onClose();
+        } catch (err) {
+            console.error('Erreur lors de l\'enregistrement de la compagnie:', err);
+            let message = 'Une erreur est survenue. Veuillez réessayer.';
+            if (err?.response?.data) {
+                const data = err.response.data;
+                if (typeof data === 'string') {
+                    message = data;
+                } else if (typeof data === 'object') {
+                    const firstKey = Object.keys(data)[0];
+                    const firstVal = data[firstKey];
+                    message = `${firstKey} : ${Array.isArray(firstVal) ? firstVal[0] : firstVal}`;
+                }
+            }
+            setSaveError(message);
+        } finally {
+            setSaving(false);
+        }
     };
 
     // File Upload Handler
@@ -103,8 +141,10 @@ const CompagnieFormModal = ({ isOpen, onClose, onSave, compagnie }) => {
                             <div className="logo-section">
                                 <label>Logo</label>
                                 <div className="logo-upload-box">
-                                    {formData.logo ? (
+                                    {formData.logo && typeof formData.logo !== 'string' ? (
                                         <img src={URL.createObjectURL(formData.logo)} alt="Logo" />
+                                    ) : formData.logo ? (
+                                        <img src={formData.logo} alt="Logo" />
                                     ) : (
                                         <div className="placeholder-content"></div>
                                     )}
@@ -162,7 +202,6 @@ const CompagnieFormModal = ({ isOpen, onClose, onSave, compagnie }) => {
 
                                 <div className="btn-group">
                                     <button className="btn-add" onClick={handleAddAccessoire}>Ajouter</button>
-                                    <button className="btn-del">Supprimer <i className="bi bi-trash"></i></button>
                                 </div>
                             </div>
 
@@ -195,8 +234,19 @@ const CompagnieFormModal = ({ isOpen, onClose, onSave, compagnie }) => {
                 </div>
 
                 <div className="compagnies-modal-footer">
-                    <button className="btn-footer-cancel" onClick={onClose}><i className="bi bi-x-lg"></i> Annuler</button>
-                    <button className="btn-footer-save" onClick={handleSubmit}><i className="bi bi-check-lg"></i> Enregistrer</button>
+                    {saveError && (
+                        <div className="modal-save-error" style={{ marginBottom: '10px', background: '#fdecea', color: '#c62828', border: '1px solid #f5c6c6', borderRadius: '4px', padding: '8px 12px', fontSize: '0.85rem' }}>
+                            <i className="bi bi-exclamation-circle-fill"></i> {saveError}
+                        </div>
+                    )}
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
+                        <button className="btn-footer-cancel" onClick={onClose} disabled={saving}>
+                            <i className="bi bi-x-lg"></i> Annuler
+                        </button>
+                        <button className="btn-footer-save" onClick={handleSubmit} disabled={saving}>
+                            <i className={saving ? 'bi bi-hourglass-split' : 'bi bi-check-lg'}></i> {saving ? 'Enregistrement...' : 'Enregistrer'}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

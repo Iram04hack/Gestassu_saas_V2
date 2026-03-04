@@ -107,6 +107,44 @@ export const importRisquesExcel = async (file) => {
     return response.data;
 };
 
+/**
+ * Met à jour partiellement un risque (véhicule) — PATCH
+ * Utilisé lors d'un avenant de changement d'immatriculation.
+ */
+export const patchRisque = async (id, data) => {
+    const response = await api.patch(`/contrats/risques/${id}/`, data);
+    return response.data;
+};
+
+/**
+ * Génère une quittance pour un contrat en statut projet.
+ * Le contrat passe automatiquement de projet → contrat.
+ * @param {{ id_contrat: string, observation?: string }} data
+ */
+export const genererQuittance = async (data) => {
+    const response = await api.post('/finances/quittances/generer/', data);
+    return response.data;
+};
+
+/**
+ * Supprime (soft delete) un contrat
+ * @param {string} id - id_contrat
+ */
+export const deleteContrat = async (id) => {
+    const response = await api.delete(`/contrats/contrats/${id}/`);
+    return response.data;
+};
+
+/**
+ * Met à jour le numéro de police assureur d'un contrat
+ * @param {string} id - id_contrat
+ * @param {string} numPolice_assureur
+ */
+export const updatePoliceAssureur = async (id, numPolice_assureur) => {
+    const response = await api.patch(`/contrats/contrats/${id}/update_police/`, { numPolice_assureur });
+    return response.data;
+};
+
 export default {
     getContrats,
     getContratById,
@@ -116,7 +154,11 @@ export default {
     getGroupesProduits,
     getProduits,
     createContrat,
+    patchRisque,
     getRisques,
     getRisquesChoices,
     importRisquesExcel,
+    genererQuittance,
+    deleteContrat,
+    updatePoliceAssureur,
 };

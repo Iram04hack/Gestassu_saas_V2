@@ -24,14 +24,8 @@ class CompagnieViewSet(viewsets.ModelViewSet):
     ordering = ['nom_compagnie']
     
     def get_queryset(self):
-        print("DEBUG: CompagnieViewSet.get_queryset called")
-        try:
-            qs = Compagnie.objects.all()
-            print(f"DEBUG: Compagnie Queryset Count: {qs.count()}")
-            return qs
-        except Exception as e:
-            print(f"DEBUG: Error in CompagnieViewSet: {e}")
-            return Compagnie.objects.none()
+        from django.db.models import Q
+        return Compagnie.objects.filter(Q(effacer=False) | Q(effacer__isnull=True))
 
     @action(detail=True, methods=['get'])
     def contacts(self, request, pk=None):
@@ -45,12 +39,12 @@ class CompagnieViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Enregistrer l'utilisateur qui a créé la compagnie"""
-        user_id = self.request.user.id if self.request.user.is_authenticated else None
+        user_id = getattr(self.request.user, 'idutilisateur', None)
         serializer.save(idutilisateur_save=user_id)
 
     def perform_update(self, serializer):
         """Enregistrer l'utilisateur qui a modifié la compagnie"""
-        user_id = self.request.user.id if self.request.user.is_authenticated else None
+        user_id = getattr(self.request.user, 'idutilisateur', None)
         serializer.save(idutilisateur_save=user_id)
 
     def perform_destroy(self, instance):

@@ -24,11 +24,21 @@ class ProduitSerializer(serializers.ModelSerializer):
     """Serializer pour le modèle Produit"""
     nom_groupe = serializers.SerializerMethodField()
     nom_compagnie = serializers.SerializerMethodField()
-    garanties_count = serializers.IntegerField(read_only=True)
-    
+    garanties_count = serializers.SerializerMethodField()
+
     class Meta:
         model = Produit
         fields = '__all__'
+
+    def get_garanties_count(self, obj):
+        # La view list() injecte la valeur via l'annotation Python.
+        # Pour le detail view, on fait le compte ici en fallback.
+        if hasattr(obj, '_garanties_count'):
+            return obj._garanties_count
+        try:
+            return Garantie.objects.filter(id_produit=obj.id_produit, effacer=False).count()
+        except Exception:
+            return 0
         
     def get_nom_groupe(self, obj):
         try:

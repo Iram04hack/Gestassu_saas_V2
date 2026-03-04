@@ -82,8 +82,9 @@ const Sidebar = () => {
                     label: 'Paramètres généraux',
                     icon: 'bi-gear-fill',
                     subItems: [
+                        { path: '/parametres/societe', label: 'Gestion des sociétés' },
                         { path: '/parametres/agences', label: 'Gestion des agences' },
-                        { path: '', label: 'Gestion des rôles' },
+                        { path: '/parametres/roles', label: 'Gestion des rôles' },
                         { path: '/parametres/utilisateurs', label: 'Gestion des utilisateurs' },
                     ]
                 },

@@ -9,11 +9,11 @@ class Mouvement(models.Model):
     Modèle pour la table MOUVEMENTS
     Représente les mouvements (débits/crédits) sur les comptes
     """
-    idquittance = models.CharField(max_length=255, primary_key=True, db_column='idquittance')
-    idmouvement = models.CharField(max_length=255, db_column='idmouvement', blank=True, null=True)
+    idmouvement = models.CharField(max_length=255, primary_key=True, db_column='idmouvement')
+    idquittance = models.CharField(max_length=255, db_column='idquittance', blank=True, null=True)
     datemouvement = models.DateTimeField(db_column='datemouvement', blank=True, null=True)
-    mont_debit = models.CharField(max_length=255, db_column='mont_debit', blank=True, null=True)
-    mont_credit = models.CharField(max_length=255, db_column='mont_credit', blank=True, null=True)
+    mont_debit = models.DecimalField(max_digits=15, decimal_places=2, db_column='mont_debit', blank=True, null=True)
+    mont_credit = models.DecimalField(max_digits=15, decimal_places=2, db_column='mont_credit', blank=True, null=True)
     observation = models.TextField(db_column='observation', blank=True, null=True)
     sync = models.BooleanField(db_column='sync', default=False)
     effacer = models.BooleanField(db_column='Effacer', default=False)
@@ -105,19 +105,54 @@ class TypeMouvementAutomatique(models.Model):
         return self.lib_type_mouvement
 
 
+class Quittance(models.Model):
+    """
+    Modèle pour la table quittance.
+    etat_quittance : -1=Annulée, 0=En attente, 1=Soldée
+    """
+    idquittance = models.CharField(max_length=50, primary_key=True, db_column='idquittance')
+    id_contrat = models.CharField(max_length=50, db_column='Id_contrat', blank=True, null=True)
+    date_synchro = models.DateTimeField(db_column='date_synchro', blank=True, null=True)
+    effacer = models.BooleanField(db_column='effacer', default=False)
+    date_enreg = models.DateTimeField(db_column='date_enreg', blank=True, null=True)
+    sync = models.BooleanField(db_column='sync', default=False)
+    numquittance = models.CharField(max_length=100, db_column='numquittance', blank=True, null=True)
+    prime_totale = models.IntegerField(db_column='prime_totale', blank=True, null=True)
+    etat_quittance = models.IntegerField(db_column='etat_quittance', default=0)
+    prime_reverse = models.BooleanField(db_column='prime_reverse', default=False)
+    date_annulation = models.DateTimeField(db_column='date_annulation', blank=True, null=True)
+    annuler_par = models.CharField(max_length=255, db_column='annuler_par', blank=True, null=True)
+    est_regle_chez_assureur = models.BooleanField(db_column='est_regle_chez_assureur', default=False)
+    idutilisateur = models.CharField(max_length=50, db_column='IDUTILISATEUR', blank=True, null=True)
+    id_cotisation = models.CharField(max_length=50, db_column='id_cotisation', blank=True, null=True)
+    observation_quittance = models.TextField(db_column='observation_quittance', blank=True, null=True)
+    daterecupserveur = models.DateTimeField(db_column='daterecupserveur', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'quittance'
+        app_label = 'finances'
+        ordering = ['-date_enreg']
+
+    def __str__(self):
+        return f"Quittance {self.numquittance} - {self.id_contrat}"
+
+
 class Caisse(models.Model):
     """
     Modèle pour la table Caisse
     """
     id_caisse = models.CharField(max_length=255, primary_key=True, db_column='IDCaisse')
-    lib_caisse = models.CharField(max_length=255, db_column='lib_caisse', blank=True, null=True)
-    effacer = models.BooleanField(db_column='Effacer', default=False)
-    
+    nom_caisse = models.CharField(max_length=255, db_column='nom_caisse', blank=True, null=True)
+    solde_caisse = models.DecimalField(max_digits=15, decimal_places=2, db_column='solde_caisse', blank=True, null=True)
+    code_agence = models.CharField(max_length=50, db_column='CodeAgence', blank=True, null=True)
+    effacer = models.BooleanField(db_column='effacer', default=False)
+
     class Meta:
         managed = False
         db_table = 'caisse'
         app_label = 'finances'
-        ordering = ['lib_caisse']
+        ordering = ['nom_caisse']
 
     def __str__(self):
-        return self.lib_caisse
+        return self.nom_caisse or self.id_caisse

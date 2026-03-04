@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CustomSelect from '../../../components/CustomSelect/CustomSelect';
-import RisquePickerModal from '../../../components/RisquePickerModal/RisquePickerModal';
-import crmService from '../../../services/crm';
-import { getAgences, getCompagnies, getProduits, createContrat, importRisquesExcel, getRisquesChoices, getInfoSociete } from '../../../services/contrats';
-import commerciauxService from '../../../services/commerciauxService';
-import VehicleCategoriesService from '../../../services/vehicleCategoriesService';
-import productsService from '../../../services/products';
-import tarifsAutoService from '../../../services/tarifsAutoService';
-import compagniesService from '../../../services/compagnies';
+import CustomSelect from '../../../../../components/CustomSelect/CustomSelect';
+import RisquePickerModal from '../../../../../components/RisquePickerModal/RisquePickerModal';
+import crmService from '../../../../../services/crm';
+import { getAgences, getCompagnies, getProduits, createContrat, importRisquesExcel, getRisquesChoices, getInfoSociete, genererQuittance } from '../../../../../services/contrats';
+import commerciauxService from '../../../../../services/commerciauxService';
+import VehicleCategoriesService from '../../../../../services/vehicleCategoriesService';
+import productsService from '../../../../../services/products';
+import tarifsAutoService from '../../../../../services/tarifsAutoService';
+import compagniesService from '../../../../../services/compagnies';
 import './NouveauContratAuto.css';
 
 /* ─── Helpers ─── */
@@ -449,8 +449,29 @@ const NouveauContratAuto = () => {
         });
     };
     const removeVehicle = (idx) => {
-        setVehicules(p => p.filter((_, i) => i !== idx));
+        setVehicules(prev => {
+            const newList = prev.filter((_, i) => i !== idx);
+
+            // Recalcule les totaux dans garantiesRows depuis les véhicules restants
+            setGarantiesRows(rows => rows.map((row, gIdx) => {
+                const totalPrime = newList.reduce((s, v) => {
+                    const g = v.garanties[gIdx];
+                    return s + (g ? parseFloat(g.prime_annuelle) || 0 : 0);
+                }, 0);
+                return totalPrime > 0 ? { ...row, prime_annuelle: totalPrime } : { ...row, prime_annuelle: '' };
+            }));
+
+            return newList;
+        });
+
         setEditingVehicleIdx(prev => {
+            if (prev === null) return null;
+            if (prev === idx) return null;
+            if (prev > idx) return prev - 1;
+            return prev;
+        });
+
+        setSelectedVehiculeIdx(prev => {
             if (prev === null) return null;
             if (prev === idx) return null;
             if (prev > idx) return prev - 1;
@@ -760,20 +781,35 @@ const NouveauContratAuto = () => {
         try {
             // En mode Mono, on n'envoie qu'un seul véhicule
             const vehs = formData.type_contrat === 'Mono' ? vehicules.slice(0, 1) : vehicules;
-            await createContrat({
+            const result = await createContrat({
                 ...formData,
                 estprojet,
                 ID_Client: selectedClient?.id_client || selectedClient?.ID_Client || '',
                 vehicules: vehs,
                 reductions,
             });
-            if (estprojet) {
-                setSavedProjet(true);
-                setSaveSuccess('Projet enregistré avec succès.');
-                setTimeout(() => setSaveSuccess(null), 5000);
-            } else {
-                navigate('/contrats/auto');
+            if (!estprojet) {
+                // Générer automatiquement la quittance (numPolice + passage projet→contrat)
+                await genererQuittance({ id_contrat: result.id_contrat });
             }
+            // Reset complet du formulaire dans les deux cas
+            setFormData({ ...INITIAL_FORM });
+            setVehicules([]);
+            setReductions(REDUCTIONS_INITIALES);
+            setSelectedClient(null);
+            setClientSearch('');
+            setGarantiesRows([]);
+            setGarantiesTemplate([]);
+            setEditingVehicleIdx(null);
+            setSelectedVehiculeIdx(null);
+            setSavedProjet(false);
+            setCalcMsg(null);
+            setImportResult(null);
+            setTauxTaxe(0);
+            setAccessoireAutoMsg(null);
+            const msg = estprojet ? 'Projet enregistré avec succès.' : 'Contrat validé avec succès. La quittance a été générée.';
+            setSaveSuccess(msg);
+            setTimeout(() => setSaveSuccess(null), 6000);
         } catch (e) {
             setSaveError(
                 e?.response?.data?.detail ||
@@ -1398,6 +1434,7 @@ const NouveauContratAuto = () => {
                                                     <td className="nca-veh-td-num">{v.veh_valeur_neuve ? fmtNum(v.veh_valeur_neuve) : <span className="nca-veh-empty-cell">—</span>}</td>
                                                     <td className="nca-veh-td-actions">
                                                         <button
+                                                            type="button"
                                                             className={`nca-veh-btn-edit ${editingVehicleIdx === vIdx ? 'active' : ''}`}
                                                             onClick={() => setEditingVehicleIdx(editingVehicleIdx === vIdx ? null : vIdx)}
                                                             title={editingVehicleIdx === vIdx ? 'Fermer' : 'Modifier ce véhicule'}
@@ -1405,6 +1442,7 @@ const NouveauContratAuto = () => {
                                                             <i className={`bi ${editingVehicleIdx === vIdx ? 'bi-chevron-up' : 'bi-pencil-fill'}`}></i>
                                                         </button>
                                                         <button
+                                                            type="button"
                                                             className="nca-veh-btn-del"
                                                             onClick={() => removeVehicle(vIdx)}
                                                             title="Retirer ce véhicule"

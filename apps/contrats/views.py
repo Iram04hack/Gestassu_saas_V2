@@ -110,10 +110,10 @@ class ContratViewSet(viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
-        # Base identique à l'original — on ne filtre PAS effacer ici
-        # car la colonne peut avoir un nom ou type différent en production.
         try:
-            queryset = Contrat.objects.all().select_related('produit', 'compagnie')
+            queryset = Contrat.objects.filter(
+                Q(effacer=False) | Q(effacer__isnull=True)
+            ).select_related('produit', 'compagnie')
         except Exception:
             queryset = Contrat.objects.all()
 
@@ -173,10 +173,21 @@ class ContratViewSet(viewsets.ModelViewSet):
         # Recherche textuelle
         search = params.get('search')
         if search:
+            # Recherche par N° police et aussi par nom/prénom client (sous-requête)
+            client_ids_matching = []
+            try:
+                Client = apps.get_model('crm', 'Client')
+                client_ids_matching = list(
+                    Client.objects.filter(
+                        Q(nom_client__icontains=search) | Q(prenom_client__icontains=search)
+                    ).values_list('id_client', flat=True)
+                )
+            except Exception:
+                pass
             queryset = queryset.filter(
                 Q(numPolice__icontains=search) |
                 Q(numPolice_assureur__icontains=search) |
-                Q(ID_Client__icontains=search)
+                Q(ID_Client__in=client_ids_matching)
             )
 
         # Filtre statut (calculé depuis les booléens du modèle)
@@ -220,9 +231,10 @@ class ContratViewSet(viewsets.ModelViewSet):
 
             if client_ids:
                 try:
-                    from apps.crm.models import Client
+                    Client = apps.get_model('crm', 'Client')
                     for c in Client.objects.filter(id_client__in=client_ids):
                         clients_map[c.id_client] = c
+                        clients_map[c.id_client.strip()] = c
                 except Exception as e:
                     print(f"Warning batch Client: {e}")
 
@@ -291,6 +303,7 @@ class ContratViewSet(viewsets.ModelViewSet):
             Contrat.objects.create(
                 id_contrat=id_contrat,
                 estprojet=data.get('estprojet', False),
+                numPolice=_safe_str(data.get('numPolice')),
                 type_doc=_safe_str(data.get('type_doc')) or 'AFFAIRE NOUVELLE',
                 type_contrat=_safe_str(data.get('type_contrat')) or 'Mono',
                 nature_contrat=_safe_str(data.get('nature_contrat')),
@@ -342,14 +355,44 @@ class ContratViewSet(viewsets.ModelViewSet):
             print(f"CRITICAL ERROR ContratViewSet.create: {e}\n{trace}")
             return Response({'error': str(e), 'traceback': trace}, status=500)
 
+    def perform_destroy(self, instance):
+        """Soft delete : met effacer=True au lieu de supprimer physiquement."""
+        instance.effacer = True
+        instance.save(update_fields=['effacer'])
 
-class RisquesViewSet(viewsets.ReadOnlyModelViewSet):
+    @action(detail=True, methods=['patch'], url_path='update_police')
+    def update_police(self, request, pk=None):
+        """Met à jour le numéro de police assureur d'un contrat."""
+        contrat = self.get_object()
+        num = request.data.get('numPolice_assureur')
+        if num is None:
+            return Response({'error': 'numPolice_assureur est requis.'}, status=400)
+        contrat.numPolice_assureur = str(num).strip() or None
+        contrat.save(update_fields=['numPolice_assureur'])
+        return Response({'numPolice_assureur': contrat.numPolice_assureur})
+
+
+class RisquesViewSet(viewsets.ModelViewSet):
     """
     Endpoint pour la liste des véhicules (risques).
-    Supporte la recherche et l'import depuis Excel.
+    Supporte la recherche, l'import depuis Excel et la mise à jour partielle (PATCH).
+    Les actions create/destroy sont désactivées — passer par ContratViewSet.
     """
     serializer_class = RisqueSerializer
     pagination_class = StandardResultsSetPagination
+    http_method_names = ['get', 'patch', 'head', 'options']
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Override PATCH : met à jour date_modif automatiquement.
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        # Mise à jour de date_modif (table legacy sans auto_now)
+        Risques.objects.filter(pk=instance.pk).update(date_modif=timezone.now())
+        return Response(serializer.data)
 
     def get_queryset(self):
         qs = Risques.objects.filter(effacer=False).order_by('-date_enreg')

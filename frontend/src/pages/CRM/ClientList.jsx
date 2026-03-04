@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ClientList = ({ clients, searchTerm, activeTab, onDelete }) => {
+const ClientList = ({ clients, searchTerm, activeTab, onDelete, onEdit }) => {
     const navigate = useNavigate();
     // Basic Filtering Logic
     // Use clients directly as they are already filtered by the API (server-side search & filtering)

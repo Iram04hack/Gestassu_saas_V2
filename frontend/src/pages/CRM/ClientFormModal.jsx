@@ -5,6 +5,8 @@ import './ClientFormModal.css';
 
 const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne', initialData = null, isEditMode = false }) => {
     const [type, setType] = useState(defaultType); // 'personne' or 'entreprise'
+    const [saving, setSaving] = useState(false);
+    const [saveError, setSaveError] = useState(null);
     const [formData, setFormData] = useState({
         qualite: '', // Will hold Civilité or Forme Juridique
         nom: '',
@@ -65,6 +67,11 @@ const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne', in
         }
     }, [type, isEditMode]);
 
+    // Reset error when modal closes/reopens
+    useEffect(() => {
+        if (isOpen) setSaveError(null);
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     const handleChange = (e) => {
@@ -72,8 +79,10 @@ const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne', in
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setSaveError(null);
+        setSaving(true);
 
         // Construct the data for API
         const apiData = {
@@ -95,15 +104,31 @@ const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne', in
             est_entreprise: type === 'entreprise'
         };
 
-        onSave(apiData);
-
-        // Reset form if not in edit mode
-        if (!isEditMode) {
-            setFormData({
-                qualite: '', nom: '', prenom: '', raisonSocial: '', adresse: '', email: '', tel: '', whatsapp: '',
-                profession: '', dateNaissance: '', pays: 'Gabon', nif: '', pointFocal: '', fonctionPf: '',
-                source: '', conseiller: '', autresInfos: ''
-            });
+        try {
+            await onSave(apiData);
+            // Reset form if not in edit mode (onSave closes the modal on success)
+            if (!isEditMode) {
+                setFormData({
+                    qualite: '', nom: '', prenom: '', raisonSocial: '', adresse: '', email: '', tel: '', whatsapp: '',
+                    profession: '', dateNaissance: '', pays: 'Gabon', nif: '', pointFocal: '', fonctionPf: '',
+                    source: '', conseiller: '', autresInfos: ''
+                });
+            }
+        } catch (err) {
+            let message = 'Une erreur est survenue. Veuillez réessayer.';
+            if (err?.response?.data) {
+                const data = err.response.data;
+                if (typeof data === 'string') {
+                    message = data;
+                } else if (typeof data === 'object') {
+                    const firstKey = Object.keys(data)[0];
+                    const firstVal = data[firstKey];
+                    message = `${firstKey} : ${Array.isArray(firstVal) ? firstVal[0] : firstVal}`;
+                }
+            }
+            setSaveError(message);
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -262,8 +287,22 @@ const ClientFormModal = ({ isOpen, onClose, onSave, defaultType = 'personne', in
                 </div>
 
                 <div className="modal-footer">
-                    <button type="button" className="btn-cancel" onClick={onClose}><i className="bi bi-x-lg"></i> Annuler</button>
-                    <button type="submit" form="clientForm" className="btn-save"><i className="bi bi-check-lg"></i> Enregistrer</button>
+                    {saveError && (
+                        <div className="modal-save-error">
+                            <i className="bi bi-exclamation-circle-fill"></i> {saveError}
+                        </div>
+                    )}
+                    <div className="modal-footer-actions">
+                        <button type="button" className="btn-cancel" onClick={onClose} disabled={saving}>
+                            <i className="bi bi-x-lg"></i> Annuler
+                        </button>
+                        <button type="submit" form="clientForm" className="btn-save" disabled={saving}>
+                            {saving
+                                ? <><i className="bi bi-hourglass-split"></i> Enregistrement...</>
+                                : <><i className="bi bi-check-lg"></i> Enregistrer</>
+                            }
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

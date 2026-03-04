@@ -89,13 +89,19 @@ class ClientViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def perform_create(self, serializer):
-        """Enregistrer l'utilisateur qui a créé le client"""
-        user_id = self.request.user.id if self.request.user.is_authenticated else None
-        serializer.save(idutilisateur_source=user_id, idutilisateur_save=user_id)
+        """Enregistrer l'utilisateur qui a créé le client et générer l'ID"""
+        import uuid
+        user_id = getattr(self.request.user, 'idutilisateur', None)
+        id_client = f"CLI{uuid.uuid4().hex[:10].upper()}"
+        serializer.save(
+            id_client=id_client,
+            idutilisateur_source=user_id,
+            idutilisateur_save=user_id
+        )
 
     def perform_update(self, serializer):
         """Enregistrer l'utilisateur qui a modifié le client"""
-        user_id = self.request.user.id if self.request.user.is_authenticated else None
+        user_id = getattr(self.request.user, 'idutilisateur', None)
         serializer.save(idutilisateur_save=user_id)
 
     def perform_destroy(self, instance):
@@ -142,12 +148,12 @@ class InteractionViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         """Enregistrer l'utilisateur qui a créé l'interaction"""
-        user_id = self.request.user.id if self.request.user.is_authenticated else None
+        user_id = getattr(self.request.user, 'idutilisateur', None)
         serializer.save(idutilisateur_save=user_id)
-    
+
     def perform_update(self, serializer):
         """Enregistrer l'utilisateur qui a modifié l'interaction"""
-        user_id = self.request.user.id if self.request.user.is_authenticated else None
+        user_id = getattr(self.request.user, 'idutilisateur', None)
         serializer.save(idutilisateur_save=user_id)
 
     def perform_destroy(self, instance):

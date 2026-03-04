@@ -573,6 +573,45 @@
   flex-shrink: 0;
 }
 
+/* ===== QUITTANCE FEEDBACK MESSAGE ===== */
+.contrats-quittance-msg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  flex-shrink: 0;
+  border-left: 4px solid;
+}
+
+.contrats-quittance-msg--success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-color: #2e7d32;
+}
+
+.contrats-quittance-msg--error {
+  background: #ffebee;
+  color: #c62828;
+  border-color: #c62828;
+}
+
+.contrats-quittance-msg-cls {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.6;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.contrats-quittance-msg-cls:hover { opacity: 1; }
+
 /* ===== PAGINATION ===== */
 .contrats-pagination-bar {
   display: flex;
@@ -744,4 +783,141 @@
   background: rgba(46, 125, 50, 0.15);
   border-color: #388e3c;
   color: #66bb6a;
+}
+
+/* ===== MODALES DE CONFIRMATION / ÉDITION ===== */
+.contrats-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+.contrats-confirm-box {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  width: 420px;
+  max-width: 95vw;
+  overflow: hidden;
+}
+
+.contrats-confirm-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.contrats-confirm-header--danger { background: #d32f2f; }
+.contrats-confirm-header--edit   { background: #6d4c41; }
+
+.contrats-confirm-body {
+  padding: 20px;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.contrats-confirm-error {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.contrats-confirm-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6d4c41;
+  margin-bottom: 6px;
+}
+
+.contrats-confirm-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.contrats-confirm-input:focus {
+  border-color: #6d4c41;
+  box-shadow: 0 0 0 2px rgba(109,76,65,0.15);
+}
+
+.contrats-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.contrats-confirm-btn {
+  padding: 7px 18px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+
+.contrats-confirm-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.contrats-confirm-btn--cancel {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  color: #374151;
+}
+.contrats-confirm-btn--cancel:hover:not(:disabled) { background: #e5e7eb; }
+
+.contrats-confirm-btn--danger {
+  background: #d32f2f;
+  color: #fff;
+}
+.contrats-confirm-btn--danger:hover:not(:disabled) { background: #b71c1c; }
+
+.contrats-confirm-btn--primary {
+  background: #6d4c41;
+  color: #fff;
+}
+.contrats-confirm-btn--primary:hover:not(:disabled) { background: #5d4037; }
+
+[data-theme="dark"] .contrats-confirm-box {
+  background: #1e293b;
+}
+[data-theme="dark"] .contrats-confirm-body {
+  color: #e2e8f0;
+}
+[data-theme="dark"] .contrats-confirm-input {
+  background: #0f172a;
+  border-color: #4a5568;
+  color: #e2e8f0;
+}
+[data-theme="dark"] .contrats-confirm-actions {
+  border-color: #2d3748;
+}
+[data-theme="dark"] .contrats-confirm-btn--cancel {
+  background: #334155;
+  border-color: #4a5568;
+  color: #e2e8f0;
 }

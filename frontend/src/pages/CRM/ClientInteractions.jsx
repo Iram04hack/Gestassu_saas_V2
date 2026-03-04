@@ -173,7 +173,7 @@ const ClientInteractions = ({ clientId, clientName, clientType }) => {
                 clientName={clientName}
             />
 
-            <style jsx>{`
+            <style>{`
                 .client-interactions {
                     max-width: 1400px;
                 }

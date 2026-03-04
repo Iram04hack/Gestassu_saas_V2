@@ -17,6 +17,13 @@ class Agence(models.Model):
         db_column='CodeAgence',
         verbose_name='Code Agence'
     )
+    numero_agence = models.CharField(
+        max_length=50,
+        db_column='numero_agence',
+        blank=True,
+        null=True,
+        verbose_name='Numéro agence'
+    )
     nomagence = models.CharField(
         max_length=255,
         db_column='nom_agence',

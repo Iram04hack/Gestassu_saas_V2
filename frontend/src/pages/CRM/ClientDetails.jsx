@@ -82,7 +82,18 @@ const ClientDetails = () => {
                     </div>
                     <div className="client-header-text">
                         <h1>{client.nom_complet}</h1>
-                        <span className={`badge ${client.type_client.toLowerCase()}`}>
+                        <span style={{
+                            display: 'inline-block',
+                            padding: '3px 12px',
+                            borderRadius: '12px',
+                            fontSize: '0.75rem',
+                            fontWeight: 700,
+                            marginTop: '6px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px',
+                            background: client.type_client === 'Client' ? '#5f443cff' : '#5f443cff',
+                            color: 'white',
+                        }}>
                             {client.type_client}
                         </span>
                     </div>

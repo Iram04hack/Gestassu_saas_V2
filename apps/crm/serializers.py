@@ -8,12 +8,12 @@ from django.db.models import Q
 
 class ClientSerializer(serializers.ModelSerializer):
     """Serializer pour le model Client"""
-    
+
     # Champ calculé pour le nom complet
     nom_complet = serializers.SerializerMethodField()
     type_client = serializers.SerializerMethodField()
     enregistre_par = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Client
         fields = [
@@ -42,7 +42,7 @@ class ClientSerializer(serializers.ModelSerializer):
             'date_enreg',
             'date_modif',
         ]
-        read_only_fields = ['date_enreg', 'date_modif', 'nom_complet', 'type_client', 'enregistre_par']
+        read_only_fields = ['id_client', 'date_enreg', 'date_modif', 'nom_complet', 'type_client', 'enregistre_par']
     
     def get_enregistre_par(self, obj):
         """Retourne le nom de l'utilisateur qui a enregistré le client"""
@@ -108,16 +108,20 @@ class ClientListSerializer(serializers.ModelSerializer):
         model = Client
         fields = [
             'id_client',
+            'nom_client',
+            'prenom_client',
             'nom_complet',
+            'nif_client',
             'type_client',
             'email',
             'telephone',
+            'tel_whatsapp',
             'est_entreprise',
             'civilite',
             'source',
             'adresse',
             'pays',
-            'enregistre_par' # Nécessaire pour l'affichage liste
+            'enregistre_par',
         ]
         # Pas de read_only_fields car c'est un serializer de lecture seule par définition via son usage
 

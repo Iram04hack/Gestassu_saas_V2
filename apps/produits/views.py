@@ -39,6 +39,11 @@ class ProduitViewSet(viewsets.ModelViewSet):
     ordering_fields = ['lib_produit']
     ordering = ['lib_produit']
 
+    def perform_destroy(self, instance):
+        """Soft delete"""
+        instance.effacer = True
+        instance.save()
+
     def list(self, request, *args, **kwargs):
         """
         Custom list to manually count warranties
@@ -450,7 +455,8 @@ class AttestationViewSet(viewsets.ModelViewSet):
             )
             
         from django.db import transaction
-        from apps.contrats.models import ContratRisques
+        from django.apps import apps as django_apps
+        ContratRisques = django_apps.get_model('contrats', 'ContratRisques')
         
         count = 0
         errors = []

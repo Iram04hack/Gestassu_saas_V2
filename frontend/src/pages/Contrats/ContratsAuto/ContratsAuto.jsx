@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ContratsAuto.css';
-import { getContrats, getCompagnies, getAgences } from '../../../services/contrats';
+import { getContrats, getCompagnies, getAgences, genererQuittance, deleteContrat, updatePoliceAssureur } from '../../../services/contrats';
 import CustomSelect from '../../../components/CustomSelect/CustomSelect';
 
 // Helper : normalise une réponse API en tableau
@@ -74,8 +74,23 @@ const ContratsAuto = () => {
     const [sortField, setSortField] = useState('date_enreg');
     const [sortDir, setSortDir] = useState('desc');
 
+    // Génération quittance
+    const [quittanceLoading, setQuittanceLoading] = useState(null); // id_contrat en cours
+    const [quittanceMsg, setQuittanceMsg] = useState(null); // { type: 'success'|'error', text }
+
+    // Suppression
+    const [deleteConfirm, setDeleteConfirm] = useState(null); // id_contrat à supprimer
+    const [deleteLoading, setDeleteLoading] = useState(false);
+
+    // Édition N° police assureur
+    const [editPoliceContrat, setEditPoliceContrat] = useState(null); // { id_contrat, numPolice_assureur }
+    const [editPoliceValue, setEditPoliceValue] = useState('');
+    const [editPoliceSaving, setEditPoliceSaving] = useState(false);
+    const [editPoliceError, setEditPoliceError] = useState(null);
+
     // Mémorise les derniers params envoyés (pour la pagination sans rejouer les filtres)
     const lastParamsRef = useRef(null);
+
 
     // ── Chargement (params explicites, pas de dépendances sur l'état) ─────
     const loadContrats = useCallback(async (params) => {
@@ -96,6 +111,83 @@ const ContratsAuto = () => {
             setLoading(false);
         }
     }, []);
+
+    // ── Handlers navigation Avenants ─────────────────────────────────────
+    const openAvenantImmat = (contratId) => {
+        setOpenDropdown(null);
+        navigate(`/contrats/auto/avenant/immat/${contratId}`);
+    };
+
+    const openAvenantImmatSearch = () => {
+        setOpenDropdown(null);
+        navigate('/contrats/auto/avenant/immat');
+    };
+
+    const openAvenantIdentite = (contratId) => {
+        setOpenDropdown(null);
+        navigate(`/contrats/auto/avenant/identite/${contratId}`);
+    };
+
+    const openAvenantIdentiteSearch = () => {
+        setOpenDropdown(null);
+        navigate('/contrats/auto/avenant/identite');
+    };
+
+    // ── Génération quittance ──────────────────────────────────────────────
+    const handleGenererQuittance = async (contratId) => {
+        setQuittanceLoading(contratId);
+        setQuittanceMsg(null);
+        try {
+            await genererQuittance({ id_contrat: contratId });
+            setQuittanceMsg({ type: 'success', text: 'Quittance générée avec succès. Le contrat est maintenant actif.' });
+            // Recharger la liste pour refléter le nouveau statut
+            loadContrats({ ...lastParamsRef.current, page: currentPage });
+        } catch (err) {
+            const msg = err.response?.data?.error || 'Erreur lors de la génération de la quittance.';
+            setQuittanceMsg({ type: 'error', text: msg });
+        } finally {
+            setQuittanceLoading(null);
+        }
+    };
+
+    // ── Suppression contrat ───────────────────────────────────────────────
+    const handleDeleteContrat = async () => {
+        if (!deleteConfirm) return;
+        setDeleteLoading(true);
+        try {
+            await deleteContrat(deleteConfirm);
+            setDeleteConfirm(null);
+            loadContrats({ ...lastParamsRef.current, page: currentPage });
+        } catch (err) {
+            const msg = err.response?.data?.error || 'Erreur lors de la suppression.';
+            setQuittanceMsg({ type: 'error', text: msg });
+            setDeleteConfirm(null);
+        } finally {
+            setDeleteLoading(false);
+        }
+    };
+
+    // ── Édition N° police assureur ────────────────────────────────────────
+    const openEditPolice = (c) => {
+        setEditPoliceContrat({ id_contrat: c.id_contrat });
+        setEditPoliceValue(c.numPolice_assureur || '');
+        setEditPoliceError(null);
+    };
+
+    const handleSavePolice = async () => {
+        if (!editPoliceContrat) return;
+        setEditPoliceSaving(true);
+        setEditPoliceError(null);
+        try {
+            await updatePoliceAssureur(editPoliceContrat.id_contrat, editPoliceValue);
+            setEditPoliceContrat(null);
+            loadContrats({ ...lastParamsRef.current, page: currentPage });
+        } catch (err) {
+            setEditPoliceError(err.response?.data?.error || 'Erreur lors de la mise à jour.');
+        } finally {
+            setEditPoliceSaving(false);
+        }
+    };
 
     // ── Ferme les dropdowns d'action au clic extérieur ────────────────────
     useEffect(() => {
@@ -221,6 +313,7 @@ const ContratsAuto = () => {
     //  RENDER
     // ════════════════════════════════════════════════════════════════════════
     return (
+        <>
         <div className="contrats-auto-container">
 
             {/* ── Header ── */}
@@ -263,8 +356,8 @@ const ContratsAuto = () => {
                     {isDropdownOpen('nouveau-projet', 'main') && (
                         <div className="action-dropdown-menu nouveau-projet-menu" onClick={e => e.stopPropagation()}>
                             <button className="dropdown-item" onClick={() => navigate('/contrats/auto/nouveau')}>Affaire Nouvelle</button>
-                            <button className="dropdown-item">Avenant de Changement d'Immatriculation</button>
-                            <button className="dropdown-item">Avenant de Changement d'Identité</button>
+                            <button className="dropdown-item" onClick={openAvenantImmatSearch}>Avenant de Changement d'Immatriculation</button>
+                            <button className="dropdown-item" onClick={openAvenantIdentiteSearch}>Avenant de Changement d'Identité</button>
                             <button className="dropdown-item">Avenant de Suspension</button>
                             <button className="dropdown-item">Avenant de Remise en Vigueur</button>
                             <button className="dropdown-item">Avenant de Résiliation</button>
@@ -328,6 +421,16 @@ const ContratsAuto = () => {
             </div>
 
             {error && <div className="contrats-error-message">{error}</div>}
+            {quittanceMsg && (
+                <div className={`contrats-quittance-msg contrats-quittance-msg--${quittanceMsg.type}`}>
+                    <i className={`bi ${quittanceMsg.type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle'}`}></i>
+                    {quittanceMsg.text}
+                    <button className="contrats-quittance-msg-cls" onClick={() => setQuittanceMsg(null)}>
+                        <i className="bi bi-x"></i>
+                    </button>
+                </div>
+            )}
+
 
             {/* ════════════════════════════════════════════════════════════
                 TABLE
@@ -452,15 +555,53 @@ const ContratsAuto = () => {
                                             </button>
                                             {isDropdownOpen(c.id_contrat, 'edit') && (
                                                 <div className="action-dropdown-menu" onClick={e => e.stopPropagation()}>
-                                                    <button className="dropdown-item">Modifier le contrat</button>
-                                                    <button className="dropdown-item">Éditer le numéro police assureur</button>
-                                                    <button className="dropdown-item">Régénérer le numéro de police du contrat</button>
+                                                    <button className="dropdown-item" onClick={() => { setOpenDropdown(null); navigate(`/contrats/auto/modifier/${c.id_contrat}`); }}>Modifier le contrat</button>
+                                                    <button className="dropdown-item" onClick={() => { setOpenDropdown(null); openEditPolice(c); }}>Éditer le numéro police assureur</button>
+                                                    <button className="dropdown-item" style={{ opacity: 0.45, cursor: 'not-allowed' }}>Régénérer le numéro de police du contrat</button>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Avenants */}
+                                        <div className="action-dropdown-wrapper">
+                                            <button
+                                                className="btn-action-icon btn-with-caret"
+                                                title="Avenants"
+                                                onClick={(e) => toggleDropdown(e, c.id_contrat, 'avenant')}
+                                            >
+                                                <i className="bi bi-file-earmark-diff"></i>
+                                                <i className="bi bi-caret-down-fill action-caret"></i>
+                                            </button>
+                                            {isDropdownOpen(c.id_contrat, 'avenant') && (
+                                                <div className="action-dropdown-menu" onClick={e => e.stopPropagation()}>
+                                                    <button
+                                                        className="dropdown-item"
+                                                        onClick={() => openAvenantImmat(c.id_contrat)}
+                                                    >
+                                                        <i className="bi bi-car-front" style={{ marginRight: 8 }} />
+                                                        Changement d'immatriculation
+                                                    </button>
+                                                    <button
+                                                        className="dropdown-item"
+                                                        onClick={() => openAvenantIdentite(c.id_contrat)}
+                                                    >
+                                                        <i className="bi bi-person-badge" style={{ marginRight: 8 }} />
+                                                        Changement d'identité
+                                                    </button>
+                                                    <button className="dropdown-item" style={{ opacity: 0.45, cursor: 'not-allowed' }}>Suspension</button>
+                                                    <button className="dropdown-item" style={{ opacity: 0.45, cursor: 'not-allowed' }}>Remise en vigueur</button>
+                                                    <button className="dropdown-item" style={{ opacity: 0.45, cursor: 'not-allowed' }}>Résiliation</button>
+                                                    <button className="dropdown-item" style={{ opacity: 0.45, cursor: 'not-allowed' }}>Incorporation</button>
                                                 </div>
                                             )}
                                         </div>
 
                                         {/* Supprimer */}
-                                        <button className="btn-action-icon danger" title="Supprimer">
+                                        <button
+                                            className="btn-action-icon danger"
+                                            title="Supprimer"
+                                            onClick={() => setDeleteConfirm(c.id_contrat)}
+                                        >
                                             <i className="bi bi-trash"></i>
                                         </button>
 
@@ -468,9 +609,13 @@ const ContratsAuto = () => {
                                         <button
                                             className="btn-generer-quittance"
                                             title={c.statut?.toLowerCase() !== 'projet' ? 'Disponible uniquement pour les projets' : 'Générer une quittance'}
-                                            disabled={c.statut?.toLowerCase() !== 'projet'}
+                                            disabled={c.statut?.toLowerCase() !== 'projet' || quittanceLoading === c.id_contrat}
+                                            onClick={() => handleGenererQuittance(c.id_contrat)}
                                         >
-                                            <i className="bi bi-receipt"></i> Générer Quittance
+                                            {quittanceLoading === c.id_contrat
+                                                ? <><i className="bi bi-hourglass-split"></i> En cours...</>
+                                                : <><i className="bi bi-receipt"></i> Générer Quittance</>
+                                            }
                                         </button>
                                     </div>
                                 </td>
@@ -524,6 +669,65 @@ const ContratsAuto = () => {
                 </div>
             )}
         </div>
+
+        {/* ── Modale confirmation suppression ── */}
+        {deleteConfirm && (
+            <div className="contrats-confirm-overlay" onClick={() => !deleteLoading && setDeleteConfirm(null)}>
+                <div className="contrats-confirm-box" onClick={e => e.stopPropagation()}>
+                    <div className="contrats-confirm-header contrats-confirm-header--danger">
+                        <i className="bi bi-trash3"></i>
+                        <span>Supprimer le contrat</span>
+                    </div>
+                    <div className="contrats-confirm-body">
+                        Êtes-vous sûr de vouloir supprimer ce contrat ? Cette action est irréversible.
+                    </div>
+                    <div className="contrats-confirm-actions">
+                        <button className="contrats-confirm-btn contrats-confirm-btn--cancel" onClick={() => setDeleteConfirm(null)} disabled={deleteLoading}>
+                            Annuler
+                        </button>
+                        <button className="contrats-confirm-btn contrats-confirm-btn--danger" onClick={handleDeleteContrat} disabled={deleteLoading}>
+                            {deleteLoading ? <><i className="bi bi-hourglass-split"></i> Suppression...</> : <><i className="bi bi-trash3"></i> Supprimer</>}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {/* ── Modale édition N° police assureur ── */}
+        {editPoliceContrat && (
+            <div className="contrats-confirm-overlay" onClick={() => !editPoliceSaving && setEditPoliceContrat(null)}>
+                <div className="contrats-confirm-box" onClick={e => e.stopPropagation()}>
+                    <div className="contrats-confirm-header contrats-confirm-header--edit">
+                        <i className="bi bi-pencil-square"></i>
+                        <span>Numéro police assureur</span>
+                    </div>
+                    <div className="contrats-confirm-body">
+                        {editPoliceError && (
+                            <div className="contrats-confirm-error"><i className="bi bi-exclamation-triangle"></i> {editPoliceError}</div>
+                        )}
+                        <label className="contrats-confirm-label">Numéro police assureur</label>
+                        <input
+                            className="contrats-confirm-input"
+                            type="text"
+                            value={editPoliceValue}
+                            onChange={e => setEditPoliceValue(e.target.value)}
+                            autoFocus
+                            onKeyDown={e => e.key === 'Enter' && handleSavePolice()}
+                        />
+                    </div>
+                    <div className="contrats-confirm-actions">
+                        <button className="contrats-confirm-btn contrats-confirm-btn--cancel" onClick={() => setEditPoliceContrat(null)} disabled={editPoliceSaving}>
+                            Annuler
+                        </button>
+                        <button className="contrats-confirm-btn contrats-confirm-btn--primary" onClick={handleSavePolice} disabled={editPoliceSaving}>
+                            {editPoliceSaving ? <><i className="bi bi-hourglass-split"></i> Enregistrement...</> : <><i className="bi bi-check2"></i> Enregistrer</>}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        </>
     );
 };
 

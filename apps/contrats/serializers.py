@@ -41,7 +41,7 @@ class ContratListSerializer(serializers.ModelSerializer):
             'id_contrat', 'estprojet', 'numPolice', 'numAvenant',
             'numPolice_assureur', 'date_acte', 'date_effet', 'Date_echeance',
             'type_doc', 'type_contrat', 'prime_totale', 'CodeAgence',
-            'date_enreg', 'IDUTILISATEUR_save',
+            'date_enreg', 'IDUTILISATEUR_save', 'ID_Client',
             'nom_compagnie', 'nom_produit', 'nom_agence',
             'statut', 'nom_client_complet', 'nom_utilisateur_save',
         ]
@@ -59,7 +59,8 @@ class ContratListSerializer(serializers.ModelSerializer):
             return '-'
 
     def get_nom_client_complet(self, obj):
-        client = self.context.get('clients_map', {}).get(obj.ID_Client)
+        client_key = (obj.ID_Client or '').strip()
+        client = self.context.get('clients_map', {}).get(client_key)
         if client:
             try:
                 if getattr(client, 'est_entreprise', False):
@@ -106,6 +107,8 @@ class ContratSerializer(serializers.ModelSerializer):
     nom_client_complet = serializers.SerializerMethodField()
     risques = serializers.SerializerMethodField()
     nom_utilisateur_save = serializers.SerializerMethodField()
+    Id_compagnie = serializers.SerializerMethodField()
+    Id_produit = serializers.SerializerMethodField()
     
     class Meta:
         model = Contrat
@@ -167,7 +170,15 @@ class ContratSerializer(serializers.ModelSerializer):
             'nom_client_complet',
             'risques',
             'nom_utilisateur_save',
+            'Id_compagnie',
+            'Id_produit',
         ]
+
+    def get_Id_compagnie(self, obj):
+        return obj.compagnie_id
+
+    def get_Id_produit(self, obj):
+        return obj.produit_id
     
     def get_risques(self, obj):
         """Récupère les risques associés au contrat avec les attestations affectées"""
@@ -218,10 +229,8 @@ class ContratSerializer(serializers.ModelSerializer):
         try:
             if not obj.ID_Client:
                 return "-"
-            # Importation locale pour éviter les imports circulaires si nécessaire, 
-            # mais ici on a déjà importé Client en haut.
-            # Importation locale pour éviter les imports circulaires
-            from apps.crm.models import Client
+            from django.apps import apps
+            Client = apps.get_model('crm', 'Client')
             client = Client.objects.filter(id_client=obj.ID_Client).first()
             if client:
                 nom = client.nom_client or ""

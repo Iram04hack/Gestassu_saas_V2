@@ -2,37 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { getCaisses, createMouvement } from '../../services/finances';
 import MovementTypeSelectionModal from './MovementTypeSelectionModal';
 
-const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
+const MovementFormModal = ({ isOpen, onClose, client, soldeActuel = 0, onSuccess }) => {
     const [caisses, setCaisses] = useState([]);
     const [isTypeModalOpen, setIsTypeModalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-    // Form state
-    const [formData, setFormData] = useState({
+    const INITIAL = {
         libelle: '',
         type_mvt_id: '',
-        type: '', // 'Crédit' or 'Débit'
+        type: '',
         caisse_id: '',
-        type_impact: '',
-        date_mouvement: new Date().toISOString().slice(0, 16), // YYYY-MM-DDTHH:MM
+        date_mouvement: new Date().toISOString().slice(0, 16),
         montant: '',
-        observation: ''
-    });
+        observation: '',
+    };
+    const [formData, setFormData] = useState(INITIAL);
 
     useEffect(() => {
         if (isOpen) {
             loadCaisses();
-            // Reset form
-            setFormData({
-                libelle: '',
-                type_mvt_id: '',
-                type: '',
-                caisse_id: '',
-                type_impact: '',
-                date_mouvement: new Date().toISOString().slice(0, 16),
-                montant: '',
-                observation: ''
-            });
+            setFormData({ ...INITIAL, date_mouvement: new Date().toISOString().slice(0, 16) });
+            setError('');
         }
     }, [isOpen]);
 
@@ -50,36 +41,35 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
             ...prev,
             libelle: selectedType.lib_type_mouvement,
             type_mvt_id: selectedType.id_type_mvt,
-            type: selectedType.type_op ? 'Crédit' : 'Débit'
+            type: selectedType.type_op ? 'Crédit' : 'Débit',
         }));
         setIsTypeModalOpen(false);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.libelle) { setError('Veuillez sélectionner un type de mouvement.'); return; }
+        if (!formData.montant || parseFloat(formData.montant) <= 0) { setError('Veuillez saisir un montant valide.'); return; }
         setLoading(true);
-
+        setError('');
         try {
-            // Mapping frontend data to backend model (Mouvement)
-            const payload = {
-                idtransfert: client.id, // Client ID
+            await createMouvement({
+                idtransfert: client.id || client.id_client,
                 datemouvement: formData.date_mouvement,
                 mont_debit: formData.type === 'Débit' ? formData.montant : 0,
                 mont_credit: formData.type === 'Crédit' ? formData.montant : 0,
                 observation: formData.observation,
                 IDTYPE_MVT: formData.type_mvt_id,
-                IDCaisse: formData.caisse_id,
+                IDCaisse: client.id || client.id_client,
                 nature_compte: 'CLIENT',
                 LibType_Mouvement: formData.libelle,
-                // IDUTILISATEUR_save: 'current_user_id', // Should be handled by backend
-            };
-
-            await createMouvement(payload);
+            });
             if (onSuccess) onSuccess();
             onClose();
         } catch (err) {
             console.error('Erreur création mouvement:', err);
-            alert('Erreur lors de la création du mouvement');
+            const msg = err?.response?.data?.error || err?.response?.data?.detail || 'Erreur lors de la création du mouvement.';
+            setError(msg);
         } finally {
             setLoading(false);
         }
@@ -87,343 +77,324 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
 
     if (!isOpen) return null;
 
+    const clientName = client ? `${client.nom_client || ''} ${client.prenom_client || ''}`.trim().toUpperCase() : '';
+    const isCredit = formData.type === 'Crédit';
+    const isDebit = formData.type === 'Débit';
+    const fmt = (n) => new Intl.NumberFormat('fr-FR').format(n ?? 0);
+
     return (
-        <div className="modal-overlay">
-            <style>{`
-                .modal-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.6);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 1000;
-                    animation: fadeIn 0.2s ease-out;
-                }
-                
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-                
-                @keyframes slideUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(20px);
+        <>
+            <div style={{
+                position: 'fixed', inset: 0,
+                background: 'rgba(0,0,0,0.55)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                zIndex: 1000,
+            }}>
+                <style>{`
+                    @keyframes mvtSlide {
+                        from { opacity: 0; transform: translateY(22px); }
+                        to { opacity: 1; transform: translateY(0); }
                     }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
+                    .mvt-modal {
+                        background: #fff; width: 580px; max-width: 96vw;
+                        border-radius: 18px; overflow: hidden;
+                        box-shadow: 0 24px 70px rgba(0,0,0,0.22);
+                        animation: mvtSlide 0.28s ease-out;
+                        display: flex; flex-direction: column;
+                        max-height: 90vh; min-height: 0;
                     }
-                }
-                
-                .movement-modal-content {
-                    background: white;
-                    width: 650px;
-                    max-width: 95vw;
-                    border-radius: 12px;
-                    overflow: hidden;
-                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-                    animation: slideUp 0.3s ease-out;
-                }
-                
-                .movement-modal-header {
-                    background: linear-gradient(135deg, #6d4c41 0%, #5d4037 100%);
-                    color: white;
-                    padding: 18px 24px;
-                    font-size: 1.15rem;
-                    font-weight: 600;
-                    letter-spacing: 0.3px;
-                }
-                
-                .movement-modal-body {
-                    padding: 24px;
-                    max-height: 65vh;
-                    overflow-y: auto;
-                }
-                
-                .movement-modal-body::-webkit-scrollbar {
-                    width: 8px;
-                }
-                
-                .movement-modal-body::-webkit-scrollbar-track {
-                    background: #f1f1f1;
-                }
-                
-                .movement-modal-body::-webkit-scrollbar-thumb {
-                    background: #8d6e63;
-                    border-radius: 4px;
-                }
-                
-                .form-group {
-                    display: flex;
-                    margin-bottom: 18px;
-                    align-items: center;
-                    transition: all 0.2s ease;
-                }
-                
-                .form-label {
-                    width: 180px;
-                    font-size: 0.9rem;
-                    color: #4a4a4a;
-                    font-weight: 600;
-                    padding-right: 12px;
-                }
-                
-                .form-input-group {
-                    flex: 1;
-                    display: flex;
-                    gap: 8px;
-                    align-items: center;
-                }
-                
-                .form-input {
-                    flex: 1;
-                    padding: 10px 14px;
-                    border: 1.5px solid #d7ccc8;
-                    border-radius: 6px;
-                    font-size: 0.9rem;
-                    transition: all 0.3s ease;
-                    background: white;
-                }
-                
-                .form-input:focus {
-                    outline: none;
-                    border-color: #6d4c41;
-                    box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
-                }
-                
-                .form-input.warning-bg {
-                    background-color: #fff9c4;
-                    border-color: #f9e79f;
-                }
-                
-                .form-input.readonly {
-                    background-color: #fff9c4;
-                    border-color: #f9e79f;
-                    cursor: not-allowed;
-                }
-                
-                select.form-input {
-                    cursor: pointer;
-                }
-                
-                textarea.form-input {
-                    resize: vertical;
-                    min-height: 80px;
-                    font-family: inherit;
-                }
-                
-                .btn-dots {
-                    background: linear-gradient(135deg, #6d4c41 0%, #5d4037 100%);
-                    color: white;
-                    border: none;
-                    width: 36px;
-                    height: 36px;
-                    border-radius: 6px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    transition: all 0.2s ease;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                }
-                
-                .btn-dots:hover {
-                    transform: translateY(-1px);
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-                }
-                
-                .btn-dots:active {
-                    transform: translateY(0);
-                }
-                
-                .amount-input {
-                    text-align: right;
-                    color: #d32f2f;
-                    font-weight: 700;
-                    font-size: 1rem;
-                }
-                
-                .movement-modal-footer {
-                    padding: 18px 24px;
-                    background: #fafafa;
-                    display: flex;
-                    justify-content: center;
-                    gap: 16px;
-                    border-top: 1px solid #e0e0e0;
-                }
-                
-                .btn-cancel,
-                .btn-save {
-                    background: linear-gradient(135deg, #6d4c41 0%, #5d4037 100%);
-                    color: white;
-                    padding: 10px 24px;
-                    border-radius: 24px;
-                    border: none;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 2px 8px rgba(109, 76, 65, 0.2);
-                }
-                
-                .btn-cancel {
-                    background: linear-gradient(135deg, #757575 0%, #616161 100%);
-                }
-                
-                .btn-cancel:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 12px rgba(117, 117, 117, 0.3);
-                }
-                
-                .btn-save:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 12px rgba(109, 76, 65, 0.3);
-                }
-                
-                .btn-cancel:active,
-                .btn-save:active {
-                    transform: translateY(0);
-                }
-                
-                .btn-save:disabled {
-                    opacity: 0.6;
-                    cursor: not-allowed;
-                    transform: none;
-                }
-            `}</style>
+                    .mvt-modal form {
+                        display: flex; flex-direction: column;
+                        flex: 1; overflow: hidden; min-height: 0;
+                    }
 
-            <div className="movement-modal-content">
-                <div className="movement-modal-header">
-                    Fiche mouvement de compte client
+                    /* ── Hero header ── */
+                    .mvt-hero {
+                        background: linear-gradient(135deg, #5d4037 0%, #3e2723 100%);
+                        padding: 20px 24px 18px;
+                        display: flex; align-items: flex-start; justify-content: space-between;
+                        flex-shrink: 0;
+                    }
+                    .mvt-hero-left { display: flex; align-items: center; gap: 14px; }
+                    .mvt-hero-icon {
+                        width: 44px; height: 44px; border-radius: 12px;
+                        background: rgba(255,255,255,0.15);
+                        display: flex; align-items: center; justify-content: center;
+                        font-size: 1.3rem; color: white; flex-shrink: 0;
+                    }
+                    .mvt-hero-title {
+                        color: white; font-size: 1.05rem; font-weight: 700; letter-spacing: 0.3px;
+                    }
+                    .mvt-hero-sub {
+                        color: rgba(255,255,255,0.65); font-size: 0.8rem; margin-top: 2px;
+                    }
+                    .mvt-close {
+                        background: rgba(255,255,255,0.15); border: none; color: white;
+                        width: 30px; height: 30px; border-radius: 8px;
+                        display: flex; align-items: center; justify-content: center;
+                        cursor: pointer; font-size: 1rem; transition: background 0.2s;
+                        flex-shrink: 0;
+                    }
+                    .mvt-close:hover { background: rgba(255,255,255,0.28); }
+
+                    /* ── Type badge strip ── */
+                    .mvt-type-strip {
+                        padding: 10px 24px 0;
+                        display: flex; gap: 8px;
+                        flex-shrink: 0;
+                    }
+                    .mvt-type-chip {
+                        padding: 4px 14px; border-radius: 20px;
+                        font-size: 0.8rem; font-weight: 700;
+                        display: flex; align-items: center; gap: 5px;
+                        letter-spacing: 0.3px;
+                    }
+                    .mvt-type-chip--credit { background: #e8f5e9; color: #2e7d32; }
+                    .mvt-type-chip--debit  { background: #fdecea; color: #c62828; }
+                    .mvt-type-chip--none   { background: #f5f5f5; color: #999; }
+
+                    /* ── Body ── */
+                    .mvt-body {
+                        padding: 18px 24px 10px;
+                        overflow-y: auto; flex: 1;
+                        scrollbar-width: thin; scrollbar-color: #d7ccc8 #fff;
+                    }
+
+                    .mvt-client-row {
+                        background: #fdf8f6; border: 1px solid #e8ddd9;
+                        border-radius: 10px; padding: 10px 14px;
+                        display: flex; align-items: center; gap: 10px;
+                        margin-bottom: 16px;
+                    }
+                    .mvt-avatar {
+                        width: 34px; height: 34px; border-radius: 50%;
+                        background: linear-gradient(135deg, #8d6e63, #6d4c41);
+                        color: white; display: flex; align-items: center;
+                        justify-content: center; font-size: 0.85rem; font-weight: 700;
+                        flex-shrink: 0;
+                    }
+                    .mvt-client-info-name { font-size: 0.88rem; font-weight: 700; color: #3e2723; }
+                    .mvt-client-info-label { font-size: 0.74rem; color: #a1887f; }
+                    .mvt-solde-banner {
+                        display: flex; align-items: center; justify-content: space-between;
+                        background: #fdf8f6; border: 1px solid #e8ddd9;
+                        border-radius: 10px; padding: 10px 16px; margin-bottom: 14px;
+                    }
+                    .mvt-solde-label { font-size: 0.78rem; color: #8d6e63; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+                    .mvt-solde-value { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.3px; }
+                    .mvt-solde-value.positive { color: #2e7d32; }
+                    .mvt-solde-value.negative { color: #c62828; }
+                    .mvt-solde-value.zero { color: #9e9e9e; }
+                    .mvt-solde-currency { font-size: 0.75rem; font-weight: 600; color: #a1887f; margin-right: 3px; }
+
+                    .mvt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+                    .mvt-field { margin-bottom: 14px; }
+                    .mvt-field.full { grid-column: 1 / -1; }
+
+                    .mvt-label {
+                        display: block; font-size: 0.78rem; font-weight: 700;
+                        color: #6d4c41; margin-bottom: 6px; letter-spacing: 0.2px;
+                        text-transform: uppercase;
+                    }
+
+                    .mvt-input, .mvt-select, .mvt-textarea {
+                        width: 100%; padding: 9px 13px;
+                        border: 1.5px solid #d7ccc8; border-radius: 9px;
+                        font-size: 0.88rem; color: #3e2723; background: #fff;
+                        outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+                        font-family: inherit; box-sizing: border-box;
+                    }
+                    .mvt-input:focus, .mvt-select:focus, .mvt-textarea:focus {
+                        border-color: #6d4c41;
+                        box-shadow: 0 0 0 3px rgba(109,76,65,0.1);
+                    }
+                    .mvt-input.readonly { background: #fdf8f6; color: #8d6e63; cursor: default; }
+                    .mvt-textarea { min-height: 72px; resize: vertical; }
+
+                    .mvt-input-btn {
+                        display: flex; gap: 8px; align-items: stretch;
+                    }
+                    .mvt-input-btn .mvt-input { flex: 1; }
+                    .mvt-btn-browse {
+                        background: linear-gradient(135deg, #6d4c41, #5d4037);
+                        color: white; border: none;
+                        width: 40px; border-radius: 9px;
+                        display: flex; align-items: center; justify-content: center;
+                        cursor: pointer; font-size: 1rem;
+                        transition: opacity 0.2s; flex-shrink: 0;
+                    }
+                    .mvt-btn-browse:hover { opacity: 0.85; }
+
+                    .mvt-amount-input {
+                        text-align: right; font-size: 1.05rem; font-weight: 700;
+                        color: #c62828; letter-spacing: 0.5px;
+                    }
+
+                    .mvt-error {
+                        background: #fdecea; border: 1px solid #ef9a9a;
+                        border-radius: 8px; padding: 8px 14px;
+                        color: #c62828; font-size: 0.82rem;
+                        display: flex; align-items: center; gap: 8px;
+                        margin-bottom: 14px;
+                    }
+
+                    .mvt-divider {
+                        border: none; border-top: 1px solid #f0e8e4;
+                        margin: 4px 0 14px;
+                    }
+
+                    /* ── Footer ── */
+                    .mvt-footer {
+                        padding: 14px 24px;
+                        background: #fafaf9; border-top: 1px solid #f0e8e4;
+                        display: flex; justify-content: flex-end; gap: 10px;
+                        flex-shrink: 0;
+                    }
+                    .mvt-btn {
+                        padding: 9px 22px; border-radius: 20px; border: none;
+                        cursor: pointer; display: flex; align-items: center; gap: 7px;
+                        font-size: 0.88rem; font-weight: 600; transition: all 0.2s;
+                    }
+                    .mvt-btn-cancel { background: #efebe9; color: #6d4c41; border: 1.5px solid #d7ccc8; }
+                    .mvt-btn-cancel:hover { background: #e8ddd9; }
+                    .mvt-btn-save {
+                        background: linear-gradient(135deg, #6d4c41, #4e342e);
+                        color: white; box-shadow: 0 2px 8px rgba(109,76,65,0.25);
+                    }
+                    .mvt-btn-save:hover { box-shadow: 0 4px 14px rgba(109,76,65,0.35); transform: translateY(-1px); }
+                    .mvt-btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+                `}</style>
+
+                <div className="mvt-modal">
+                    {/* Hero */}
+                    <div className="mvt-hero">
+                        <div className="mvt-hero-left">
+                            <div className="mvt-hero-icon"><i className="bi bi-arrow-left-right"></i></div>
+                            <div>
+                                <div className="mvt-hero-title">Mouvement de compte</div>
+                                <div className="mvt-hero-sub">Enregistrer un débit ou crédit client</div>
+                            </div>
+                        </div>
+                        <button className="mvt-close" onClick={onClose}><i className="bi bi-x-lg"></i></button>
+                    </div>
+
+                    {/* Type badge */}
+                    <div className="mvt-type-strip">
+                        <span className={`mvt-type-chip ${isCredit ? 'mvt-type-chip--credit' : isDebit ? 'mvt-type-chip--debit' : 'mvt-type-chip--none'}`}>
+                            {isCredit ? <><i className="bi bi-arrow-down-circle-fill"></i> Crédit</> :
+                             isDebit  ? <><i className="bi bi-arrow-up-circle-fill"></i> Débit</> :
+                             <><i className="bi bi-question-circle"></i> Type non sélectionné</>}
+                        </span>
+                    </div>
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="mvt-body">
+                            {/* Client */}
+                            <div className="mvt-client-row">
+                                <div className="mvt-avatar">{clientName.charAt(0) || 'C'}</div>
+                                <div>
+                                    <div className="mvt-client-info-name">{clientName || '—'}</div>
+                                    <div className="mvt-client-info-label">Compte client</div>
+                                </div>
+                            </div>
+
+                            {/* Solde actuel */}
+                            <div className="mvt-solde-banner">
+                                <span className="mvt-solde-label"><i className="bi bi-wallet2"></i> Solde actuel du compte</span>
+                                <span className={`mvt-solde-value ${soldeActuel > 0 ? 'positive' : soldeActuel < 0 ? 'negative' : 'zero'}`}>
+                                    <span className="mvt-solde-currency">XAF</span>
+                                    {fmt(soldeActuel)}
+                                </span>
+                            </div>
+
+                            {error && (
+                                <div className="mvt-error">
+                                    <i className="bi bi-exclamation-triangle-fill"></i> {error}
+                                </div>
+                            )}
+
+                            <hr className="mvt-divider" />
+
+                            <div className="mvt-grid">
+                                {/* Libellé du mouvement */}
+                                <div className="mvt-field full">
+                                    <label className="mvt-label">Libellé du mouvement</label>
+                                    <div className="mvt-input-btn">
+                                        <input
+                                            type="text"
+                                            className="mvt-input readonly"
+                                            value={formData.libelle}
+                                            readOnly
+                                            placeholder="Cliquer sur … pour sélectionner"
+                                        />
+                                        <button type="button" className="mvt-btn-browse" onClick={() => setIsTypeModalOpen(true)} title="Choisir le type">
+                                            <i className="bi bi-three-dots"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Caisse */}
+                                <div className="mvt-field">
+                                    <label className="mvt-label">Caisse impactée</label>
+                                    <select
+                                        className="mvt-select"
+                                        value={formData.caisse_id}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, caisse_id: e.target.value }))}
+                                    >
+                                        <option value="">Sélectionner...</option>
+                                        {caisses.map(c => (
+                                            <option key={c.id_caisse} value={c.id_caisse}>{c.lib_caisse}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Date */}
+                                <div className="mvt-field">
+                                    <label className="mvt-label">Date du mouvement</label>
+                                    <input
+                                        type="datetime-local"
+                                        className="mvt-input"
+                                        value={formData.date_mouvement}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, date_mouvement: e.target.value }))}
+                                    />
+                                </div>
+
+                                {/* Montant */}
+                                <div className="mvt-field full">
+                                    <label className="mvt-label">Montant (XAF)</label>
+                                    <input
+                                        type="number"
+                                        className="mvt-input mvt-amount-input"
+                                        value={formData.montant}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, montant: e.target.value }))}
+                                        placeholder="0"
+                                        min="0"
+                                    />
+                                </div>
+
+                                {/* Observation */}
+                                <div className="mvt-field full">
+                                    <label className="mvt-label">Observation</label>
+                                    <textarea
+                                        className="mvt-textarea"
+                                        value={formData.observation}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, observation: e.target.value }))}
+                                        placeholder="Remarques éventuelles..."
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mvt-footer">
+                            <button type="button" className="mvt-btn mvt-btn-cancel" onClick={onClose}>
+                                <i className="bi bi-x-lg"></i> Annuler
+                            </button>
+                            <button type="submit" className="mvt-btn mvt-btn-save" disabled={loading}>
+                                <i className="bi bi-check-lg"></i> {loading ? 'Enregistrement...' : 'Enregistrer'}
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
-                <form onSubmit={handleSubmit}>
-                    <div className="movement-modal-body">
-                        <div className="form-group">
-                            <label className="form-label">Intitulé du compte :</label>
-                            <div style={{ fontWeight: 'bold' }}>
-                                {client ? `${client.nom_client || ''} ${client.prenom_client || ''}`.toUpperCase() : ''}
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Solde client :</label>
-                            <input
-                                type="text"
-                                className="form-input warning-bg amount-input"
-                                value="0,00"
-                                readOnly
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Libellé du mouvement :</label>
-                            <div className="form-input-group">
-                                <input
-                                    type="text"
-                                    className="form-input warning-bg"
-                                    value={formData.libelle}
-                                    readOnly
-                                    placeholder="Sélectionner..."
-                                />
-                                <button type="button" className="btn-dots" onClick={() => setIsTypeModalOpen(true)}>
-                                    <i className="bi bi-three-dots"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Type de mouvement :</label>
-                            <div className="form-input-group" style={{ maxWidth: '150px' }}>
-                                <input
-                                    type="text"
-                                    className="form-input warning-bg"
-                                    value={formData.type}
-                                    readOnly
-                                    style={{
-                                        color: formData.type === 'Crédit' ? 'green' : (formData.type === 'Débit' ? 'red' : 'inherit'),
-                                        fontWeight: 'bold'
-                                    }}
-                                />
-                                {formData.type && (
-                                    <i className={`bi ${formData.type === 'Crédit' ? 'bi-arrow-down-circle-fill text-success' : 'bi-arrow-up-circle-fill text-danger'}`}></i>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Caisse impacté :</label>
-                            <div className="form-input-group">
-                                <select
-                                    className="form-input"
-                                    value={formData.caisse_id}
-                                    onChange={(e) => setFormData({ ...formData, caisse_id: e.target.value })}
-                                >
-                                    <option value="">Sélectionner une caisse...</option>
-                                    {caisses.map(c => (
-                                        <option key={c.id_caisse} value={c.id_caisse}>{c.lib_caisse}</option>
-                                    ))}
-                                </select>
-                                <button type="button" className="btn-dots"><i className="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Type d'impact :</label>
-                            <select className="form-input warning-bg" style={{ maxWidth: '100px' }}>
-                                <option></option>
-                            </select>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Date mouvement :</label>
-                            <input
-                                type="datetime-local"
-                                className="form-input"
-                                value={formData.date_mouvement}
-                                onChange={(e) => setFormData({ ...formData, date_mouvement: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Montant :</label>
-                            <input
-                                type="number"
-                                className="form-input amount-input"
-                                value={formData.montant}
-                                onChange={(e) => setFormData({ ...formData, montant: e.target.value })}
-                                placeholder="0,00"
-                            />
-                        </div>
-
-                        <div className="form-group" style={{ alignItems: 'flex-start' }}>
-                            <label className="form-label">Observation :</label>
-                            <textarea
-                                className="form-input"
-                                rows="4"
-                                value={formData.observation}
-                                onChange={(e) => setFormData({ ...formData, observation: e.target.value })}
-                            ></textarea>
-                        </div>
-                    </div>
-
-                    <div className="movement-modal-footer">
-                        <button type="button" className="btn-cancel" onClick={onClose}>
-                            <i className="bi bi-x-lg"></i> Annuler
-                        </button>
-                        <button type="submit" className="btn-save" disabled={loading}>
-                            <i className="bi bi-check-lg"></i> {loading ? 'Enregistrement...' : 'Enregistrer'}
-                        </button>
-                    </div>
-                </form>
             </div>
 
             <MovementTypeSelectionModal
@@ -431,7 +402,7 @@ const MovementFormModal = ({ isOpen, onClose, client, onSuccess }) => {
                 onClose={() => setIsTypeModalOpen(false)}
                 onSelect={handleTypeSelect}
             />
-        </div>
+        </>
     );
 };
 
